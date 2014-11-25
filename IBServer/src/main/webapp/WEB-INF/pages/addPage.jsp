@@ -53,6 +53,8 @@
                         <div class="bg" style="width:700px;">
                             <script>
                                 setSaveOnBlur(${ticket.id});
+                                setSaveOnUnload(${ticket.id});
+                                setRegularSave(${ticket.id});
                             </script>
                             <ib:ticketEditor ticket="${ticket}"/>
                         </div>
