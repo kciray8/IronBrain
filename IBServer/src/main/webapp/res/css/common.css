@@ -1,0 +1,25 @@
+a{
+    text-decoration: none;
+    color: #32404f;
+}
+
+a:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sectionRow:hover{
+    background-color: #c5eaff;
+}
+
+table {
+    border: 0;
+    border-spacing: 0;
+}
+
+.bg{
+    border-radius: 10px;
+    background-color: #cccccc;
+    margin: 2px;
+    padding: 10px;
+}
