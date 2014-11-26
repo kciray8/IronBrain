@@ -75,5 +75,6 @@
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jdbc:8.0.15" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-juli:8.0.15" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
   </component>
 </module>

@@ -8,8 +8,10 @@
             <td>
                 <ib:section sec="${sec}"/>
             </td>
-            <td style="padding-left: 15px">
-                <a target="_blank" onClick="onDeleteSection(${sec.id}); return false ;">X</a>
+            <td id="openMenuSection${sec.id}" style="padding-left: 15px">
+                <div id="openMenuSectionDiv${sec.id}">
+                    <a target="_blank" onClick="openSettings(${sec.id}); return false ;">Меню</a>
+                </div>
             </td>
         </tr>
     </c:forEach>

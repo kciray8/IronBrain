@@ -9,8 +9,17 @@
 
 <html>
     <head>
+
+        <link rel="stylesheet" type="text/css" href="res/css/jquery-ui.css"/>
+        <!--
+        <link rel="stylesheet" type="text/css" href="res/css/jquery-ui.structure.css"/>
+        <link rel="stylesheet" type="text/css" href="res/css/jquery-ui.theme.css"/>
+        -->
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <script type="text/javascript" src="res/js/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="res/js/jquery.js"></script>
+        <script type="text/javascript" src="res/js/jquery-ui.js"></script>
+
         <script type="text/javascript" src="res/js/addPage.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
@@ -64,6 +73,8 @@
             <tr>
                 <td>
                     ms == ${ms}
+                    <br>
+                    var = <span id="var"></span>
                 </td>
             </tr>
         </table>

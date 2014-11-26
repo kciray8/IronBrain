@@ -19,7 +19,50 @@ table {
 
 .bg{
     border-radius: 10px;
-    background-color: #cccccc;
+    background-color: #dbdedb;
     margin: 2px;
     padding: 10px;
 }
+
+.richTextEditor{
+    padding: 5px; border: 1px solid #000000;
+    background-color: #ffffff;
+}
+
+
+/*Menu element*/
+.ui-menu .ui-menu-item {
+    padding: 2px;
+    font-weight: normal;
+    font-size: medium;
+
+}
+/*Menu all*/
+.ui-menu{
+    border-color: rgba(0, 0, 0, 0.72);
+    padding: 2px;
+    width: 150px;
+    background: #dddddd;
+}
+
+/*Menu element on hover*/
+.ui-menu-item .ui-state-focus{
+    font-weight: normal;
+}
+
+.ui-widget-content .ui-state-focus{
+    font-weight: normal;
+    border-color: #c5eaff;
+    color: #000000;
+    background-color: #c5eaff;
+}
+
+/*Divider*/
+.ui-widget-content .ui-menu-divider{
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+.ui-widget-header{
+   background: #979797;
+}
+
