@@ -20,15 +20,6 @@ public class Section{
 
     private String label;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    private String name;
 
     public Section(){
 
@@ -84,5 +75,15 @@ public class Section{
         }else{
             return label;
         }
+    }
+
+    private Integer owner;
+
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Integer owner) {
+        this.owner = owner;
     }
 }

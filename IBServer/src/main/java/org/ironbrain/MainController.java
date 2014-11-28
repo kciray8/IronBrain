@@ -21,15 +21,39 @@ public class MainController extends APIController {
 
         modelMap.addAttribute("sections", sections);
         modelMap.addAttribute("path", path);
-        modelMap.addAttribute("parentSection", mainSection.getParent());
-        modelMap.addAttribute("thisSection", mainSection.getId());
-
+        modelMap.addAttribute("section", mainSection);
+        modelMap.addAttribute("data", data);
         modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+
+        /*
+        modelMap.addAttribute("debug_data", " "+getUser().getId()+ " "+
+                getUser().getLogin()  + " "+getUser().getEmail() );*/
 
         if (tic != null) {
             Ticket ticket = getTicket(tic);
             modelMap.addAttribute("ticket", ticket);
+            Section ticketSection = getSectionFromTicket(ticket.getId());
+            modelMap.addAttribute("ticketSection", ticketSection);
         }
         return "addPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/")
+    public String getRoot() {
+        if(getUser() != null) {
+            return "redirect:/add?sec=" + getUser().getRoot();
+        }else {
+            return "redirect:/add?sec=1";
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/login_and_redirect")
+    public String loginAndRedirect(@RequestParam String login, @RequestParam String password) {
+        Result result = login(login, password);
+        if(result.isOk()) {
+            return "redirect:/add?sec=" + getUser().getRoot();
+        }else {
+            return null;
+        }
     }
 }

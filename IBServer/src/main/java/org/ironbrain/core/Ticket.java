@@ -38,4 +38,14 @@ public class Ticket {
     public void setAnswers(String answers) {
         this.answers = answers;
     }
+
+    private Integer owner;
+
+    public Integer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
 }

@@ -41,18 +41,22 @@ function initAddPage() {
     });
 }
 
-function saveTicket(id) {
+function saveTicket(id, sectionId) {
     $("#saveProgress").html("Сохранение...");
+    var ticketLabel = $('#ticketLabel').val();
 
     $.get('update_ticket', {
             answers: $('#answersDiv').html(),
             questions: $('#questionsDiv').html(),
-            id: id
+            id: id,
+            label: ticketLabel
         },
         function (data) {
-            //handleResult(data);
-            var d = new Date();
-            $("#saveProgress").html("OK! " + d.getMinutes() + ":" + d.getSeconds());
+            if (data.res = Result.OK) {
+                var d = new Date();
+                $("#saveProgress").html("OK! " + d.getMinutes() + ":" + d.getSeconds());
+                $("#navSection" + sectionId).html(ticketLabel);
+            }
         });
 }
 
@@ -66,24 +70,26 @@ function onAddNewTicket(section) {
     );
 }
 
-function setSaveOnBlur(id) {
+function setSaveOnBlur(id, sectionId) {
     $(window).blur(function () {
-        saveTicket(id);
+        saveTicket(id, sectionId);
     });
 }
 
-function setSaveOnUnload(id) {
+function setSaveOnUnload(id, sectionId) {
     window.onbeforeunload = function () {
-        saveTicket(id);
+        saveTicket(id, sectionId);
     };
 }
 
-function setRegularSave(id) {
-    function autoSave() {
-        saveTicket(id);
-    }
+function setRegularSave(id, sectionId) {
+    /*
+     function autoSave() {
+     saveTicket(id, sectionId);
+     }
 
-    setInterval(autoSave, 60 * 1000);
+     setInterval(autoSave, 60 * 1000);
+     */
 }
 
 function clearSelection() {
@@ -136,14 +142,15 @@ function pasteHtmlFromBuffer() {
 
 function deleteSectionDialog(id) {
     dialogYesNo("Вы действительно хотите удалить раздел?", function () {
-        onDeleteSection(id );
+        onDeleteSection(id);
     });
     $('#menu').remove();
 }
 
 function openSettings(id) {
+    $('#menu').remove();
     $(document.documentElement).append($('<ul>').attr('id', "menu")
-            .append($('<li>').append("Вспомнить").attr("onClick", "deleteSectionDialog();"))
+            .append($('<li>').append("Добавить в экзамен").attr("onClick", "exam.remindSection(" + id + ");$('#menu').remove();"))
             .append($('<li>').append(" "))
             .append($('<li>').append("Удалить").attr("onClick", 'deleteSectionDialog(' + id + ");"))
             .append($('<li>').append(" "))
@@ -168,7 +175,7 @@ function dialogYesNo(body, onYes, onNo) {
             modal: true,
             title: "Подтверждение",
             height: 250,
-            width: 400,
+            width: 300,
             buttons: {
                 "Yes": function () {
                     $(this).dialog('close');
@@ -178,6 +185,33 @@ function dialogYesNo(body, onYes, onNo) {
                     $(this).dialog('close');
                     onNo();
                 }
+            }
+        });
+}
+
+var timerEditId;
+function initRichEditor(id, sectionId, ticketId) {
+    /*
+     $('#' + id).bind('keydown', function (event) {
+     clearInterval(timerEditId);
+     timerEditId = setInterval(function () {
+     saveTicket(ticketId, sectionId);
+     clearInterval(timerEditId);
+     }, 2000);
+     });*/
+}
+
+function enter() {
+    $.get('login', {
+            login: $("#login").val(),
+            password: $("#password").val()
+        },
+        function (data) {
+            if (data.res == Result.ERROR) {
+                $("#login_error").html(data.message).show();
+            }
+            if (data.res == Result.OK) {
+                location.reload();
             }
         });
 }

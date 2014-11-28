@@ -1,8 +1,10 @@
 package org.ironbrain.dao;
 
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.ironbrain.Result;
 import org.ironbrain.core.Section;
+import org.ironbrain.core.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +15,35 @@ import java.util.List;
 @Repository
 @SuppressWarnings("unchecked")
 @Transactional
-public class SectionDao extends BaseDao{
-    public Section getSection(int id) {
+public class SectionDao extends BaseDao {
+    public Section getSection(int id, User user) {
         Section section = (Section) getSess().get(Section.class, id);
+        if (user != null) {
+            if (!section.getOwner().equals(user.getId())) {
+                return null;
+            }
+        }
         return section;
     }
 
-    public List<Section> getSections(int id) {
-        List<Section> section = getSess().createCriteria(Section.class)
-                .add(Restrictions.eq("parent", id)).list();
+    public Section getSectionFromTicket(int ticketId) {
+        Section section = (Section) getSess().createCriteria(Section.class)
+                .add(Restrictions.eq("ticket", ticketId)).uniqueResult();
+
+        return section;
+    }
+
+    public List<Section> getSections(int id, User user) {
+
+        List<Section> section;
+        if (user != null) {
+            section = getSess().createCriteria(Section.class)
+                    .add(Restrictions.eq("parent", id))
+                    .add(Restrictions.eq("owner", user.getId()))
+                    .list();
+        } else {
+            section = new ArrayList<>();
+        }
 
         return section;
     }
@@ -44,14 +66,14 @@ public class SectionDao extends BaseDao{
         return sections;
     }
 
-    public Result addSection(int parent, String label) {
+    public Result addSection(Integer parent, String label, User user) {
         Result result = new Result();
 
         Section section = new Section();
         section.setParent(parent);
-        section.setName(label);
         section.setLabel(label);
-        int id = (int)getSess().save(section);
+        section.setOwner(user.getId());
+        int id = (int) getSess().save(section);
         section.setId(id);
 
         result.setData(section);
@@ -68,5 +90,10 @@ public class SectionDao extends BaseDao{
         result.setData(section);
 
         return result;
+    }
+
+    public Long getChildCount(int section) {
+        return (Long) getSess().createCriteria(Section.class)
+                .setProjection(Projections.rowCount()).add(Restrictions.eq("parent", section)).uniqueResult();
     }
 }

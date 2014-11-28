@@ -20,7 +20,9 @@
         <script type="text/javascript" src="res/js/jquery.js"></script>
         <script type="text/javascript" src="res/js/jquery-ui.js"></script>
 
+        <script type="text/javascript" src="res/js/exam.js"></script>
         <script type="text/javascript" src="res/js/addPage.js"></script>
+
         <script type="text/javascript">
             $(document).ready(function () {
                 initAddPage();
@@ -34,40 +36,65 @@
         <table>
             <tr>
                 <td colspan="2" style="width:100%;">
-                    <div class="bg">
+                    <div class="bg header" style="position: relative">
+                        <a class="main-menu" href="/">Главная</a>
+                        <a class="main-menu" href="test">Экзамен</a>
+                        <a class="main-menu" href="test">Профиль</a>
+                        <a class="main-menu" href="test">О сайте</a>
+                        <c:if test="${data.user != null}">
+                            <div style="float:right;">
+                                    ${data.user.login}
+                                <button onclick="window.location.href = 'logout'">Выход</button>
+                            </div>
+                        </c:if>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width:100%;">
+                    <div class="bg path">
                         <ib:path list="${path}"/>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td valign="top">
-                    <div class="bg">
+                    <c:if test="${data.user == null}">
+                        <ib:login/>
+                    </c:if>
+
+                    <div class="bg" style="width:200px;">
                         <ib:sections list="${sections}"/>
 
+                        <c:if test="${section.parent != null}">
+                            <a href="add?sec=${section.parent}">&lt;&lt; Назад</a>
+                            <br>
+                        </c:if>
                         <br>
-                        <a href="add?sec=${parentSection}">&lt;&lt; Назад</a>
-
+                        <input placeholder="Имя раздела" style="width:100%;" type="text" size="20"
+                               id="newSectionName"></label>
                         <br>
-                        <label>Имя раздела<input type="text" size="20" id="newSectionName"></label>
-                        <br>
-                        <button id="addSectionButton" onClick="onAddSection(${thisSection});">Добавить раздел
+                        <button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
                         </button>
                         <br>
-                        <button id="addTicketButton" onClick="onAddNewTicket(${thisSection});">Добавить билет
+                        <button id="addTicketButton" onClick="onAddNewTicket(${section.id});">Добавить билет
                         </button>
                     </div>
                 </td>
                 <td valign="top">
-                    <c:if test="${ticket != null}">
-                        <div class="bg" style="width:700px;">
+                    <div class="bg" style="width:700px;">
+                        <c:if test="${ticket != null}">
                             <script>
-                                setSaveOnBlur(${ticket.id});
-                                setSaveOnUnload(${ticket.id});
-                                setRegularSave(${ticket.id});
+                                setSaveOnBlur(${ticket.id}, ${ticketSection.id});
+                                setSaveOnUnload(${ticket.id}, ${ticketSection.id});
+                                setRegularSave(${ticket.id}, ${ticketSection.id});
                             </script>
-                            <ib:ticketEditor ticket="${ticket}"/>
-                        </div>
-                    </c:if>
+                            <ib:ticketEditor ticket="${ticket}" section="${ticketSection}"/>
+                        </c:if>
+                        <c:if test="${ticket == null}">
+                            О программе
+                        </c:if>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -75,6 +102,7 @@
                     ms == ${ms}
                     <br>
                     var = <span id="var"></span>
+                    <br>${debug_data}
                 </td>
             </tr>
         </table>

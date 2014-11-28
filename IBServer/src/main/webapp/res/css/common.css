@@ -1,14 +1,14 @@
-a{
+a {
     text-decoration: none;
     color: #32404f;
 }
 
-a:hover{
+a:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
-.sectionRow:hover{
+.sectionRow:hover {
     background-color: #c5eaff;
 }
 
@@ -17,18 +17,31 @@ table {
     border-spacing: 0;
 }
 
-.bg{
-    border-radius: 10px;
+.bg {
+    /*border-radius: 10px;*/
     background-color: #dbdedb;
     margin: 2px;
     padding: 10px;
+    border: solid 1px;
 }
 
-.richTextEditor{
-    padding: 5px; border: 1px solid #000000;
+.path {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.header {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.richTextEditor {
+    padding: 5px;
+    border: 1px solid #000000;
     background-color: #ffffff;
+    margin-top: 5px;
+    margin-bottom: 2px;
 }
-
 
 /*Menu element*/
 .ui-menu .ui-menu-item {
@@ -37,20 +50,21 @@ table {
     font-size: medium;
 
 }
+
 /*Menu all*/
-.ui-menu{
+.ui-menu {
     border-color: rgba(0, 0, 0, 0.72);
     padding: 2px;
-    width: 150px;
+    width: 200px;
     background: #dddddd;
 }
 
 /*Menu element on hover*/
-.ui-menu-item .ui-state-focus{
+.ui-menu-item .ui-state-focus {
     font-weight: normal;
 }
 
-.ui-widget-content .ui-state-focus{
+.ui-widget-content .ui-state-focus {
     font-weight: normal;
     border-color: #c5eaff;
     color: #000000;
@@ -58,11 +72,66 @@ table {
 }
 
 /*Divider*/
-.ui-widget-content .ui-menu-divider{
+.ui-widget-content .ui-menu-divider {
     margin-top: 1px;
     margin-bottom: 1px;
 }
-.ui-widget-header{
-   background: #979797;
+
+.ui-widget-header {
+    background: #979797;
 }
 
+.ticketNameSpan {
+    margin-bottom: 5px;
+}
+
+.form-element {
+    margin-top: 3px;
+}
+
+form {
+    margin-bottom: 0px;
+}
+
+hr {
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
+
+button {
+    border: solid 1px;
+    margin-top: 5px;
+    padding-top: 2px;
+}
+
+button:hover {
+    background-color: #c5eaff;
+}
+
+button:active {
+    background-color: #bfa8ff;
+}
+
+.main-menu{
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: large;
+    height: 40px;
+}
+
+.main-menu:hover {
+    text-decoration: none;
+    background-color: #c5eaff;
+}
+
+.login_error{
+    background-color: #ffa39c;
+    margin-top: 5px;
+    padding: 5px;
+    display: none;
+}
+
+input[type="text"], input[type="password"]{
+    border: 1px solid black;
+    padding: 3px;
+}

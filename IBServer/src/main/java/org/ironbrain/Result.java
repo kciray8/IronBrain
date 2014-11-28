@@ -37,4 +37,14 @@ public class Result {
     private State res = State.OK;
     private String message;
     private Object data;
+
+    public static Result getError(String message){
+        Result result = new Result();
+        result.setRes(State.ERROR);
+        result.setMessage(message);
+        return result;
+    }
+    public static Result getOk(){
+        return new Result();
+    }
 }

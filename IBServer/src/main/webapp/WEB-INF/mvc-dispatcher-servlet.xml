@@ -1,10 +1,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
+
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+        >
 
     <context:annotation-config/>
     <context:property-placeholder location='classpath:database.properties'/>
@@ -23,11 +27,15 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+
+        <property name="autoCommitOnClose" value="true"/>
+        <property name="idleConnectionTestPeriod" value="3600"/>
+        <property name="maxIdleTime" value="3600"/>
     </bean>
 
     <bean id="sessionFactory"
@@ -50,4 +58,10 @@
     </bean>
 
     <mvc:resources mapping="/res/**" location="res"/>
+
+    <bean id="data" class="org.ironbrain.SessionData" scope="session">
+        <aop:scoped-proxy/>
+    </bean>
+
+
 </beans>
