@@ -1,9 +1,6 @@
 package org.ironbrain.core;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "Remind")
 @Entity
@@ -14,7 +11,11 @@ public class Remind {
 
     private Integer user;
 
+    private String path;
+
     private Integer ticket;
+
+    private String label;
 
     public Integer getId() {
         return id;
@@ -38,5 +39,21 @@ public class Remind {
 
     public void setTicket(Integer ticket) {
         this.ticket = ticket;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

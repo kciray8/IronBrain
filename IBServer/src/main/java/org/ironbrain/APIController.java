@@ -1,15 +1,11 @@
 package org.ironbrain;
 
-import org.ironbrain.core.Section;
-import org.ironbrain.core.Ticket;
-import org.ironbrain.core.User;
-import org.ironbrain.dao.RemindDao;
-import org.ironbrain.dao.SectionDao;
-import org.ironbrain.dao.TicketDao;
-import org.ironbrain.dao.UserDao;
+import org.ironbrain.core.*;
+import org.ironbrain.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SessionAttributes({APIController.USER})
@@ -30,6 +26,13 @@ public class APIController {
 
     @Autowired
     private RemindDao remindDao;
+
+
+    @Autowired
+    private ExamDao examDao;
+
+    @Autowired
+    private TryDao tryDao;
 
     protected User getUser() {
         return data.getUser();
@@ -78,11 +81,30 @@ public class APIController {
     }
 
     @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_ticket_label")
+    public String getTicketLabel(@RequestParam int id) {
+        return ticketDao.getTicketLabel(id);
+    }
+
+    @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/update_ticket")
     public Result updateTicket(@RequestParam int id, @RequestParam String answers,
-                               @RequestParam String questions, @RequestParam String label) {
+                               @RequestParam String questions, @RequestParam String label,
+                               @RequestParam long clientVersionDate) {
 
-        return ticketDao.updateTicket(id, answers, questions, label);
+        return ticketDao.updateTicket(id, answers, questions, label, clientVersionDate);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/check_ticket")
+    public Result checkTicket(@RequestParam int id, @RequestParam long clientVersionDate) {
+        return ticketDao.checkTicket(id, clientVersionDate);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/update_ticket_edit_date")
+    public void updateTicketEditDate(@RequestParam int id, @RequestParam long editDate) {
+
+        ticketDao.updateTicket(id, editDate);
     }
 
     @ResponseBody
@@ -115,7 +137,7 @@ public class APIController {
     @RequestMapping(method = RequestMethod.GET, value = "/logout")
     public String logout() {
         data.setUser(null);
-        return "redirect:/add?sec=1";
+        return "redirect:/.";
     }
 
     @ResponseBody
@@ -124,5 +146,74 @@ public class APIController {
         remindDao.addRemind(section, getUser().getId());
 
         return "OK";
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_reminds")
+    public List<Remind> getReminds() {
+        return remindDao.getReminds(getUser());
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/delete_remind")
+    public Result deleteRemind(@RequestParam int id) {
+        return remindDao.delete(id);
+    }
+
+    int i;
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/remind")
+    public Result remind(@RequestParam String ids) {
+        List<Remind> reminds = new ArrayList<>();
+
+        String[] idArray = ids.split(",");
+        for (String idStr : idArray) {
+            int id = new Integer(idStr);
+            reminds.add(remindDao.get(id));
+        }
+
+        Exam exam = examDao.create(reminds.size());
+
+        i = 1;
+        reminds.forEach(remind -> {
+            Try someTry = tryDao.create(remind.getTicket(), exam.getId(), i++, 0);
+        });
+
+        return Result.getOk();
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_last_undone_exam")
+    public Exam getLastUndoneExam() {
+        return examDao.getLastUndoneExam();
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_tries_from_exam")
+    public List<Try> getTriesFromExam(int id) {
+        return tryDao.getTriesFromExam(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_temp_try")
+    public Try getTempTry(int id) {
+        return tryDao.getTempTry(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/try_done")
+    public Result tryDone(@RequestParam int id, @RequestParam boolean correct) {
+        Try someTry = tryDao.getTry(id);
+        System.out.println(someTry.getId());
+        someTry.setEndMs(System.currentTimeMillis());
+
+        if(correct){
+            someTry.setCorrect(true);
+        }
+        someTry.setDone(true);
+        tryDao.updateTry(someTry);
+
+        return Result.getOk();
     }
 }

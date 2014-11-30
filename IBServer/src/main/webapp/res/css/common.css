@@ -12,11 +12,6 @@ a:hover {
     background-color: #c5eaff;
 }
 
-table {
-    border: 0;
-    border-spacing: 0;
-}
-
 .bg {
     /*border-radius: 10px;*/
     background-color: #dbdedb;
@@ -35,7 +30,7 @@ table {
     padding-bottom: 3px;
 }
 
-.richTextEditor {
+.richTextEditor, .examTextOutput{
     padding: 5px;
     border: 1px solid #000000;
     background-color: #ffffff;
@@ -100,8 +95,9 @@ hr {
 
 button {
     border: solid 1px;
+    /*
     margin-top: 5px;
-    padding-top: 2px;
+    padding-top: 2px;*/
 }
 
 button:hover {
@@ -112,7 +108,35 @@ button:active {
     background-color: #bfa8ff;
 }
 
-.main-menu{
+.table {
+    border: solid 1px #df00df;
+    border-collapse: collapse;
+}
+
+.base_table, .base_td, .base_th {
+    border: 1px solid black;
+}
+
+.base_td, .base_th {
+    padding: 5px;
+}
+
+.base_tr:hover {
+    background-color: #e7f8ff;
+}
+
+.base_td {
+    vertical-align: baseline;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.base_table {
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+.main-menu {
     padding-left: 10px;
     padding-right: 10px;
     font-size: large;
@@ -124,14 +148,14 @@ button:active {
     background-color: #c5eaff;
 }
 
-.login_error{
+.login_error {
     background-color: #ffa39c;
     margin-top: 5px;
     padding: 5px;
     display: none;
 }
 
-input[type="text"], input[type="password"]{
+input[type="text"], input[type="password"] {
     border: 1px solid black;
     padding: 3px;
 }

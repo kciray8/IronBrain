@@ -12,6 +12,20 @@ public class Ticket {
     @GeneratedValue
     private Integer id;
 
+    private Long createDate;
+
+    public Long getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(Long editDate) {
+        this.editDate = editDate;
+    }
+
+    private Long editDate;
+
+    private Long remind;
+
     public Integer getId() {
         return id;
     }
@@ -19,6 +33,7 @@ public class Ticket {
     public void setId(Integer id) {
         this.id = id;
     }
+
     private String questions = "";
 
     public String getQuestions() {
@@ -47,5 +62,21 @@ public class Ticket {
 
     public void setOwner(Integer owner) {
         this.owner = owner;
+    }
+
+    public Long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Long createDate) {
+        this.createDate = createDate;
+    }
+
+    public Long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Long remind) {
+        this.remind = remind;
     }
 }

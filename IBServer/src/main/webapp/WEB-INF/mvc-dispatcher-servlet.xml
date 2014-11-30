@@ -63,5 +63,7 @@
         <aop:scoped-proxy/>
     </bean>
 
+    <bean id="ib" class="org.ironbrain.IronBrain">
+    </bean>
 
 </beans>

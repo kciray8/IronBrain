@@ -38,6 +38,16 @@ public class Result {
     private String message;
     private Object data;
 
+    public String getSubRes() {
+        return subRes;
+    }
+
+    public void setSubRes(String subRes) {
+        this.subRes = subRes;
+    }
+
+    private String subRes;
+
     public static Result getError(String message){
         Result result = new Result();
         result.setRes(State.ERROR);

@@ -16,4 +16,7 @@ public class SessionData {
 
     private User user;
 
+    public int getUserId(){
+        return getUser().getId();
+    }
 }

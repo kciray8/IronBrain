@@ -16,6 +16,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: com.mchange:c3p0:0.9.5-pre10" />
           <element id="library" level="project" name="Maven: com.mchange:mchange-commons-java:0.2.8" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:18.0" />
         </element>
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/src/main/webapp" />

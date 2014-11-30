@@ -3,6 +3,9 @@ var Result = {
     ERROR: "ERROR"
 };
 
+var updateTime;
+var versionConflict = false;
+
 function handleResult(data) {
     if (data.res = Result.OK) {
         location.reload();
@@ -49,13 +52,38 @@ function saveTicket(id, sectionId) {
             answers: $('#answersDiv').html(),
             questions: $('#questionsDiv').html(),
             id: id,
-            label: ticketLabel
+            label: ticketLabel,
+            clientVersionDate: updateTime
         },
         function (data) {
-            if (data.res = Result.OK) {
+            if (data.res == Result.OK) {
                 var d = new Date();
-                $("#saveProgress").html("OK! " + d.getMinutes() + ":" + d.getSeconds());
+                $("#saveProgress").html("OK! " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
                 $("#navSection" + sectionId).html(ticketLabel);
+                updateTime = data.data;
+            } else {
+                var subRes = data.subRes;
+                if (data.subRes == "versionConflict") {
+                    versionConflict = true;
+                    location.href = ".";
+                    //alert("conf")
+                }
+            }
+        });
+}
+
+function checkTicket(id) {
+    $.get('check_ticket', {
+            id: id,
+            clientVersionDate: updateTime
+        },
+        function (data) {
+            if (data.res != Result.OK) {
+                var subRes = data.subRes;
+                if (data.subRes == "versionConflict") {
+                    versionConflict = true;
+                    location.href = ".";
+                }
             }
         });
 }
@@ -74,22 +102,27 @@ function setSaveOnBlur(id, sectionId) {
     $(window).blur(function () {
         saveTicket(id, sectionId);
     });
+    $(window).focus(function () {
+        checkTicket(id);
+    });
+
 }
 
 function setSaveOnUnload(id, sectionId) {
     window.onbeforeunload = function () {
-        saveTicket(id, sectionId);
+        if (!versionConflict) {
+            saveTicket(id, sectionId);
+        }
     };
 }
 
 function setRegularSave(id, sectionId) {
-    /*
-     function autoSave() {
-     saveTicket(id, sectionId);
-     }
+    function autoSave() {
+        saveTicket(id, sectionId);
+    }
 
-     setInterval(autoSave, 60 * 1000);
-     */
+    //setInterval(autoSave, 1000);
+    setInterval(autoSave, 60 * 1000);
 }
 
 function clearSelection() {
@@ -214,4 +247,25 @@ function enter() {
                 location.reload();
             }
         });
+}
+
+function deleteRemind(id) {
+    $.get('delete_remind', {
+            id: id
+        },
+        function (data) {
+            handleResult(data);
+        }
+    );
+}
+
+
+var reminds;
+
+function changeRemindState(id) {
+    reminds.forEach(function (element) {
+        if (element.id == id) {
+            element.on = $('#stateRemind' + id)[0].checked;
+        }
+    })
 }

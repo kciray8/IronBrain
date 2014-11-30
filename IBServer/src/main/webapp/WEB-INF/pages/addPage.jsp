@@ -24,6 +24,8 @@
         <script type="text/javascript" src="res/js/addPage.js"></script>
 
         <script type="text/javascript">
+            updateTime = ${pageGenerateDate};
+            
             $(document).ready(function () {
                 initAddPage();
             });
@@ -33,37 +35,24 @@
         <title>Добавление билета</title>
     </head>
     <body>
-        <table>
+        <table width="100%">
             <tr>
-                <td colspan="2" style="width:100%;">
-                    <div class="bg header" style="position: relative">
-                        <a class="main-menu" href="/">Главная</a>
-                        <a class="main-menu" href="test">Экзамен</a>
-                        <a class="main-menu" href="test">Профиль</a>
-                        <a class="main-menu" href="test">О сайте</a>
-                        <c:if test="${data.user != null}">
-                            <div style="float:right;">
-                                    ${data.user.login}
-                                <button onclick="window.location.href = 'logout'">Выход</button>
-                            </div>
-                        </c:if>
-                    </div>
-                </td>
+                <ib:headerBlock data="${data}"/>
             </tr>
             <tr>
-                <td colspan="2" style="width:100%;">
+                <td colspan="2">
                     <div class="bg path">
                         <ib:path list="${path}"/>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td valign="top">
+                <td valign="top" style="width:200px;">
                     <c:if test="${data.user == null}">
                         <ib:login/>
                     </c:if>
 
-                    <div class="bg" style="width:200px;">
+                    <div class="bg">
                         <ib:sections list="${sections}"/>
 
                         <c:if test="${section.parent != null}">
@@ -72,7 +61,7 @@
                         </c:if>
                         <br>
                         <input placeholder="Имя раздела" style="width:100%;" type="text" size="20"
-                               id="newSectionName"></label>
+                               id="newSectionName">
                         <br>
                         <button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
                         </button>
@@ -82,7 +71,7 @@
                     </div>
                 </td>
                 <td valign="top">
-                    <div class="bg" style="width:700px;">
+                    <div class="bg">
                         <c:if test="${ticket != null}">
                             <script>
                                 setSaveOnBlur(${ticket.id}, ${ticketSection.id});
