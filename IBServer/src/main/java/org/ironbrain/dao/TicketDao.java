@@ -1,5 +1,6 @@
 package org.ironbrain.dao;
 
+import org.hibernate.Query;
 import org.ironbrain.APIController;
 import org.ironbrain.Result;
 import org.ironbrain.core.Section;
@@ -8,6 +9,9 @@ import org.ironbrain.core.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 @SuppressWarnings("unchecked")
@@ -28,12 +32,12 @@ public class TicketDao extends BaseDao {
 
         System.out.println("update ..." + ticket.getEditDate() + "  " + clientVersionDate);
 
-        if(ticket.getEditDate() > clientVersionDate){
+        if (ticket.getEditDate() > clientVersionDate) {
             result = Result.getError("Есть более новая версия!");
             result.setSubRes("versionConflict");
 
             return result;
-        }else {
+        } else {
             result = Result.getOk();
             result.setData(System.currentTimeMillis());
         }
@@ -90,15 +94,39 @@ public class TicketDao extends BaseDao {
 
         Ticket ticket = (Ticket) getSess().get(Ticket.class, id);
 
-        if(ticket.getEditDate() > clientVersionDate){
+        if (ticket.getEditDate() > clientVersionDate) {
             result = Result.getError("Есть более новая версия!");
             result.setSubRes("versionConflict");
 
             return result;
-        }else {
+        } else {
             result = Result.getOk();
         }
 
         return result;
+    }
+
+    boolean firstIter = true;
+    public List<Ticket> query(String query) {
+        List<String> words = Arrays.asList((query.split(" ")));
+
+        StringBuilder dbQuery = new StringBuilder("FROM Ticket as ticket WHERE");
+
+        firstIter = true;
+        words.forEach(word -> {
+            if (!firstIter) {
+                dbQuery.append(" AND ");
+            }
+            dbQuery.append("(ticket.answers LIKE '%").append(word).append("%'");
+            dbQuery.append(" OR ticket.questions LIKE '%").append(word).append("%'");
+            dbQuery.append(" OR ticket.path LIKE '%").append(word).append("%'").append(")");
+
+            firstIter = false;
+        });
+
+        Query queryResult = getSess().createQuery(dbQuery.toString());
+
+
+        return queryResult.list();
     }
 }

@@ -42,4 +42,13 @@ public class ExamDao extends BaseDao {
             return exams.get(0);
         }
     }
+
+    public Exam get(int id) {
+        Exam someExam = (Exam) getSess().get(Exam.class, id);
+        return someExam;
+    }
+
+    public void update(Exam exam){
+        getSess().update(exam);
+    }
 }

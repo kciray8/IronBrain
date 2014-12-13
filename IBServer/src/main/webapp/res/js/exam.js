@@ -36,7 +36,7 @@ Exam.prototype.nextTicket = function (id) {
     var remind = $("input:radio[name='toRemindRButton']:checked").val();
     var correct = true;
 
-    if(remind == "rNow"){
+    if (remind == "rNow") {
         correct = false;
     }
     $.get('try_done', {
@@ -50,5 +50,25 @@ Exam.prototype.nextTicket = function (id) {
         }
     );
 };
+
+Exam.prototype.configure = function () {
+    $(document).keypress(function (event) {
+        if (event.which == 13) {
+            if (!exam.tempTicketOpen) {
+                $("#answerButton").click();
+            } else {
+                $("#nextTicketButton").click();
+            }
+        }
+        if(event.which == 49){
+            $("input:radio[value='rNow']").click();
+        }
+        if(event.which == 50){
+            $("input:radio[value='rLater']").click();
+        }
+    });
+};
+
+Exam.prototype.tempTicketOpen = false;
 
 var exam = new Exam();

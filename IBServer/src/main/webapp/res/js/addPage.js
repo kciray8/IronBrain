@@ -269,3 +269,23 @@ function changeRemindState(id) {
         }
     })
 }
+
+function onSearch() {
+    $.get('query', {
+            query: $("#query").val()
+        },
+        function (result) {
+            var resultHtml = "<table>";
+
+            result.forEach(function (ticket) {
+                resultHtml += "<tr>";
+                resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
+                resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.answers + "</div></td>";
+                resultHtml += "</tr>";
+            });
+            resultHtml += "</table>";
+
+            $("#searchResult").html(resultHtml);
+        }
+    );
+}

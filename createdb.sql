@@ -17,19 +17,20 @@ INSERT INTO Users VALUES (1, 'kciray', '1234', 'kciray8@gmail.com', 1);
 INSERT INTO Users VALUES (2, 'lol', '222', 'lol@gmail.com', 7);
 
 CREATE TABLE Tickets (
-  id        INTEGER PRIMARY KEY AUTO_INCREMENT,
-  questions TEXT,
-  answers   TEXT,
-  owner     INTEGER             DEFAULT 1,
-  remind  BIGINT UNSIGNED DEFAULT 0,
-  createDate BIGINT UNSIGNED DEFAULT 0,
-  editDate BIGINT UNSIGNED DEFAULT 0,
+  id         INTEGER PRIMARY KEY AUTO_INCREMENT,
+  questions  TEXT,
+  answers    TEXT,
+  owner      INTEGER             DEFAULT 1,
+  remind     BIGINT UNSIGNED     DEFAULT 0,
+  createDate BIGINT UNSIGNED     DEFAULT 0,
+  editDate   BIGINT UNSIGNED     DEFAULT 0,
+  path       TEXT,
   FOREIGN KEY (owner) REFERENCES Users (id)
 )
   DEFAULT CHARSET =utf8;
 
-INSERT INTO Tickets VALUES (1, 'Вопрос1!!!', 'Ответ1 <b>жирный</b>', 1,0,0,0);
-INSERT INTO Tickets VALUES (2, 'Вопрос2!!!', 'Ответ2 <b>жирный</b>', 1,0,0,0);
+INSERT INTO Tickets VALUES (1, 'Вопрос1!!!', 'Ответ1 <b>жирный</b>', 1, 0, 0, 0,"");
+INSERT INTO Tickets VALUES (2, 'Вопрос2!!!', 'Ответ2 <b>жирный</b>', 1, 0, 0, 0,"");
 
 CREATE TABLE Sections (
   id     INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -55,38 +56,40 @@ CREATE TABLE Remind (
   id     INTEGER PRIMARY KEY AUTO_INCREMENT,
   user   INTEGER,
   ticket INTEGER             DEFAULT NULL,
-  label  VARCHAR(100) NOT NULL,
-  path  VARCHAR(1000) NOT NULL,
+  label  VARCHAR(100)  NOT NULL,
+  path   VARCHAR(1000) NOT NULL,
   FOREIGN KEY (user) REFERENCES Users (id),
   FOREIGN KEY (ticket) REFERENCES Tickets (id)
 )
   DEFAULT CHARSET =utf8;
 
 CREATE TABLE Exam (
-  id     INTEGER PRIMARY KEY AUTO_INCREMENT,
-  done   BOOLEAN,
-  user INTEGER,
-  count INTEGER,
+  id      INTEGER PRIMARY KEY AUTO_INCREMENT,
+  done    BOOLEAN,
+  user    INTEGER,
+  count   INTEGER,
   startMs BIGINT UNSIGNED,
-  endMs BIGINT UNSIGNED,
+  endMs   BIGINT UNSIGNED,
   FOREIGN KEY (user) REFERENCES Users (id)
-) DEFAULT CHARSET =utf8;
+)
+  DEFAULT CHARSET =utf8;
 
 CREATE TABLE Try (
-  id     INTEGER PRIMARY KEY AUTO_INCREMENT,
-  done   BOOLEAN,
-  user INTEGER,
-  startMs BIGINT UNSIGNED,
-  endMs BIGINT UNSIGNED,
-  num INTEGER,
+  id         INTEGER PRIMARY KEY AUTO_INCREMENT,
+  done       BOOLEAN,
+  user       INTEGER,
+  startMs    BIGINT UNSIGNED,
+  endMs      BIGINT UNSIGNED,
+  num        INTEGER,
   attemptNum INTEGER,
-  ticket INTEGER,
-  correct   BOOLEAN,
-  exam   INTEGER,
+  ticket     INTEGER,
+  correct    BOOLEAN,
+  exam       INTEGER,
   FOREIGN KEY (user) REFERENCES Users (id),
   FOREIGN KEY (ticket) REFERENCES Tickets (id),
   FOREIGN KEY (exam) REFERENCES Exam (id)
-) DEFAULT CHARSET =utf8;
+)
+  DEFAULT CHARSET =utf8;
 
 
 SET foreign_key_checks = 1;

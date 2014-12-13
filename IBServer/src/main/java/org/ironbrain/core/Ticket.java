@@ -79,4 +79,14 @@ public class Ticket {
     public void setRemind(Long remind) {
         this.remind = remind;
     }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private String path = "";
 }

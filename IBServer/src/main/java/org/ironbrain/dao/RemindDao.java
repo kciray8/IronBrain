@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import org.hibernate.criterion.Restrictions;
 import org.ironbrain.APIController;
 import org.ironbrain.Result;
+import org.ironbrain.SessionData;
 import org.ironbrain.core.Remind;
 import org.ironbrain.core.Section;
 import org.ironbrain.core.User;
@@ -20,6 +21,9 @@ import java.util.List;
 public class RemindDao extends BaseDao {
     @Autowired
     APIController api;
+
+    @Autowired
+    protected SessionData data;
 
     public void addRemind(Section section, int user) {
         //One ticket
@@ -72,5 +76,16 @@ public class RemindDao extends BaseDao {
         getSess().delete(remind);
 
         return Result.getOk();
+    }
+
+    public void deleteWithTicketId(Integer ticket) {
+        List<Remind> reminds = getSess().createCriteria(Remind.class)
+                .add(Restrictions.eq("user", data.getUser().getId()))
+                .add(Restrictions.eq("ticket", ticket))
+                .list();
+
+        reminds.forEach(remind->{
+            getSess().delete(remind);
+        });
     }
 }

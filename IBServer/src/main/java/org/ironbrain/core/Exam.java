@@ -1,9 +1,6 @@
 package org.ironbrain.core;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "Exam")
 @Entity
@@ -78,4 +75,8 @@ public class Exam {
 
     private Long endMs;
 
+    @Transient
+    public long getDurationMin() {
+        return (endMs - startMs) / (1000 * 60);
+    }
 }

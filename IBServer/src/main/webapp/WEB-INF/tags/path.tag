@@ -4,4 +4,4 @@
 <%@tag pageEncoding="UTF-8" %>
 
 <c:forEach var="sec" items="${list}">
-    <ib:section sec="${sec}"/>→</c:forEach>
+    <ib:section sec="${sec}"/><c:if test="${list.get(list.size()-1)!= sec}">→</c:if></c:forEach>

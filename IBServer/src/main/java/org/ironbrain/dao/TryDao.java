@@ -16,9 +16,12 @@ public class TryDao extends BaseDao {
     @Autowired
     protected SessionData data;
 
+    @Autowired
+    private RemindDao remindDao;
+
+
     public Try create(int ticketId, int examId, int num, int attemptNum) {
         Try someTry = new Try();
-        someTry.setStartMs(System.currentTimeMillis());
         someTry.setUser(data.getUser().getId());
         someTry.setCorrect(false);
         someTry.setDone(false);
@@ -27,6 +30,21 @@ public class TryDao extends BaseDao {
         someTry.setTicket(ticketId);
         someTry.setNum(num);
         someTry.setAttemptNum(attemptNum);
+        int id = (int) getSess().save(someTry);
+        someTry.setId(id);
+        return someTry;
+    }
+
+    public Try createNextAttempt(Try lastTry, int num) {
+        Try someTry = new Try();
+        someTry.setUser(data.getUser().getId());
+        someTry.setCorrect(false);
+        someTry.setDone(false);
+        someTry.setNum(0);
+        someTry.setExam(lastTry.getExam());
+        someTry.setTicket(lastTry.getTicket());
+        someTry.setNum(num);
+        someTry.setAttemptNum(lastTry.getAttemptNum() + 1);
         int id = (int) getSess().save(someTry);
         someTry.setId(id);
         return someTry;
@@ -47,6 +65,9 @@ public class TryDao extends BaseDao {
 
     public void updateTry(Try someTry) {
         getSess().update(someTry);
+        if(someTry.getCorrect()){
+            remindDao.deleteWithTicketId(someTry.getTicket());
+        }
     }
 
     public Try getTempTry(int examId) {
@@ -59,7 +80,13 @@ public class TryDao extends BaseDao {
         if (tries.isEmpty()) {
             return null;
         } else {
-            return tries.get(0);
+            Try tempTry = tries.get(0);
+            if(tempTry.getStartMs() == null){
+                tempTry.setStartMs(System.currentTimeMillis());
+                getSess().save(tempTry);
+            }
+
+            return tempTry;
         }
     }
 }

@@ -27,12 +27,11 @@ public class APIController {
     @Autowired
     private RemindDao remindDao;
 
+    @Autowired
+    protected ExamDao examDao;
 
     @Autowired
-    private ExamDao examDao;
-
-    @Autowired
-    private TryDao tryDao;
+    protected TryDao tryDao;
 
     protected User getUser() {
         return data.getUser();
@@ -160,7 +159,6 @@ public class APIController {
         return remindDao.delete(id);
     }
 
-    int i;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/remind")
@@ -205,15 +203,46 @@ public class APIController {
     @RequestMapping(method = RequestMethod.GET, value = "/try_done")
     public Result tryDone(@RequestParam int id, @RequestParam boolean correct) {
         Try someTry = tryDao.getTry(id);
-        System.out.println(someTry.getId());
         someTry.setEndMs(System.currentTimeMillis());
 
-        if(correct){
+        if (correct) {
             someTry.setCorrect(true);
+
         }
         someTry.setDone(true);
         tryDao.updateTry(someTry);
 
         return Result.getOk();
+    }
+
+    int i;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/to_next_attempt")
+    public void toNextAttempt() {
+        Exam lastExam = getLastUndoneExam();
+        List<Try> tries = getTriesFromExam(lastExam.getId());
+        Try lastTry = tries.get(tries.size() - 1);
+
+        i = 0;
+        int lastAttemptNum = lastTry.getAttemptNum();
+        tries.forEach(someTry -> {
+            if ((!someTry.getCorrect()) && (someTry.getAttemptNum() == lastAttemptNum)) {
+                Try newTry = tryDao.createNextAttempt(someTry, ++i);
+            }
+        });
+
+        lastExam.setCount(i);
+        examDao.update(lastExam);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/query")
+    public List<Ticket> query(@RequestParam String query) {
+        //List<Ticket> result = new ArrayList<>();
+
+        //result.add(getTicket(6));
+        //result.add(getTicket(8));
+        return  ticketDao.query(query);
     }
 }

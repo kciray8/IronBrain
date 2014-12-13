@@ -1,9 +1,6 @@
 package org.ironbrain.core;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "Try")
 @Entity
@@ -109,4 +106,9 @@ public class Try {
     private Integer num;
 
     private Integer ticket;
+
+    @Transient
+    public long getDurationSec() {
+        return (endMs - startMs) / 1000;
+    }
 }

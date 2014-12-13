@@ -4,11 +4,11 @@ import org.ironbrain.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,7 +28,7 @@ public class MainController extends APIController {
         modelMap.addAttribute("section", mainSection);
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("ib", ib);
-        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+
         long pageGenDate = System.currentTimeMillis();
         modelMap.addAttribute("pageGenerateDate", pageGenDate);
 
@@ -41,41 +41,67 @@ public class MainController extends APIController {
             Section ticketSection = getSectionFromTicket(ticket.getId());
             modelMap.addAttribute("ticketSection", ticketSection);
         }
+
+        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
         return "addPage";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/exam")
     public String getExamPage(ModelMap modelMap) {
+        long ms = System.currentTimeMillis();
         List<Remind> reminds = getReminds();
         modelMap.addAttribute("reminds", reminds);
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("ib", ib);
 
         Exam lastExam = getLastUndoneExam();
+
         if (lastExam != null) {
             Try tempTry = getTempTry(lastExam.getId());
             if (tempTry == null) {
-                List<Try> tries = getTriesFromExam(lastExam.getId());
-                Try lastTry = tries.get(tries.size() - 1);
-                int tempAttempt = lastTry.getAttemptNum();
-                int nextAttempt = lastTry.getAttemptNum() + 1;
-                List<Try> newAttempt = new ArrayList<>();
-                tries.forEach(someTry -> {
-                    if (!someTry.getCorrect()){
-                        //Try newTry =
-                    }
-                });
+                toNextAttempt();
+                tempTry = getTempTry(lastExam.getId());
+
+                //All tickets done!
+                if (tempTry == null) {
+                    lastExam.setDone(true);
+                    lastExam.setEndMs(System.currentTimeMillis());
+                    examDao.update(lastExam);
+                    return "redirect:/exam" + lastExam.getId();
+                }
             }
 
-            modelMap.addAttribute("exam", getLastUndoneExam());
-
+            modelMap.addAttribute("exam", lastExam);
             modelMap.addAttribute("tempTry", tempTry);
             Ticket ticket = getTicket(tempTry.getTicket());
             modelMap.addAttribute("ticket", ticket);
         }
 
+        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
         return "examPage";
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public String getSearch(ModelMap modelMap, String query) {
+        modelMap.addAttribute("data", data);
+        if(query != null){
+            modelMap.addAttribute("query", query);
+        }
+
+        return "searchPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/exam{examID}")
+    public String getExamResult(ModelMap modelMap, @PathVariable(value="examID") int examID) {
+        Exam exam = examDao.get(examID);
+        modelMap.addAttribute("exam", exam);
+
+        List<Try> tries = tryDao.getTriesFromExam(examID);
+        modelMap.addAttribute("tries", tries);
+
+        return "examResultPage";
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public String getRoot() {
