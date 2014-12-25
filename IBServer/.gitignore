@@ -5,4 +5,4 @@
 src/main/java/database.properties
 src/main/java/org/ironbrain/trash.txt
 target
-src/main/webapp/res/css/jquery-ui.css
+src/main/webapp/res/css/jquery*
