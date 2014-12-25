@@ -20,6 +20,11 @@ public class Section{
 
     private String label;
 
+    /**
+     * 0 - simple
+     * 1 - TIME
+     */
+    private Integer type;
 
     public Section(){
 

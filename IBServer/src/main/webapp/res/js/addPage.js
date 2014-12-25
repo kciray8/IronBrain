@@ -48,7 +48,7 @@ function saveTicket(id, sectionId) {
     $("#saveProgress").html("Сохранение...");
     var ticketLabel = $('#ticketLabel').val();
 
-    $.get('update_ticket', {
+    $.post('update_ticket', {
             answers: $('#answersDiv').html(),
             questions: $('#questionsDiv').html(),
             id: id,
@@ -270,22 +270,46 @@ function changeRemindState(id) {
     })
 }
 
+function editTicket(id){
+    window.open('edit_ticket?id=' + id);
+}
+
 function onSearch() {
+    var query = $("#query").val();
+
     $.get('query', {
-            query: $("#query").val()
+            query: query
         },
         function (result) {
-            var resultHtml = "<table>";
+            var resultHtml = "<table width='100%'>";
 
             result.forEach(function (ticket) {
+                resultHtml += "<tr><td colspan='2'>";
+                resultHtml += ticket.path;
+                resultHtml += "</td></tr>";
+
+                resultHtml += "<tr><td colspan='2'>";
+                resultHtml += "<button onclick='editTicket(" + ticket.id + ");'>Редактировать</button>";
+                resultHtml += " <button onclick='exam.remindTicket(" + ticket.id + ");'>Вспомнить</button>";
+                resultHtml += "</td></tr>";
+
                 resultHtml += "<tr>";
                 resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
                 resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.answers + "</div></td>";
                 resultHtml += "</tr>";
+
+                resultHtml += "<tr><td colspan='2'>";
+                resultHtml += "<hr>";
+                resultHtml += "</td></tr>";
             });
             resultHtml += "</table>";
 
             $("#searchResult").html(resultHtml);
+
+            var words = query.split(" ");
+            words.forEach(function (word) {
+                $('#searchResult').highlight(word);
+            })
         }
     );
 }

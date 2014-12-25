@@ -1,5 +1,6 @@
 package org.ironbrain;
 
+import com.google.common.base.Joiner;
 import org.ironbrain.core.*;
 import org.ironbrain.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SessionAttributes({APIController.USER})
 public class APIController {
@@ -16,16 +18,16 @@ public class APIController {
     protected SessionData data;
 
     @Autowired
-    private SectionDao sectionDao;
+    protected SectionDao sectionDao;
 
     @Autowired
-    private TicketDao ticketDao;
+    protected TicketDao ticketDao;
 
     @Autowired
-    private UserDao userDao;
+    protected UserDao userDao;
 
     @Autowired
-    private RemindDao remindDao;
+    protected RemindDao remindDao;
 
     @Autowired
     protected ExamDao examDao;
@@ -86,7 +88,7 @@ public class APIController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/update_ticket")
+    @RequestMapping(method = RequestMethod.POST, value = "/update_ticket")
     public Result updateTicket(@RequestParam int id, @RequestParam String answers,
                                @RequestParam String questions, @RequestParam String label,
                                @RequestParam long clientVersionDate) {
@@ -141,8 +143,13 @@ public class APIController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/add_remind")
-    public String addRemind(@RequestParam int section) {
-        remindDao.addRemind(section, getUser().getId());
+    public String addRemind(Integer section, Integer ticket) {
+        if (section != null) {
+            remindDao.addRemind(section, getUser().getId());
+        }
+        if (ticket != null) {
+            remindDao.addRemindTicket(ticket);
+        }
 
         return "OK";
     }
@@ -201,13 +208,12 @@ public class APIController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/try_done")
-    public Result tryDone(@RequestParam int id, @RequestParam boolean correct) {
+    public Result tryDone(@RequestParam int id, @RequestParam boolean correct, Boolean examDone) {
         Try someTry = tryDao.getTry(id);
         someTry.setEndMs(System.currentTimeMillis());
 
         if (correct) {
             someTry.setCorrect(true);
-
         }
         someTry.setDone(true);
         tryDao.updateTry(someTry);
@@ -239,10 +245,30 @@ public class APIController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/query")
     public List<Ticket> query(@RequestParam String query) {
-        //List<Ticket> result = new ArrayList<>();
+        return ticketDao.query(query);
+    }
 
-        //result.add(getTicket(6));
-        //result.add(getTicket(8));
-        return  ticketDao.query(query);
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/update_all_paths")
+    public String updateAllPath() {
+        List<Ticket> tickets = ticketDao.getAllTickets();
+        StringBuilder res = new StringBuilder();
+
+        tickets.forEach(ticket -> {
+            Section section = sectionDao.getSectionFromTicket(ticket.getId());
+            if (section != null) {
+                List<String> path = getPath(section.getId())
+                        .stream()
+                        .map(Section::getLabel)
+                        .collect(Collectors.toList());
+                String pathString = Joiner.on("→").join(path);
+
+                res.append(pathString);
+                ticket.setPath(pathString);
+                ticketDao.updateTicket(ticket);
+            }
+        });
+
+        return res.toString();
     }
 }

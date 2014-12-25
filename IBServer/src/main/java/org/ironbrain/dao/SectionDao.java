@@ -3,8 +3,10 @@ package org.ironbrain.dao;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.ironbrain.Result;
+import org.ironbrain.SessionData;
 import org.ironbrain.core.Section;
 import org.ironbrain.core.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,9 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 @Transactional
 public class SectionDao extends BaseDao {
+    @Autowired
+    protected SessionData data;
+
     public Section getSection(int id, User user) {
         Section section = (Section) getSess().get(Section.class, id);
         if (user != null) {
@@ -27,10 +32,24 @@ public class SectionDao extends BaseDao {
     }
 
     public Section getSectionFromTicket(int ticketId) {
+        System.out.println("id " + ticketId);
+
         Section section = (Section) getSess().createCriteria(Section.class)
                 .add(Restrictions.eq("ticket", ticketId)).uniqueResult();
 
         return section;
+    }
+
+    public Section getTimeSection() {
+        Section section = (Section) getSess().createCriteria(Section.class)
+                .add(Restrictions.eq("owner", data.getUserId()))
+                .add(Restrictions.eq("type", 1)).uniqueResult();
+
+        return section;
+    }
+
+    public List<Section> getSections(int id) {
+        return getSections(id, data.getUser());
     }
 
     public List<Section> getSections(int id, User user) {
@@ -59,6 +78,8 @@ public class SectionDao extends BaseDao {
                     break;
                 }
                 tempSection = section.getParent();
+            } else {
+                break;
             }
         } while (true);
 
@@ -66,8 +87,12 @@ public class SectionDao extends BaseDao {
         return sections;
     }
 
-    public Result addSection(Integer parent, String label, User user) {
-        Result result = new Result();
+    public Result<Section> addSection(Integer parent, String label) {
+        return addSection(parent, label, data.getUser());
+    }
+
+    public Result<Section> addSection(Integer parent, String label, User user) {
+        Result<Section> result = new Result<>();
 
         Section section = new Section();
         section.setParent(parent);
@@ -81,7 +106,7 @@ public class SectionDao extends BaseDao {
         return result;
     }
 
-    public Result deleteSection(int id) {
+    public Result<Section> deleteSection(int id) {
         Result result = new Result();
 
         Section section = new Section();

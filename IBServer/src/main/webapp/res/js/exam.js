@@ -12,6 +12,15 @@ Exam.prototype.remindSection = function (id) {
         });
 };
 
+Exam.prototype.remindTicket = function (id) {
+    $.get('add_remind', {
+            ticket: id
+        },
+        function (data) {
+            alert("OK");
+        });
+};
+
 Exam.prototype.remind = function () {
     var toRemind = [];
 
@@ -51,15 +60,43 @@ Exam.prototype.nextTicket = function (id) {
     );
 };
 
+Exam.prototype.endExam = function () {
+    var remind = $("input:radio[name='toRemindRButton']:checked").val();
+    var correct = true;
+
+    if (remind == "rNow") {
+        correct = false;
+    }
+    $.get('try_done', {
+            id: id,
+            correct: correct
+        },
+        function (data) {
+            if (data.res = Result.OK) {
+                location.reload();
+            }
+        }
+    );
+};
+
 Exam.prototype.configure = function () {
-    $(document).keypress(function (event) {
-        if (event.which == 13) {
+    $(document).keydown(function (event) {
+        if (event.which == 13) {//Enter
+            if (!exam.tempTicketOpen) {
+                $("#answerButton").click();
+            } else {
+                $("input:radio[value='rLater']").click();
+                $("#nextTicketButton").click();
+            }
+        }
+        if (event.which == 16) {//Shift
             if (!exam.tempTicketOpen) {
                 $("#answerButton").click();
             } else {
                 $("#nextTicketButton").click();
             }
         }
+
         if(event.which == 49){
             $("input:radio[value='rNow']").click();
         }

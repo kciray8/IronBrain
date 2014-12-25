@@ -2,7 +2,7 @@ package org.ironbrain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Result {
+public class Result<T> {
     public State getRes() {
         return res;
     }
@@ -24,11 +24,11 @@ public class Result {
         return res == State.OK;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -36,7 +36,7 @@ public class Result {
 
     private State res = State.OK;
     private String message;
-    private Object data;
+    private T data;
 
     public String getSubRes() {
         return subRes;
@@ -48,13 +48,14 @@ public class Result {
 
     private String subRes;
 
-    public static Result getError(String message){
+    public static Result getError(String message) {
         Result result = new Result();
         result.setRes(State.ERROR);
         result.setMessage(message);
         return result;
     }
-    public static Result getOk(){
+
+    public static Result getOk() {
         return new Result();
     }
 }

@@ -23,6 +23,12 @@ public class RemindDao extends BaseDao {
     APIController api;
 
     @Autowired
+    private TicketDao ticketDao;
+
+    @Autowired
+    private SectionDao sectionDao;
+
+    @Autowired
     protected SessionData data;
 
     public void addRemind(Section section, int user) {
@@ -84,8 +90,13 @@ public class RemindDao extends BaseDao {
                 .add(Restrictions.eq("ticket", ticket))
                 .list();
 
-        reminds.forEach(remind->{
+        reminds.forEach(remind -> {
             getSess().delete(remind);
         });
+    }
+
+    public void addRemindTicket(Integer ticketId) {
+        Section section = sectionDao.getSectionFromTicket(ticketId);
+        addRemind(section, data.getUser().getId());
     }
 }

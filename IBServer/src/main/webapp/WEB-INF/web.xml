@@ -38,4 +38,6 @@
         <!-- Week timeout -->
         <session-timeout>10080</session-timeout>
     </session-config>
+
+    <!-- distributable /-->
 </web-app>

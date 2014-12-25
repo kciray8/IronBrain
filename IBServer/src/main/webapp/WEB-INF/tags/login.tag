@@ -6,11 +6,11 @@
     <div>
         Вход<br>
         <div class="form-element">
-            <input style="width: 100%" type="text" placeholder="Логин" name="login" id="login" value="">
+            <input style="width: 100%; box-sizing: border-box;" type="text" placeholder="Логин" name="login" id="login" value="">
             <br>
         </div>
         <div class="form-element">
-            <input style="width: 100%" width="2" type="password" id="password" placeholder="Пароль"
+            <input style="width: 100%; box-sizing: border-box;" width="2" type="password" id="password" placeholder="Пароль"
                    name="password"
                    value="">
         </div>

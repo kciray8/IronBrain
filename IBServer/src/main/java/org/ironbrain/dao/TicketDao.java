@@ -54,6 +54,10 @@ public class TicketDao extends BaseDao {
         return result;
     }
 
+    public Section addTicket(int sectionId) {
+      return addTicket(sectionId, data.getUser());
+    }
+
     public Section addTicket(int sectionId, User user) {
         Long genNum = api.getChildCount(sectionId) + 1;
 
@@ -72,7 +76,7 @@ public class TicketDao extends BaseDao {
         int ticketSessionId = (int) getSess().save(section);
         section.setId(ticketSessionId);
 
-        api.addRemind(ticketSessionId);
+        api.addRemind(ticketSessionId, null);
 
         return section;
     }
@@ -86,6 +90,10 @@ public class TicketDao extends BaseDao {
         Ticket ticket = (Ticket) getSess().get(Ticket.class, id);
 
         ticket.setEditDate(editDate);
+        getSess().update(ticket);
+    }
+
+    public void updateTicket(Ticket ticket) {
         getSess().update(ticket);
     }
 
@@ -108,6 +116,8 @@ public class TicketDao extends BaseDao {
 
     boolean firstIter = true;
     public List<Ticket> query(String query) {
+        query = query.trim();
+
         List<String> words = Arrays.asList((query.split(" ")));
 
         StringBuilder dbQuery = new StringBuilder("FROM Ticket as ticket WHERE");
@@ -128,5 +138,9 @@ public class TicketDao extends BaseDao {
 
 
         return queryResult.list();
+    }
+
+    public List<Ticket> getAllTickets() {
+        return getSess().createCriteria(Ticket.class).list();
     }
 }

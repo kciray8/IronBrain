@@ -3,9 +3,18 @@ a {
     color: #32404f;
 }
 
+pre{
+    white-space: pre-wrap;
+}
+
 a:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+body {
+    max-width: 1000px;
+    margin: 10px auto auto;
 }
 
 .sectionRow:hover {
@@ -14,7 +23,7 @@ a:hover {
 
 .bg {
     /*border-radius: 10px;*/
-    background-color: #dbdedb;
+    background-color: #ececec;
     margin: 2px;
     padding: 10px;
     border: solid 1px;
@@ -36,6 +45,9 @@ a:hover {
     background-color: #ffffff;
     margin-top: 5px;
     margin-bottom: 2px;
+
+    /*font-family:monospace;*/
+
 }
 
 /*Menu element*/
@@ -81,7 +93,7 @@ a:hover {
 }
 
 .form-element {
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
 form {
@@ -121,7 +133,7 @@ button:active {
     padding: 5px;
 }
 
-.base_tr:hover {
+.base_tr:hover{
     background-color: #e7f8ff;
 }
 
@@ -158,4 +170,7 @@ button:active {
 input[type="text"], input[type="password"] {
     border: 1px solid black;
     padding: 3px;
+}
+
+.highlight { background-color: #d7ffb0
 }

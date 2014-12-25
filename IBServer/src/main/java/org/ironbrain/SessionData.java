@@ -2,7 +2,7 @@ package org.ironbrain;
 
 import org.ironbrain.core.User;
 
-public class SessionData {
+public class SessionData{
     public SessionData() {
     }
 
