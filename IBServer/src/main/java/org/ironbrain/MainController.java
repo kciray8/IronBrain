@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -24,6 +26,7 @@ public class MainController extends APIController {
         long ms = System.currentTimeMillis();
         List<Section> sections = getSections(sec);
         List<Section> path = getPath(sec);
+        List<Field> allUserFields = getFields();
         Section mainSection = getSection(sec);
 
         modelMap.addAttribute("sections", sections);
@@ -37,11 +40,26 @@ public class MainController extends APIController {
 
         if (tic != null) {
             Ticket ticket = getTicket(tic);
+            Section ticketSection = getSectionFromTicket(ticket.getId());
+
+            List<SectionToField> secToFlds = ticketSection.getSectionToFields();
+
+            List<Field> ticketFields = new ArrayList<>();
+            secToFlds.forEach(secToFld->{
+                ticketFields.add(secToFld.field);
+            });
+
+            modelMap.addAttribute("secToFlds", secToFlds);
+
+            List<Field> unusedFields = new LinkedList<>(allUserFields);
+            unusedFields.removeAll(ticketFields);
+            modelMap.addAttribute("unusedFields", unusedFields);
+
             ticket.setEditDate(pageGenDate);
             updateTicketEditDate(ticket.getId(), pageGenDate);
 
             modelMap.addAttribute("ticket", ticket);
-            Section ticketSection = getSectionFromTicket(ticket.getId());
+
             path.add(ticketSection);
             modelMap.addAttribute("ticketSection", ticketSection);
         }

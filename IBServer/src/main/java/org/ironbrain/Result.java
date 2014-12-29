@@ -58,4 +58,10 @@ public class Result<T> {
     public static Result getOk() {
         return new Result();
     }
+
+    public static Result getOk(Object data) {
+        Result result = Result.getOk();
+        result.setData(data);
+        return result;
+    }
 }

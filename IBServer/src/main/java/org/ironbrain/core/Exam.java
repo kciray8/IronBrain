@@ -77,6 +77,7 @@ public class Exam {
 
     @Transient
     public long getDurationMin() {
+
         return (endMs - startMs) / (1000 * 60);
     }
 }

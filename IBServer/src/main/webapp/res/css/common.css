@@ -1,9 +1,13 @@
+*{
+    box-sizing: border-box;
+}
+
 a {
     text-decoration: none;
     color: #32404f;
 }
 
-pre{
+pre {
     white-space: pre-wrap;
 }
 
@@ -39,7 +43,7 @@ body {
     padding-bottom: 3px;
 }
 
-.richTextEditor, .examTextOutput, .searchTextOutput{
+.richTextEditor, .examTextOutput, .searchTextOutput {
     padding: 5px;
     border: 1px solid #000000;
     background-color: #ffffff;
@@ -133,7 +137,7 @@ button:active {
     padding: 5px;
 }
 
-.base_tr:hover{
+.base_tr:hover {
     background-color: #e7f8ff;
 }
 
@@ -172,5 +176,56 @@ input[type="text"], input[type="password"] {
     padding: 3px;
 }
 
-.highlight { background-color: #d7ffb0
+.highlight {
+    background-color: #d7ffb0
+}
+
+.fieldsBG, .fieldsBGInverse{
+    background-color: #ddffe5;
+    border: 1px solid #000000;
+
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 0px;
+    margin-right: 5px;
+
+    padding-bottom: 2px;
+    padding-top: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.fieldsBGInverse {
+    background-color: #ffc4ed;
+}
+
+.fieldsBGInverse:hover {
+    background-color: #d3759c;
+}
+
+.fieldSelection {
+    margin-top: 5px;
+    background-color: #fff7d1;
+    border: solid #000000 1px;
+    padding-bottom: 5px;
+}
+
+.selectedField {
+    margin-top: 5px;
+    margin-left: 5px;
+    background-color: #ff8b3f;
+}
+
+.iw-contextMenu {
+    border: 1px solid #000000;
+    box-shadow: 3px 3px 1px 1px rgba(0,0,0,0.4);
+}
+
+.iw-cm-menu li {
+    border-bottom: 1px solid #000000;
+}
+
+.iw-mSelected {
+    background-color: #c5eaff;
+    color: #000000;
 }

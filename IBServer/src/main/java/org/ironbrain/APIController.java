@@ -21,6 +21,9 @@ public class APIController {
     protected SectionDao sectionDao;
 
     @Autowired
+    protected FieldDao fieldDao;
+
+    @Autowired
     protected TicketDao ticketDao;
 
     @Autowired
@@ -34,6 +37,9 @@ public class APIController {
 
     @Autowired
     protected TryDao tryDao;
+
+    @Autowired
+    protected SectionToFieldDao secToFDao;
 
     protected User getUser() {
         return data.getUser();
@@ -270,5 +276,36 @@ public class APIController {
         });
 
         return res.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/add_field")
+    public Result addField(@RequestParam String name) {
+        return fieldDao.addField(name);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/get_fields")
+    public List<Field> getFields() {
+        return fieldDao.getFields();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/add_field_to_section")
+    public Result addFieldToSection(@RequestParam Integer fieldId, @RequestParam Integer sectionId) {
+        return fieldDao.addFieldToSection(fieldId, sectionId);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/invert_field")
+    public Result invertField(@RequestParam Integer fieldToSecId) {
+        return secToFDao.invertField(fieldToSecId);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/ del_secToField")
+    public Result deleteSectionToField(@RequestParam Integer sectionToFieldId) {
+        return secToFDao.deleteSectionToField(sectionToFieldId);
     }
 }

@@ -6,4 +6,6 @@ src/main/java/database.properties
 src/main/java/org/ironbrain/trash.txt
 target
 src/main/webapp/res/css/jquery-ui*
+src/main/webapp/res/css/contextMenu.css
 src/main/webapp/res/js/jquery*
+src/main/webapp/res/js/contextMenu.js

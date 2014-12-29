@@ -2,14 +2,13 @@ package org.ironbrain.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Table(name = "Sections")
 @Entity
-public class Section{
+public class Section {
     @Id
     @GeneratedValue
     private Integer id;
@@ -26,11 +25,11 @@ public class Section{
      */
     private Integer type;
 
-    public Section(){
+    public Section() {
 
     }
 
-    public Section(Integer id){
+    public Section(Integer id) {
 
     }
 
@@ -74,10 +73,10 @@ public class Section{
     }
 
     @JsonIgnore
-    public String getFramedLabel(){
-        if(ticket == null){
-            return "[" +label + "]";
-        }else{
+    public String getFramedLabel() {
+        if (ticket == null) {
+            return "[" + label + "]";
+        } else {
             return label;
         }
     }
@@ -91,4 +90,43 @@ public class Section{
     public void setOwner(Integer owner) {
         this.owner = owner;
     }
+
+
+    @OneToMany
+    @JoinColumn(name = "sectionId")
+    private List<SectionToField> sectionToFields = new LinkedList<>();
+
+    public List<SectionToField> getSectionToFields() {
+        return sectionToFields;
+    }
+
+    public void setSectionToFields(List<SectionToField> sectionToFields) {
+        this.sectionToFields = sectionToFields;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+
+
+    /*
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "sectiontofield",
+            joinColumns = {@JoinColumn(name = "sectionId")},
+            inverseJoinColumns = {@JoinColumn(name = "fieldId")})
+    private List<Field> fields = new LinkedList<>();
+
+    public List<Field> getFields() {
+        return this.fields;
+    }
+
+    public void setFields(List<Field> categories) {
+        this.fields = categories;
+    }*/
 }
