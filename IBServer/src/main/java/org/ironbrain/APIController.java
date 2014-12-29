@@ -39,7 +39,13 @@ public class APIController {
     protected TryDao tryDao;
 
     @Autowired
+    protected DirectionDao directionDao;
+
+    @Autowired
     protected SectionToFieldDao secToFDao;
+
+    @Autowired
+    protected DirectionToFieldDao dirToFDao;
 
     protected User getUser() {
         return data.getUser();
@@ -48,7 +54,7 @@ public class APIController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/get_sections")
     public List<Section> getSections(@RequestParam int sec) {
-        return sectionDao.getSections(sec, getUser());
+        return sectionDao.getChildren(sec, getUser());
     }
 
     @ResponseBody
@@ -293,19 +299,44 @@ public class APIController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/add_field_to_section")
-    public Result addFieldToSection(@RequestParam Integer fieldId, @RequestParam Integer sectionId) {
-        return fieldDao.addFieldToSection(fieldId, sectionId);
+    public Result addFieldToSection(@RequestParam Integer fieldId, @RequestParam Integer targetId) {
+        return fieldDao.addFieldToSection(fieldId, targetId);
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/invert_field")
-    public Result invertField(@RequestParam Integer fieldToSecId) {
-        return secToFDao.invertField(fieldToSecId);
+    @RequestMapping(method = RequestMethod.GET, value = "/invert_section_to_field")
+    public Result invertField(@RequestParam Integer id) {
+        return secToFDao.invertField(id);
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/ del_secToField")
-    public Result deleteSectionToField(@RequestParam Integer sectionToFieldId) {
-        return secToFDao.deleteSectionToField(sectionToFieldId);
+    @RequestMapping(method = RequestMethod.GET, value = "/delete_section_to_field")
+    public Result deleteSectionToField(@RequestParam Integer id) {
+        return secToFDao.deleteSectionToField(id);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/add_field_to_direction")
+    public Result addFieldToDirection(@RequestParam Integer fieldId, @RequestParam Integer targetId) {
+        return fieldDao.addFieldToDirection(fieldId, targetId);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/delete_direction_to_field")
+    public Result deleteDirectionToField(@RequestParam Integer id) {
+        return dirToFDao.deleteDirectionToField(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/add_direction")
+    public Result addDirection(@RequestParam String name) {
+        return directionDao.addDirection(name);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/recalculate_direction")
+    public Result recalculateDirection(@RequestParam Integer id) {
+        return directionDao.recalculateDirection(id);
     }
 }

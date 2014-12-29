@@ -38,34 +38,66 @@ public class MainController extends APIController {
         long pageGenDate = System.currentTimeMillis();
         modelMap.addAttribute("pageGenerateDate", pageGenDate);
 
+        Section targetSection = mainSection;
+
         if (tic != null) {
             Ticket ticket = getTicket(tic);
-            Section ticketSection = getSectionFromTicket(ticket.getId());
-
-            List<SectionToField> secToFlds = ticketSection.getSectionToFields();
-
-            List<Field> ticketFields = new ArrayList<>();
-            secToFlds.forEach(secToFld->{
-                ticketFields.add(secToFld.field);
-            });
-
-            modelMap.addAttribute("secToFlds", secToFlds);
-
-            List<Field> unusedFields = new LinkedList<>(allUserFields);
-            unusedFields.removeAll(ticketFields);
-            modelMap.addAttribute("unusedFields", unusedFields);
+            targetSection = getSectionFromTicket(ticket.getId());
 
             ticket.setEditDate(pageGenDate);
             updateTicketEditDate(ticket.getId(), pageGenDate);
 
             modelMap.addAttribute("ticket", ticket);
 
-            path.add(ticketSection);
-            modelMap.addAttribute("ticketSection", ticketSection);
+            path.add(targetSection);
+            modelMap.addAttribute("ticketSection", targetSection);
         }
+
+        //Add fields
+        List<SectionToField> secToFlds = targetSection.getSectionToFields();
+
+        List<Field> ticketFields = new ArrayList<>();
+        secToFlds.forEach(secToFld -> {
+            ticketFields.add(secToFld.field);
+        });
+
+        modelMap.addAttribute("secToFlds", secToFlds);
+
+        List<Field> unusedFields = new LinkedList<>(allUserFields);
+        unusedFields.removeAll(ticketFields);
+        modelMap.addAttribute("unusedFields", unusedFields);
 
         modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
         return "addPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/direction")
+    public String getDirectionPage(ModelMap modelMap, Integer id) {
+        long ms = System.currentTimeMillis();
+        List<Field> allUserFields = getFields();
+        List<Direction> directions = directionDao.getDirections();
+        modelMap.addAttribute("data", data);
+        modelMap.addAttribute("directions", directions);
+
+        if (id != null) {
+            Direction direction = directionDao.getDirection(id);
+            modelMap.addAttribute("direction", direction);
+
+            List<DirectionToField> directionToFields = direction.getDirectionToFields();
+            modelMap.addAttribute("directionToFields", directionToFields);
+
+            List<Field> directionFields = new ArrayList<>();
+            directionToFields.forEach(dirToFld -> {
+                directionFields.add(dirToFld.getField());
+            });
+
+            List<Field> unusedFields = new LinkedList<>(allUserFields);
+            unusedFields.removeAll(directionFields);
+            modelMap.addAttribute("unusedFields", unusedFields);
+        }
+
+        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+        return "directionPage";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/edit_ticket")
@@ -171,7 +203,7 @@ public class MainController extends APIController {
     }
 
     private Section ensureChildSectionExist(int parent, String name) {
-        List<Section> years = sectionDao.getSections(parent);
+        List<Section> years = sectionDao.getChildren(parent);
 
         Mutable<Section> childrenMut = new MutableObject<>();
         years.forEach(iYear -> {

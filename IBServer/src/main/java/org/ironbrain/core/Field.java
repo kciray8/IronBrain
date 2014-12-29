@@ -1,9 +1,9 @@
 package org.ironbrain.core;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Field {
@@ -38,6 +38,18 @@ public class Field {
     }
 
     private Integer owner;
+
+    public List<SectionToField> getSectionToFields() {
+        return sectionToFields;
+    }
+
+    public void setSectionToFields(List<SectionToField> sectionToFields) {
+        this.sectionToFields = sectionToFields;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fieldId")
+    private List<SectionToField> sectionToFields = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

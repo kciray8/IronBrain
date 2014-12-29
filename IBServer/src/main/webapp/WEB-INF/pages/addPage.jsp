@@ -8,6 +8,10 @@
         <ib:headBlock title="-Билеты-"/>
     </head>
     <body>
+        <script>
+            updateTime = ${pageGenerateDate};
+        </script>
+
         <table width="100%">
             <tr>
                 <ib:mainMenuBlock data="${data}"/>
@@ -36,17 +40,26 @@
 
                                 <ib:sections list="${sections}"/>
 
-                                <br>
-                                <input placeholder="Имя раздела" style="width:100%;" type="text" size="20"
+                                <ib:gap px="5"/>
+                                <input autofocus placeholder="Имя раздела" style="width:100%;" type="text" size="20"
                                        id="newSectionName">
-                                <br>
+                                <ib:gap px="5"/>
                                 <button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
                                 </button>
-                                <br>
+                                <ib:gap px="5"/>
                                 <button id="addTicketButton" onClick="onAddNewTicket(${section.id});">Добавить билет
                                 </button>
                             </div>
                         </c:if>
+                    </td>
+                </c:if>
+
+                <c:if test="${ticket == null}">
+                    <td valign="top" style="width: 100%">
+                        <div class="bg">
+                            <ib:fieldEditor target="section" fieldMappers="${secToFlds}" targetId="${section.id}"
+                                            unusedFields="${unusedFields}"/>
+                        </div>
                     </td>
                 </c:if>
 
@@ -65,7 +78,7 @@
                                 setRegularSave(${ticket.id}, ${ticketSection.id});
                             </script>
                             <ib:ticketEditor ticket="${ticket}" section="${ticketSection}"
-                                             secToFields="${secToFlds}" unusedFields="${unusedFields}" />
+                                             secToFields="${secToFlds}" unusedFields="${unusedFields}"/>
                         </div>
                     </td>
                 </c:if>

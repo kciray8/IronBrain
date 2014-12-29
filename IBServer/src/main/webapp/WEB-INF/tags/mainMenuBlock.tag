@@ -10,7 +10,9 @@
         <a class="main-menu" href="test">Профиль</a>
         <a class="main-menu" href="test">О сайте</a>
         <a class="main-menu" href="search">Поиск</a>
-        <a class="main-menu" href="/add_ticket_to_time">+Билет</a>
+        <a class="main-menu" href="direction">Направления</a>
+        <a class="main-menu" href="add_ticket_to_time">+Билет</a>
+
         <c:if test="${data.user != null}">
             <div style="float:right;">
                     ${data.user.login}&nbsp;&nbsp;

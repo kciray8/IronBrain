@@ -17,8 +17,6 @@
 <script type="text/javascript" src="res/js/addPage.js"></script>
 
 <script type="text/javascript">
-    updateTime = ${pageGenerateDate};
-
     $(document).ready(function () {
         initAddPage();
     });

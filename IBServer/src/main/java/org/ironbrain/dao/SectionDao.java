@@ -32,7 +32,7 @@ public class SectionDao extends BaseDao {
     }
 
     public Section getSectionFromTicket(int ticketId) {
-        System.out.println("id " + ticketId);
+        System.out.println("parentId " + ticketId);
 
         Section section = (Section) getSess().createCriteria(Section.class)
                 .add(Restrictions.eq("ticket", ticketId)).uniqueResult();
@@ -48,16 +48,16 @@ public class SectionDao extends BaseDao {
         return section;
     }
 
-    public List<Section> getSections(int id) {
-        return getSections(id, data.getUser());
+    public List<Section> getChildren(int parentId) {
+        return getChildren(parentId, data.getUser());
     }
 
-    public List<Section> getSections(int id, User user) {
+    public List<Section> getChildren(int parentId, User user) {
 
         List<Section> section;
         if (user != null) {
             section = getSess().createCriteria(Section.class)
-                    .add(Restrictions.eq("parent", id))
+                    .add(Restrictions.eq("parent", parentId))
                     .add(Restrictions.eq("owner", user.getId()))
                     .list();
         } else {

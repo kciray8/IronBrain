@@ -19,4 +19,8 @@ public class SessionData{
     public int getUserId(){
         return getUser().getId();
     }
+
+    public boolean testOwner(int owner){
+        return getUserId() == owner;
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Table(name = "Sections")
 @Entity
-public class Section {
+public class Section implements Comparable<Section> {
     @Id
     @GeneratedValue
     private Integer id;
@@ -129,4 +129,26 @@ public class Section {
     public void setFields(List<Field> categories) {
         this.fields = categories;
     }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Section section = (Section) o;
+
+        if (!id.equals(section.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public int compareTo(Section o) {
+        return this.getId() - o.getId();
+    }
 }
