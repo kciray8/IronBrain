@@ -19,6 +19,16 @@ public class Section implements Comparable<Section> {
 
     private String label;
 
+    public Long getRemindDate() {
+        return remindDate;
+    }
+
+    public void setRemindDate(Long remindDate) {
+        this.remindDate = remindDate;
+    }
+
+    private Long remindDate;
+
     /**
      * 0 - simple
      * 1 - TIME

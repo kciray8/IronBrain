@@ -8,7 +8,7 @@
         <ib:headBlock title="-Поиск-"/>
     </head>
     <body>
-        <table style="width:100%;">
+        <table>
             <tr>
                 <ib:mainMenuBlock data="${data}"/>
             </tr>

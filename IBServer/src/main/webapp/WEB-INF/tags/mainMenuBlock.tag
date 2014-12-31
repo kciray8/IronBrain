@@ -6,7 +6,7 @@
 <td colspan="2">
     <div class="bg header" style="position: relative">
         <a class="main-menu" href=".">Главная</a>
-        <a class="main-menu" href="exam">Экзамен</a>
+        <a class="main-menu" href="exam" id="examAnchor">Экзамен</a>
         <a class="main-menu" href="test">Профиль</a>
         <a class="main-menu" href="test">О сайте</a>
         <a class="main-menu" href="search">Поиск</a>
@@ -22,3 +22,11 @@
     </div>
 </td>
 
+<script>
+    var examCount = 0;
+
+    function addToTicketsExamCount(count) {
+        examCount += count;
+        $("#examAnchor").html("Экзамен " + "(+" + examCount + ")");
+    }
+</script>

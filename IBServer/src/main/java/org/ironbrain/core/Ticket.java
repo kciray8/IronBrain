@@ -23,7 +23,6 @@ public class Ticket {
     }
 
     private Long editDate;
-
     private Long remind;
 
     public Integer getId() {
@@ -33,7 +32,6 @@ public class Ticket {
     public void setId(Integer id) {
         this.id = id;
     }
-
     private String questions = "";
 
     public String getQuestions() {

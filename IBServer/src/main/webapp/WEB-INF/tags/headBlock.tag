@@ -21,6 +21,6 @@
         initAddPage();
     });
 </script>
-<link rel="stylesheet" type="text/css" href="res/css/common.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="res/css/common.css" />
 <meta name="viewport" content="width=320"/>
 <title>${title}</title>

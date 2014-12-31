@@ -59,4 +59,14 @@ public class Direction {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Long createDate) {
+        this.createDate = createDate;
+    }
+
+    private Long createDate = 0L;
 }

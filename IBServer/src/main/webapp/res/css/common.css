@@ -1,4 +1,4 @@
-*{
+* {
     box-sizing: border-box;
 }
 
@@ -9,6 +9,10 @@ a {
 
 pre {
     white-space: pre-wrap;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    border-left: solid #c9bfdd 3px;
 }
 
 a:hover {
@@ -52,6 +56,10 @@ body {
 
     /*font-family:monospace;*/
 
+}
+
+.plainHtmlEditor{
+    background-color: rgba(255, 151, 6, 0.13);
 }
 
 /*Menu element*/
@@ -180,7 +188,7 @@ input[type="text"], input[type="password"] {
     background-color: #d7ffb0
 }
 
-.fieldsBG, .fieldsBGInverse{
+.fieldsBG, .fieldsBGInverse {
     background-color: #ddffe5;
     border: 1px solid #000000;
 
@@ -218,7 +226,7 @@ input[type="text"], input[type="password"] {
 
 .iw-contextMenu {
     border: 1px solid #000000;
-    box-shadow: 3px 3px 1px 1px rgba(0,0,0,0.4);
+    box-shadow: 3px 3px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .iw-cm-menu li {
@@ -228,4 +236,44 @@ input[type="text"], input[type="password"] {
 .iw-mSelected {
     background-color: #c5eaff;
     color: #000000;
+}
+
+/*jQuery Ui - Customization*/
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-radius: 0px;
+
+    border: 1px solid #000000;
+    background: #ececec;
+}
+
+.ui-button .ui-button-text {
+    padding: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid #000000;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: 0px;
+    margin-left: 10px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: .1em 1em;
+    position: relative;
+}
+
+.ui-widget {
+    font-size: 1.0em;
+}
+
+.ui-widget-content {
+    border: 1px solid #000000;
+    background: #ececec;
+}
+
+.inlineImgButton {
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
 }

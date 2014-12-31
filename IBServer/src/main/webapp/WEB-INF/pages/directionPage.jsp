@@ -64,7 +64,6 @@
 
                             <ib:gap px="5"/>
                             Количество билетов - ${direction.ticketsCount}
-                            <button>Просмотр</button>
                             <ib:gap px="5"/>
                             <button onclick="recalculateDirection()">Пересчитать</button>
                         </c:if>

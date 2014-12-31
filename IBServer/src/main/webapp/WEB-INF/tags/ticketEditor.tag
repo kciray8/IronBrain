@@ -20,12 +20,12 @@
     <!-- Вспомнить после <i><%= DateUtils.getNiceDate(ticket.getRemind()) %></i> -->
 </div>
 
-<ib:editorTools/><br>
-
 Ответы:<br>
-<ib:richEditor ticket="${ticket}" html="${ticket.answers}" section="${section}" divID="answersDiv"/>
+<ib:richEditor editorName="answers" ticket="${ticket}"
+               html="${ticket.answers}" section="${section}" divID="answersDiv"/>
 Вопросы:<br>
-<ib:richEditor ticket="${ticket}" html="${ticket.questions}" section="${section}" divID="questionsDiv"/>
+<ib:richEditor  editorName="questions" ticket="${ticket}"
+                html="${ticket.questions}" section="${section}" divID="questionsDiv"/>
 
 <div style="margin-top: 5px; margin-bottom: 3px">
     <ib:fieldEditor target="section" fieldMappers="${secToFields}" targetId="${section.id}" unusedFields="${unusedFields}"/>

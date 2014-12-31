@@ -8,7 +8,7 @@ Exam.prototype.remindSection = function (id) {
             section: id
         },
         function (data) {
-            alert("OK");
+            addToTicketsExamCount(1);
         });
 };
 
@@ -17,7 +17,7 @@ Exam.prototype.remindTicket = function (id) {
             ticket: id
         },
         function (data) {
-            alert("OK");
+            addToTicketsExamCount(1);
         });
 };
 

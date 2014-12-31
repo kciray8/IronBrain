@@ -169,35 +169,11 @@ function pasteHtmlAtCaret(html) {
     }
 }
 
-function pasteHtmlFromBuffer() {
-    pasteHtmlAtCaret("<code> fd gdf gdf     fdgdfg   fdgfdgdfgfd</code>");
-}
-
 function deleteSectionDialog(id) {
     dialogYesNo("Вы действительно хотите удалить раздел?", function () {
         onDeleteSection(id);
     });
     $('#menu').remove();
-}
-
-function openSettings(id) {
-    $('#menu').remove();
-    $(document.documentElement).append($('<ul>').attr('id', "menu")
-            .append($('<li>').append("Добавить в экзамен").attr("onClick", "exam.remindSection(" + id + ");$('#menu').remove();"))
-            .append($('<li>').append(" "))
-            .append($('<li>').append("Удалить").attr("onClick", 'deleteSectionDialog(' + id + ");"))
-            .append($('<li>').append(" "))
-            .append($('<li>').append("Свойства"))
-            .append($('<li>').append(" "))
-            .append($('<li>').append("Закрыть").attr("onClick", "$('#menu').remove();"))
-    );
-
-    $("#menu").menu();
-    $("#menu").position({
-        my: "left top",
-        at: "right+3 top",
-        of: "#openMenuSectionDiv" + id
-    });
 }
 
 function dialogYesNo(body, onYes, onNo) {
@@ -270,7 +246,7 @@ function changeRemindState(id) {
     })
 }
 
-function editTicket(id){
+function editTicket(id) {
     window.open('edit_ticket?id=' + id);
 }
 
@@ -281,7 +257,7 @@ function onSearch() {
             query: query
         },
         function (result) {
-            var resultHtml = "<table width='100%'>";
+            var resultHtml = "<table>";
 
             result.forEach(function (ticket) {
                 resultHtml += "<tr><td colspan='2'>";
@@ -294,8 +270,8 @@ function onSearch() {
                 resultHtml += "</td></tr>";
 
                 resultHtml += "<tr>";
-                resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
-                resultHtml += "<td valign='top' width='50%'><div class='searchTextOutput'>" + ticket.answers + "</div></td>";
+                resultHtml += "<td valign='top' style='width: 50%'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
+                resultHtml += "<td valign='top' style='width: 50%'><div class='searchTextOutput'>" + ticket.answers + "</div></td>";
                 resultHtml += "</tr>";
 
                 resultHtml += "<tr><td colspan='2'>";
@@ -313,3 +289,6 @@ function onSearch() {
         }
     );
 }
+
+
+var activeEditor;
