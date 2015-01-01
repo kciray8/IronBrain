@@ -1,5 +1,7 @@
 package org.ironbrain.dao;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.Query;
 import org.ironbrain.APIController;
 import org.ironbrain.Result;
@@ -20,6 +22,9 @@ public class TicketDao extends BaseDao {
     @Autowired
     APIController api;
 
+    @Autowired
+    SectionDao sectionDao;
+
     public Ticket getTicket(int id) {
         Ticket ticket = (Ticket) getSess().get(Ticket.class, id);
         return ticket;
@@ -30,7 +35,9 @@ public class TicketDao extends BaseDao {
 
         Ticket ticket = (Ticket) getSess().get(Ticket.class, id);
 
-        System.out.println("update ..." + ticket.getEditDate() + "  " + clientVersionDate);
+        if (!data.testOwner(ticket.getOwner())) {
+            throw new RuntimeException("Access denied");
+        }
 
         if (ticket.getEditDate() > clientVersionDate) {
             result = Result.getError("Есть более новая версия!");
@@ -54,11 +61,16 @@ public class TicketDao extends BaseDao {
         return result;
     }
 
-    public Section addTicket(int sectionId) {
-      return addTicket(sectionId, data.getUser());
+    public Pair<Section, Ticket> addTicket(int sectionId) {
+        return addTicket(sectionId, data.getUser());
     }
 
-    public Section addTicket(int sectionId, User user) {
+    public Pair<Section, Ticket> addTicket(int sectionId, User user) {
+        Section parentSection = sectionDao.getSection(sectionId, user);
+        if (!data.testOwner(parentSection.getOwner())) {
+            throw new RuntimeException("Access denied");
+        }
+
         Long genNum = api.getChildCount(sectionId) + 1;
 
         Ticket ticket = new Ticket();
@@ -66,6 +78,7 @@ public class TicketDao extends BaseDao {
         ticket.setRemind(ticket.getCreateDate());
         ticket.setEditDate(ticket.getCreateDate());
         int ticketId = (int) getSess().save(ticket);
+        ticket.setId(ticketId);
         ticket.setOwner(user.getId());
 
         Section section = new Section();
@@ -73,12 +86,14 @@ public class TicketDao extends BaseDao {
         section.setParent(sectionId);
         section.setTicket(ticketId);
         section.setOwner(user.getId());
-        int ticketSessionId = (int) getSess().save(section);
-        section.setId(ticketSessionId);
+        int ticketSectionId = (int) getSess().save(section);
+        section.setId(ticketSectionId);
 
-        api.addRemind(ticketSessionId, null);
+        ticket.setPath(api.getPathToSection(section.getId()));
 
-        return section;
+        api.addRemind(ticketSectionId, null);
+
+        return new ImmutablePair<>(section, ticket);
     }
 
     public String getTicketLabel(int ticketId) {
@@ -115,12 +130,13 @@ public class TicketDao extends BaseDao {
     }
 
     boolean firstIter = true;
+
     public List<Ticket> query(String query) {
         query = query.trim();
 
         List<String> words = Arrays.asList((query.split(" ")));
 
-        StringBuilder dbQuery = new StringBuilder("FROM Ticket as ticket WHERE");
+        StringBuilder dbQuery = new StringBuilder("FROM Ticket as ticket WHERE ((ticket.owner = " + data.getUserId() + ") AND ");
 
         firstIter = true;
         words.forEach(word -> {
@@ -134,6 +150,7 @@ public class TicketDao extends BaseDao {
             firstIter = false;
         });
 
+        dbQuery.append(")");
         Query queryResult = getSess().createQuery(dbQuery.toString());
 
 

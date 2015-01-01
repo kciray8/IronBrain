@@ -21,6 +21,11 @@ public class SectionDao extends BaseDao {
     @Autowired
     protected SessionData data;
 
+    public Section getSection(int id) {
+        return getSection(id, data.getUser());
+    }
+
+
     public Section getSection(int id, User user) {
         Section section = (Section) getSess().get(Section.class, id);
         if (user != null) {

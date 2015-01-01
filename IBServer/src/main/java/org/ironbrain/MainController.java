@@ -1,7 +1,5 @@
 package org.ironbrain;
 
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import org.ironbrain.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +19,15 @@ public class MainController extends APIController {
     IronBrain ib;
 
     @RequestMapping(method = RequestMethod.GET, value = "/add")
-    public String getAddPage(ModelMap modelMap, @RequestParam int sec, Integer tic) {
+    public String getAddPage(ModelMap modelMap, Integer sec, Integer tic) {
         long ms = System.currentTimeMillis();
+        if (data.getUser() == null) {
+            return "redirect:/main";
+        }
+        if (sec == null) {
+            sec = getUser().getRoot();
+        }
+
         List<Section> sections = getSections(sec);
         List<Section> path = getPath(sec);
         List<Field> allUserFields = getFields();
@@ -68,7 +72,29 @@ public class MainController extends APIController {
         modelMap.addAttribute("unusedFields", unusedFields);
 
         modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+
         return "addPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/main")
+    public String getMainPage(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+
+        return "mainPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/about")
+    public String getAboutPage(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+
+        return "aboutPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/register")
+    public String getRegisterPage(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+
+        return "registerPage";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/direction")
@@ -106,6 +132,21 @@ public class MainController extends APIController {
         return "redirect:/add?sec=" + section.getParent() + "&tic=" + id;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/exam{examID}")
+    public String getExamResult(ModelMap modelMap, @PathVariable(value = "examID") int examID) {
+        Exam exam = examDao.get(examID);
+        modelMap.addAttribute("exam", exam);
+
+        List<Try> tries = tryDao.getTriesFromExam(examID);
+        modelMap.addAttribute("tries", tries);
+        modelMap.addAttribute("data", data);
+
+        List<Exam> exams = examDao.getDoneExams();
+        modelMap.addAttribute("exams", exams);
+
+        return "examResultPage";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/exam")
     public String getExamPage(ModelMap modelMap) {
         long ms = System.currentTimeMillis();
@@ -114,12 +155,30 @@ public class MainController extends APIController {
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("ib", ib);
 
+        List<Exam> exams = examDao.getDoneExams();
+        modelMap.addAttribute("exams", exams);
+
         Exam lastExam = getLastUndoneExam();
+        boolean weEndExam = reloadOrEndExamIfNeed(lastExam, modelMap);
+        if (weEndExam) {
+            return "redirect:/exam" + lastExam.getId();
+        }
+
+        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+        return "examPage";
+    }
+
+    /**
+     * @param modelMap optional
+     * @return true - if we end exam
+     */
+    public boolean reloadOrEndExamIfNeed(Exam lastExam, ModelMap modelMap) {
 
         if (lastExam != null) {
             Try tempTry = getTempTry(lastExam.getId());
             if (tempTry == null) {
                 toNextAttempt();
+                lastExam = getLastUndoneExam();//Refresh exam data
                 tempTry = getTempTry(lastExam.getId());
 
                 //All tickets done!
@@ -127,18 +186,18 @@ public class MainController extends APIController {
                     lastExam.setDone(true);
                     lastExam.setEndMs(System.currentTimeMillis());
                     examDao.update(lastExam);
-                    return "redirect:/exam" + lastExam.getId();
+                    return true;
                 }
             }
 
-            modelMap.addAttribute("exam", lastExam);
-            modelMap.addAttribute("tempTry", tempTry);
             Ticket ticket = getTicket(tempTry.getTicket());
-            modelMap.addAttribute("ticket", ticket);
+            if (modelMap != null) {
+                modelMap.addAttribute("ticket", ticket);
+                modelMap.addAttribute("exam", lastExam);
+                modelMap.addAttribute("tempTry", tempTry);
+            }
         }
-
-        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
-        return "examPage";
+        return false;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
@@ -150,18 +209,6 @@ public class MainController extends APIController {
 
         return "searchPage";
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/exam{examID}")
-    public String getExamResult(ModelMap modelMap, @PathVariable(value = "examID") int examID) {
-        Exam exam = examDao.get(examID);
-        modelMap.addAttribute("exam", exam);
-
-        List<Try> tries = tryDao.getTriesFromExam(examID);
-        modelMap.addAttribute("tries", tries);
-
-        return "examResultPage";
-    }
-
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public String getRoot() {
@@ -182,39 +229,4 @@ public class MainController extends APIController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/add_ticket_to_time")
-    public String addTicketToTime() {
-        Section timeSection = sectionDao.getTimeSection();
-
-        LocalDate date = LocalDate.now();
-
-        String nowYearStr = Integer.toString(date.getYear());
-        Section sectionNowYear = ensureChildSectionExist(timeSection.getId(), nowYearStr);
-
-        String nowMonthStr = String.format("%2d", date.getMonthValue());
-        Section sectionNowMonth = ensureChildSectionExist(sectionNowYear.getId(), nowMonthStr);
-
-        String nowDayStr = String.format("%2d", date.getDayOfMonth());
-        Section sectionNowDay = ensureChildSectionExist(sectionNowMonth.getId(), nowDayStr);
-
-        Section ticketSection = ticketDao.addTicket(sectionNowDay.getId());
-
-        return "redirect:/edit_ticket?id=" + ticketSection.getTicket();
-    }
-
-    private Section ensureChildSectionExist(int parent, String name) {
-        List<Section> years = sectionDao.getChildren(parent);
-
-        Mutable<Section> childrenMut = new MutableObject<>();
-        years.forEach(iYear -> {
-            if (iYear.getLabel().equals(name)) {
-                childrenMut.setValue(iYear);
-            }
-        });
-        Section child = childrenMut.getValue();
-        if (child == null) {
-            child = sectionDao.addSection(parent, name).getData();
-        }
-        return child;
-    }
 }

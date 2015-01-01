@@ -15,6 +15,26 @@ public class Try {
 
     private Long startMs;
 
+    public String getShortText() {
+        return shortText;
+    }
+
+    public void setShortText(String shortText) {
+        this.shortText = shortText;
+    }
+
+    private String shortText;
+
+    public String getPathToSection() {
+        return pathToSection;
+    }
+
+    public void setPathToSection(String pathToSection) {
+        this.pathToSection = pathToSection;
+    }
+
+    private String pathToSection;
+
     private Long endMs;
 
     public Integer getAttemptNum() {
@@ -110,5 +130,14 @@ public class Try {
     @Transient
     public long getDurationSec() {
         return (endMs - startMs) / 1000;
+    }
+
+    @Transient
+    public String getColor(){
+        if(correct){
+            return "#C1FFE9";
+        }else{
+            return "#FFD8D7";
+        }
     }
 }

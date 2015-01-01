@@ -60,7 +60,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <mvc:resources mapping="/res/**" location="res"/>
+    <mvc:resources mapping="/**" location="res" />
 
     <bean id="data" class="org.ironbrain.SessionData" scope="session">
         <aop:scoped-proxy/>
@@ -68,5 +68,4 @@
 
     <bean id="ib" class="org.ironbrain.IronBrain">
     </bean>
-
 </beans>

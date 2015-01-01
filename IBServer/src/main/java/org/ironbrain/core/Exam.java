@@ -1,5 +1,7 @@
 package org.ironbrain.core;
 
+import org.ironbrain.utils.DateUtils;
+
 import javax.persistence.*;
 
 @Table(name = "Exam")
@@ -79,5 +81,10 @@ public class Exam {
     public long getDurationMin() {
 
         return (endMs - startMs) / (1000 * 60);
+    }
+
+    @Transient
+    public String getName(){
+        return DateUtils.getNiceDate(startMs);
     }
 }

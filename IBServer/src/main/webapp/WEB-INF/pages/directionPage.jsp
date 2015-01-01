@@ -19,6 +19,7 @@
                 });
             }
 
+            <c:if test="${direction != null}">
             function recalculateDirection() {
                 $.get("recalculate_direction", {
                     id: ${direction.id}
@@ -28,6 +29,7 @@
                     }
                 });
             }
+            </c:if>
         </script>
 
         <table width="100%">

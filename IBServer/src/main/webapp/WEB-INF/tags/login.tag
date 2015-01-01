@@ -15,11 +15,17 @@
                    value="">
         </div>
         <div class="form-element">
-            <button onclick="enter();">Войти</button>  <button>Регистрация</button>
+            <button onclick="enter();">Войти</button>  <button onclick="register();">Регистрация</button>
         </div>
-        <div id = "login_error" class="login_error">
+        <div id = "login_error" class="msg_error">
 
         </div>
     </div>
 </div>
 <div style="margin-top: 6px"></div>
+
+<script>
+    function register(){
+        location.href = "./register";
+    }
+</script>

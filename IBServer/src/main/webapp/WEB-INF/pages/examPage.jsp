@@ -28,6 +28,9 @@
                             <br>
                             Заход № ${tempTry.attemptNum}
                         </c:if>
+                        <c:if test="${exam == null}">
+                            <ib:examList exams="${exams}"/>
+                        </c:if>
                     </div>
                 </td>
                 <td valign="top">
@@ -72,14 +75,6 @@
                             exam.configure();
                         </script>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    ms == ${ms}
-                    <br>
-                    var = <span id="var"></span>
-                    <br>${debug_data}
                 </td>
             </tr>
         </table>

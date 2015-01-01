@@ -21,8 +21,8 @@
 </button>
 
 <button onclick="document.execCommand('removeFormat',false,null);" title="Очистить формат">X</button>
-<button onclick="document.execCommand('backColor',false,'9CEBFF');"><ib:marker color="#9CEBFF"/></button>
-<button onclick="document.execCommand('backColor',false,'FFFFFF');"><ib:marker color="#FFFFFF"/></button>
+<button onclick="document.execCommand('backColor',false,'#9CEBFF');"><ib:marker color="#9CEBFF"/></button>
+<button onclick="document.execCommand('backColor',false,'#FFFFFF');"><ib:marker color="#FFFFFF"/></button>
 
 <button onclick="document.execCommand('strikeThrough',false,null);"><s>abc</s></button>
 

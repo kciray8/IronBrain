@@ -8,7 +8,7 @@
         <ib:headBlock title="-Поиск-"/>
     </head>
     <body>
-        <table>
+        <table style="width: 100%">
             <tr>
                 <ib:mainMenuBlock data="${data}"/>
             </tr>
@@ -23,8 +23,8 @@
                         </div>
 
                         <script>
-                            $("#query").keypress(function(e) {
-                                if(e.which == 13) {
+                            $("#query").keypress(function (e) {
+                                if (e.which == 13) {
                                     onSearch();
                                 }
                             });

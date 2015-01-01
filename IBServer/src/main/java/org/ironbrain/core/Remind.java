@@ -15,6 +15,8 @@ public class Remind {
 
     private Integer ticket;
 
+    private String shortText;
+
     private String label;
 
     public Integer getId() {
@@ -55,5 +57,13 @@ public class Remind {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getShortText() {
+        return shortText;
+    }
+
+    public void setShortText(String shortText) {
+        this.shortText = shortText;
     }
 }

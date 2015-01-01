@@ -1,51 +1,25 @@
 package org.ironbrain;
 
 import com.google.common.base.Joiner;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ironbrain.core.*;
-import org.ironbrain.dao.*;
+import org.ironbrain.dao.AllDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SessionAttributes({APIController.USER})
-public class APIController {
+public class APIController extends AllDao {
     public static final String USER = "user";
 
     @Autowired
     protected SessionData data;
-
-    @Autowired
-    protected SectionDao sectionDao;
-
-    @Autowired
-    protected FieldDao fieldDao;
-
-    @Autowired
-    protected TicketDao ticketDao;
-
-    @Autowired
-    protected UserDao userDao;
-
-    @Autowired
-    protected RemindDao remindDao;
-
-    @Autowired
-    protected ExamDao examDao;
-
-    @Autowired
-    protected TryDao tryDao;
-
-    @Autowired
-    protected DirectionDao directionDao;
-
-    @Autowired
-    protected SectionToFieldDao secToFDao;
-
-    @Autowired
-    protected DirectionToFieldDao dirToFDao;
 
     protected User getUser() {
         return data.getUser();
@@ -123,7 +97,7 @@ public class APIController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/add_ticket")
     public Section addTicket(@RequestParam int section) {
-        return ticketDao.addTicket(section, getUser());
+        return ticketDao.addTicket(section, getUser()).getLeft();
     }
 
     @ResponseBody
@@ -194,7 +168,8 @@ public class APIController {
 
         i = 1;
         reminds.forEach(remind -> {
-            Try someTry = tryDao.create(remind.getTicket(), exam.getId(), i++, 0);
+            Ticket ticket = ticketDao.getTicket(remind.getTicket());
+            Try someTry = tryDao.create(ticket, exam.getId(), i++, 1);
         });
 
         return Result.getOk();
@@ -220,7 +195,7 @@ public class APIController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/try_done")
-    public Result tryDone(@RequestParam int id, @RequestParam boolean correct, Boolean examDone) {
+    public Result tryDone(@RequestParam int id, @RequestParam boolean correct) {
         Try someTry = tryDao.getTry(id);
         someTry.setEndMs(System.currentTimeMillis());
 
@@ -269,11 +244,7 @@ public class APIController {
         tickets.forEach(ticket -> {
             Section section = sectionDao.getSectionFromTicket(ticket.getId());
             if (section != null) {
-                List<String> path = getPath(section.getId())
-                        .stream()
-                        .map(Section::getLabel)
-                        .collect(Collectors.toList());
-                String pathString = Joiner.on("→").join(path);
+                String pathString = getPathToSection(section.getId());
 
                 res.append(pathString);
                 ticket.setPath(pathString);
@@ -282,6 +253,15 @@ public class APIController {
         });
 
         return res.toString();
+    }
+
+    public String getPathToSection(int sectionId) {
+        List<String> path = getPath(sectionId)
+                .stream()
+                .map(Section::getLabel)
+                .collect(Collectors.toList());
+        String pathString = Joiner.on("→").join(path);
+        return pathString;
     }
 
     @ResponseBody
@@ -338,5 +318,50 @@ public class APIController {
     @RequestMapping(method = RequestMethod.GET, value = "/recalculate_direction")
     public Result recalculateDirection(@RequestParam Integer id) {
         return directionDao.recalculateDirection(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/register_user")
+    public Result registerUser(@RequestParam String login, @RequestParam String password,
+                               @RequestParam String email, @RequestParam Boolean extended) {
+        return userDao.registerUser(login, password, email, extended);
+    }
+
+    public Pair<Section, Ticket> addTicketToTime() {
+        Section timeSection = sectionDao.getTimeSection();
+
+        LocalDate date = LocalDate.now();
+
+        String nowYearStr = Integer.toString(date.getYear());
+        Section sectionNowYear = ensureChildSectionExist(timeSection.getId(), nowYearStr);
+
+        String nowMonthStr = String.format("%2d", date.getMonthValue());
+        Section sectionNowMonth = ensureChildSectionExist(sectionNowYear.getId(), nowMonthStr);
+
+        String nowDayStr = String.format("%2d", date.getDayOfMonth());
+        Section sectionNowDay = ensureChildSectionExist(sectionNowMonth.getId(), nowDayStr);
+
+        return ticketDao.addTicket(sectionNowDay.getId());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/add_ticket_to_time")
+    public String addTicketToTimeAndRedirect() {
+        return "redirect:/edit_ticket?id=" + addTicketToTime().getLeft().getTicket();
+    }
+
+    private Section ensureChildSectionExist(int parent, String name) {
+        List<Section> years = sectionDao.getChildren(parent);
+
+        Mutable<Section> childrenMut = new MutableObject<>();
+        years.forEach(iYear -> {
+            if (iYear.getLabel().equals(name)) {
+                childrenMut.setValue(iYear);
+            }
+        });
+        Section child = childrenMut.getValue();
+        if (child == null) {
+            child = sectionDao.addSection(parent, name).getData();
+        }
+        return child;
     }
 }

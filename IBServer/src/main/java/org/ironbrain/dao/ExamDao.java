@@ -16,7 +16,7 @@ public class ExamDao extends BaseDao {
     @Autowired
     protected SessionData data;
 
-    public Exam create(int count){
+    public Exam create(int count) {
         Exam exam = new Exam();
         exam.setStartMs(System.currentTimeMillis());
         exam.setUser(data.getUser().getId());
@@ -27,7 +27,7 @@ public class ExamDao extends BaseDao {
         return exam;
     }
 
-    public Exam getLastUndoneExam(){
+    public Exam getLastUndoneExam() {
         List<Exam> exams;
 
         exams = getSess().createCriteria(Exam.class)
@@ -36,11 +36,22 @@ public class ExamDao extends BaseDao {
                 .setMaxResults(1)
                 .list();
 
-        if(exams.isEmpty()){
+        if (exams.isEmpty()) {
             return null;
-        }else {
+        } else {
             return exams.get(0);
         }
+    }
+
+    public List<Exam> getDoneExams() {
+        List<Exam> exams;
+
+        exams = getSess().createCriteria(Exam.class)
+                .add(Restrictions.eq("user", data.getUser().getId()))
+                .add(Restrictions.eq("done", true))
+                .list();
+
+        return exams;
     }
 
     public Exam get(int id) {
@@ -48,7 +59,7 @@ public class ExamDao extends BaseDao {
         return someExam;
     }
 
-    public void update(Exam exam){
+    public void update(Exam exam) {
         getSess().update(exam);
     }
 }

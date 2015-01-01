@@ -9,6 +9,8 @@ import java.util.List;
 @Table(name = "Sections")
 @Entity
 public class Section implements Comparable<Section> {
+    public static enum Type {SIMPLE, TIME}
+
     @Id
     @GeneratedValue
     private Integer id;

@@ -1,5 +1,7 @@
 package org.ironbrain.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +19,16 @@ public class User {
     private String password;
 
     private Integer root;
+
+    public Boolean getExtended() {
+        return extended;
+    }
+
+    public void setExtended(Boolean extended) {
+        this.extended = extended;
+    }
+
+    private Boolean extended;
 
     public User(){
 
@@ -51,6 +63,7 @@ public class User {
         this.login = login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

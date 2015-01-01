@@ -7,6 +7,24 @@ a {
     color: #32404f;
 }
 
+a.someLogo{
+    margin: 15px;
+    color: transparent;
+}
+
+ul.squareUl {
+    list-style-type: square;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    padding-left: 5px;
+}
+
+li.squareLi {
+    margin-left: 2px;
+}
+
 pre {
     white-space: pre-wrap;
     margin-top: 0px;
@@ -22,7 +40,12 @@ a:hover {
 
 body {
     max-width: 1000px;
+    min-width: 1000px;
     margin: 10px auto auto;
+}
+
+p {
+    margin: 0px;
 }
 
 .sectionRow:hover {
@@ -38,7 +61,7 @@ body {
 }
 
 .path {
-    padding-top: 3px;
+    padding: 3px;
     padding-bottom: 3px;
 }
 
@@ -58,7 +81,7 @@ body {
 
 }
 
-.plainHtmlEditor{
+.plainHtmlEditor {
     background-color: rgba(255, 151, 6, 0.13);
 }
 
@@ -124,8 +147,11 @@ button {
     padding-top: 2px;*/
 }
 
-button:hover {
+button:hover:enabled{
     background-color: #c5eaff;
+}
+button:hover:disabled{
+
 }
 
 button:active {
@@ -172,7 +198,7 @@ button:active {
     background-color: #c5eaff;
 }
 
-.login_error {
+div.msg_error {
     background-color: #ffa39c;
     margin-top: 5px;
     padding: 5px;

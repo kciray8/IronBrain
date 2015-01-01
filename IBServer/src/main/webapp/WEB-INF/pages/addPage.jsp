@@ -16,6 +16,7 @@
             <tr>
                 <ib:mainMenuBlock data="${data}"/>
             </tr>
+
             <tr>
                 <td colspan="2">
                     <div class="bg path">
@@ -27,10 +28,6 @@
             <tr>
                 <c:if test="${ticket == null}">
                     <td valign="top">
-                        <c:if test="${data.user == null}">
-                            <ib:login/>
-                        </c:if>
-
                         <c:if test="${data.user != null}">
                             <div class="bg" style="width: 300px">
                                 <c:if test="${section.parent != null}">
@@ -41,7 +38,7 @@
                                 <ib:sections list="${sections}"/>
 
                                 <ib:gap px="5"/>
-                                <input autofocus placeholder="Имя раздела" style="width:100%;" type="text" size="20"
+                                <input placeholder="Имя раздела" style="width:100%;" type="text" size="20"
                                        id="newSectionName">
                                 <ib:gap px="5"/>
                                 <button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
@@ -82,27 +79,7 @@
                         </div>
                     </td>
                 </c:if>
-
-                <c:if test="${data.user == null}">
-                    <td valign="top" style="width: 100%">
-                        <div class="bg">
-                            <c:if test="${ticket == null}">
-                                <ib:about/>
-                            </c:if>
-                        </div>
-                    </td>
-                </c:if>
             </tr>
-            <!--
-            <tr>
-                <td>
-                    ms == ${ms}
-                    <br>
-                    var = <span id="var"></span>
-                    <br>${debug_data}
-                </td>
-            </tr>
-            -->
         </table>
     </body>
 </html>

@@ -27,14 +27,14 @@
             <tr>
                 <td style="width: 200px;vertical-align: top;">
                     <div class="bg">
-                        Менюшка
+                        <ib:examList exams="${exams}"/>
                     </div>
                 </td>
                 <td valign="top">
                     <div class="bg">
                         Длительность экзамена - ${exam.durationMin} минут(ы)
 
-                        <ib:margin />
+                        <ib:margin/>
 
                         <% int i = 0; %>
                         <table class="base_table">
@@ -43,17 +43,33 @@
                                     №
                                 </th>
                                 <th class="base_th">
-                                    Длительность (сек)
+                                    Попытка
+                                </th>
+                                <th class="base_th">
+                                    Текст
+                                </th>
+                                <th class="base_th">
+                                    Действия
                                 </th>
                             </tr>
 
                             <c:forEach var="tempTry" items="${tries}">
-                                <tr class="base_tr">
+                                <tr class="base_tr"  style="background-color: ${tempTry.color}">
                                     <td class="base_td">
                                         <%= ++i %>
                                     </td>
+
                                     <td class="base_td">
-                                            ${tempTry.durationSec}
+                                            ${tempTry.attemptNum}
+                                    </td>
+
+                                    <td class="base_td">
+                                            ${tempTry.shortText}
+                                    </td>
+                                    <td class="base_td">
+                                        <button onclick="window.open('edit_ticket?id=${tempTry.ticket}')">
+                                            Редактировать
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -2,7 +2,9 @@ package org.ironbrain.dao;
 
 import org.hibernate.criterion.Restrictions;
 import org.ironbrain.SessionData;
+import org.ironbrain.core.Ticket;
 import org.ironbrain.core.Try;
+import org.ironbrain.utils.HtmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +22,15 @@ public class TryDao extends BaseDao {
     private RemindDao remindDao;
 
 
-    public Try create(int ticketId, int examId, int num, int attemptNum) {
+    public Try create(Ticket ticket, int examId, int num, int attemptNum) {
         Try someTry = new Try();
+        someTry.setShortText(HtmlUtils.getShortText(ticket.getQuestions(), 100));
         someTry.setUser(data.getUser().getId());
         someTry.setCorrect(false);
         someTry.setDone(false);
-        someTry.setNum(0);
         someTry.setExam(examId);
-        someTry.setTicket(ticketId);
+        someTry.setTicket(ticket.getId());
+        someTry.setPathToSection(ticket.getPath());
         someTry.setNum(num);
         someTry.setAttemptNum(attemptNum);
         int id = (int) getSess().save(someTry);
@@ -38,8 +41,10 @@ public class TryDao extends BaseDao {
     public Try createNextAttempt(Try lastTry, int num) {
         Try someTry = new Try();
         someTry.setUser(data.getUser().getId());
+        someTry.setPathToSection(lastTry.getPathToSection());
         someTry.setCorrect(false);
         someTry.setDone(false);
+        someTry.setShortText(lastTry.getShortText());
         someTry.setNum(0);
         someTry.setExam(lastTry.getExam());
         someTry.setTicket(lastTry.getTicket());
@@ -65,7 +70,7 @@ public class TryDao extends BaseDao {
 
     public void updateTry(Try someTry) {
         getSess().update(someTry);
-        if(someTry.getCorrect()){
+        if (someTry.getCorrect()) {
             remindDao.deleteWithTicketId(someTry.getTicket());
         }
     }
@@ -81,7 +86,7 @@ public class TryDao extends BaseDao {
             return null;
         } else {
             Try tempTry = tries.get(0);
-            if(tempTry.getStartMs() == null){
+            if (tempTry.getStartMs() == null) {
                 tempTry.setStartMs(System.currentTimeMillis());
                 getSess().save(tempTry);
             }

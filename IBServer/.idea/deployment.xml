@@ -5,7 +5,7 @@
       <paths name="Local">
         <serverdata>
           <mappings>
-            <mapping deploy="\" local="$PROJECT_DIR$/src/main/webapp/res" web="/" />
+            <mapping deploy="\res" local="$PROJECT_DIR$/src/main/webapp/res" web="/" />
             <mapping deploy="WEB-INF\pages" local="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages" web="/" />
             <mapping deploy="WEB-INF\tags" local="$PROJECT_DIR$/src/main/webapp/WEB-INF/tags" web="/" />
           </mappings>

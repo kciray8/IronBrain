@@ -7,7 +7,9 @@ import org.ironbrain.Result;
 import org.ironbrain.SessionData;
 import org.ironbrain.core.Remind;
 import org.ironbrain.core.Section;
+import org.ironbrain.core.Ticket;
 import org.ironbrain.core.User;
+import org.ironbrain.utils.HtmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,10 +36,14 @@ public class RemindDao extends BaseDao {
     public void addRemind(Section section, int user) {
         //One ticket
         if (section.getTicket() != null) {
+            Ticket ticket = ticketDao.getTicket(section.getTicket());
+
             Remind remind = new Remind();
             remind.setTicket(section.getTicket());
             remind.setUser(user);
             remind.setLabel(section.getLabel());
+
+            remind.setShortText(HtmlUtils.getShortText(ticket.getQuestions(), 50));
 
             List<String> pathList = new ArrayList<>();
             api.getPath(section.getId()).forEach(sec -> {
@@ -64,6 +70,10 @@ public class RemindDao extends BaseDao {
     public void addRemind(int sectionId, int user) {
         Section section = api.getSection(sectionId);
         addRemind(section, user);
+    }
+
+    public List<Remind> getReminds() {
+        return getReminds(data.getUser());
     }
 
     public List<Remind> getReminds(User user) {

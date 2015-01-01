@@ -220,7 +220,7 @@ function enter() {
                 $("#login_error").html(data.message).show();
             }
             if (data.res == Result.OK) {
-                location.reload();
+                location.href = "./add";
             }
         });
 }
@@ -257,9 +257,12 @@ function onSearch() {
             query: query
         },
         function (result) {
-            var resultHtml = "<table>";
 
-            result.forEach(function (ticket) {
+            var resultHtml = "<table style='width: 100%' >";
+
+            for (var i = 0; i < result.length; i++) {
+                var ticket = result[i];
+
                 resultHtml += "<tr><td colspan='2'>";
                 resultHtml += ticket.path;
                 resultHtml += "</td></tr>";
@@ -275,9 +278,12 @@ function onSearch() {
                 resultHtml += "</tr>";
 
                 resultHtml += "<tr><td colspan='2'>";
-                resultHtml += "<hr>";
+                if (i != result.length - 1) {
+                    resultHtml += "<hr>";
+                }
                 resultHtml += "</td></tr>";
-            });
+            }
+
             resultHtml += "</table>";
 
             $("#searchResult").html(resultHtml);
