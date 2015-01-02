@@ -8,7 +8,7 @@
 <ib:gap px="5"/>
 
 <c:forEach var="exam" items="${exams}">
-    <a href="exam${exam.id}">${exam.name}</a> <br>
+    <a class="menu" href="exam${exam.id}">${exam.name}</a> <br>
 </c:forEach>
 
-<a href="http://localhost:8080/exam">--Сборка--</a>
+<a class="menu" href="http://localhost:8080/exam">--Сборка--</a>

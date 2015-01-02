@@ -60,13 +60,21 @@
                                             ${ticket.answers}
                                     </div>
                                     Повторить:<br>
-                                    <input checked value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
-                                    <input value="rLater" type="radio" name="toRemindRButton">Потом</input>
+                                    <input value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
+                                    <input checked value="rLater" type="radio" name="toRemindRButton">Потом</input>
+                                    <input value="rDay" type="radio" name="toRemindRButton">Через день</input>
+                                    <input value="rWeek" type="radio" name="toRemindRButton">Через неделю</input>
+                                    <input value="rMonth" type="radio" name="toRemindRButton">Через месяц</input>
+                                    <input value="rHalfYear" type="radio" name="toRemindRButton">Через пол года</input>
+                                    <input value="rYear" type="radio" name="toRemindRButton">Через год</input>
 
                                     <br>
                                     <ib:margin/>
                                     <button id="nextTicketButton" onclick="exam.nextTicket(${tempTry.id})">Следующий
                                         билет
+                                    </button>
+
+                                    <button id="nextTicketButton" onclick="window.open('edit_ticket?id=${tempTry.ticket}')">Редактировать
                                     </button>
                                 </div>
                             </c:if>

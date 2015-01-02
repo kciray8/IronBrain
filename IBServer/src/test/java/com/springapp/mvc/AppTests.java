@@ -3,6 +3,8 @@ package com.springapp.mvc;
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.ironbrain.IB;
 import org.ironbrain.MainController;
 import org.ironbrain.Result;
 import org.ironbrain.SessionData;
@@ -60,6 +62,8 @@ public class AppTests extends AllDao {
 
     @Test
     public void integration() throws Exception {
+        IB.setMsOffset(0);
+
         String login = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(5, 15));
         String password = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(5, 15));
 
@@ -76,14 +80,15 @@ public class AppTests extends AllDao {
         Assert.assertEquals(rootSection.getId(), timeSection.getParent());
         Assert.assertEquals(user.getId(), rootSection.getOwner());
 
-        study1();
+        createTicketsAndDayExam();
+        createDirectionAndFullExam();
     }
 
     /**
      * 1)Create section "IT" in root
-     * 2)Create section "Java" in IT
+     * 2)Create section "Java" in IT and set field "Java for it"
      * 3)Add ticket "java questions N" - "java answers N" to "Java" section
-     * 4)Add ticket "java extra questions" - "java extra answers" to Time
+     * 4)Add ticket "java extra questions" - "java extra answers" to Time and set fields "Java" and "HTML"
      * 5)Delete tickets #1 and tickets #5 from list to remind
      * 6)Start exam with 9 tickets
      * 7)Attempt #1 - correct answer only on first and last try
@@ -91,20 +96,26 @@ public class AppTests extends AllDao {
      * 9)Attempt #3 - only last try incorrect
      * 10)Attempt #4 - all correct
      */
-    private void study1() {
-        List<Section> rootChildren = sectionDao.getChildren(user.getRoot());
-        Section firstSection = rootChildren.get(0);
+    Section javaSection;
+    Field htmlField;
+    Field javaField;
+    Section itSection;
 
-        Section itSection = sectionDao.addSection(firstSection.getId(), "IT").getData();
-        Section javaSection = sectionDao.addSection(itSection.getId(), "Java").getData();
+    private void createTicketsAndDayExam() {
+        List<Section> rootChildren = sectionDao.getChildren(user.getRoot());
+        Section groupSection = rootChildren.get(0);
+
+        itSection = sectionDao.addSection(groupSection.getId(), "IT").getData();
+        javaSection = sectionDao.addSection(itSection.getId(), "Java").getData();
+
+        javaField = fieldDao.getField(fieldDao.addField("Java").getData());
+        Assert.assertEquals("Java", javaField.getLabel());
+        SectionToField fieldToSection = fieldDao.addFieldToSection(javaField.getId(), javaSection.getId());
 
         int firstTicket = -1;
         int fiveTicket = -1;
         for (int i = 1; i < 11; i++) {
-            Ticket ticketN = ticketDao.addTicket(javaSection.getId()).getRight();
-            ticketN.setQuestions("java questions " + i);
-            ticketN.setAnswers("java answers " + i);
-            ticketDao.updateTicket(ticketN);
+            Ticket ticketN = addTicketToSection(javaSection, "java questions " + i, "java answers " + i);
             if (i == 1) {
                 firstTicket = ticketN.getId();
             }
@@ -120,10 +131,15 @@ public class AppTests extends AllDao {
         List<Remind> reminds = remindDao.getReminds();
         Assert.assertEquals(10, reminds.size());//All 10 tickets was added to remind list
 
-        Ticket extraTicket = api.addTicketToTime().getRight();
+        Pair<Section, Ticket> extraTicketData = api.addTicketToTime();
+        Ticket extraTicket = extraTicketData.getRight();
         extraTicket.setQuestions("java extra questions");
         extraTicket.setAnswers("java extra answers");
         ticketDao.updateTicket(extraTicket);
+
+        htmlField = fieldDao.getField(fieldDao.addField("Html").getData());
+        fieldDao.addFieldToSection(htmlField.getId(), extraTicketData.getLeft().getId());
+        fieldDao.addFieldToSection(javaField.getId(), extraTicketData.getLeft().getId());
 
         //Delete 1 and 5 ticket from remind list
         remindDao.deleteWithTicketId(firstTicket);
@@ -159,7 +175,7 @@ public class AppTests extends AllDao {
         Assert.assertEquals("java answers 2", firstTryAnswers);
 
         //Tries
-        api.tryDone(firstTry.getId(), true);//#1
+        api.tryDone(firstTry.getId(), true, Ticket.REMIND_LATER);//#1
         doneTempTrue(exam, false);//#2
         doneTempTrue(exam, false);//#3
         doneTempTrue(exam, false);//#4
@@ -204,9 +220,68 @@ public class AppTests extends AllDao {
         Assert.assertTrue(doneOk);
     }
 
+    private Ticket addTicketToSection(Section section, String questions, String answers) {
+        Ticket ticketN = ticketDao.addTicket(section.getId()).getRight();
+        ticketN.setQuestions(questions);
+        ticketN.setAnswers(answers);
+        ticketDao.updateTicket(ticketN);
+        return ticketN;
+    }
+
+    /**
+     * 1)Add new ticket to "Java" section "special java questions" - "special java answers"
+     * 2)Add field "Java" to special ticket and inverse it
+     * 3)Add direction "Java and Html"
+     * 4)Create section "Html" with subsections "1" and "2"
+     * 5)In it - create 5 tickets about html
+     * 6)Update direction percent and ensure that it 0%
+     */
+    private void createDirectionAndFullExam() {
+        Pair<Section, Ticket> ticketData = ticketDao.addTicket(javaSection.getId());
+        Ticket specialTicket = ticketData.getRight();
+        specialTicket.setQuestions("special java questions");
+        specialTicket.setAnswers("special java answers");
+        ticketDao.updateTicket(specialTicket);
+
+        SectionToField sectionToField = fieldDao.addFieldToSection(javaField.getId(), ticketData.getKey().getId());
+        secToFDao.invertField(sectionToField.getId());
+
+        Direction direction = directionDao.addDirection("Java and Html");
+        fieldDao.addFieldToDirection(javaField.getId(), direction.getId());
+        fieldDao.addFieldToDirection(htmlField.getId(), direction.getId());
+
+        Section htmlSection = sectionDao.addSection(itSection.getId(), "Html").getData();
+        fieldDao.addFieldToSection(htmlField.getId(), htmlSection.getId());
+
+        Section html1 = sectionDao.addSection(htmlSection.getId(), "1").getData();
+        addTicketToSection(html1, "questions html.1", "answers html.1");
+        addTicketToSection(html1, "questions html.2", "answers html.2");
+
+        Section html2 = sectionDao.addSection(htmlSection.getId(), "2").getData();
+        addTicketToSection(html2, "questions htm2.1", "answers htm2.1");
+        addTicketToSection(html2, "questions htm2.2", "answers htm2.2");
+        addTicketToSection(html2, "questions htm2.3", "answers htm2.3");
+
+        //Update direction data
+        directionDao.recalculateDirection(direction.getId());
+        direction = directionDao.getDirection(direction.getId());
+        Assert.assertEquals(16, direction.getTicketsCount().intValue());
+
+        //Now we have 11 tickets in direction:
+        //ticket 1-10 AND extra ticket
+        double knowPercent = directionDao.getKnowPercent(direction);
+        Assert.assertEquals(knowPercent, 0, 0.001);
+
+        directionDao.sliceAndAddToRemind(direction, 6);
+    }
+
     private void doneTempTrue(Exam exam, boolean result) {
         Try tempTry = tryDao.getTempTry(exam.getId());
-        api.tryDone(tempTry.getId(), result);
+        if (result) {
+            api.tryDone(tempTry.getId(), result, Ticket.REMIND_LATER);
+        } else {
+            api.tryDone(tempTry.getId(), result, Ticket.REMIND_NOW);
+        }
     }
 
     private void log(Object obj) {

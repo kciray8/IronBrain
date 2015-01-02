@@ -16,11 +16,11 @@ import java.util.List;
 @Controller
 public class MainController extends APIController {
     @Autowired
-    IronBrain ib;
+    IB ib;
 
     @RequestMapping(method = RequestMethod.GET, value = "/add")
     public String getAddPage(ModelMap modelMap, Integer sec, Integer tic) {
-        long ms = System.currentTimeMillis();
+        long ms = IB.getNowMs();
         if (data.getUser() == null) {
             return "redirect:/main";
         }
@@ -39,7 +39,7 @@ public class MainController extends APIController {
         modelMap.addAttribute("data", data);
         modelMap.addAttribute("ib", ib);
 
-        long pageGenDate = System.currentTimeMillis();
+        long pageGenDate = IB.getNowMs();
         modelMap.addAttribute("pageGenerateDate", pageGenDate);
 
         Section targetSection = mainSection;
@@ -71,7 +71,7 @@ public class MainController extends APIController {
         unusedFields.removeAll(ticketFields);
         modelMap.addAttribute("unusedFields", unusedFields);
 
-        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+        modelMap.addAttribute("ms", Long.toString(IB.getNowMs() - ms));
 
         return "addPage";
     }
@@ -99,7 +99,7 @@ public class MainController extends APIController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/direction")
     public String getDirectionPage(ModelMap modelMap, Integer id) {
-        long ms = System.currentTimeMillis();
+        long ms = IB.getNowMs();
         List<Field> allUserFields = getFields();
         List<Direction> directions = directionDao.getDirections();
         modelMap.addAttribute("data", data);
@@ -122,7 +122,7 @@ public class MainController extends APIController {
             modelMap.addAttribute("unusedFields", unusedFields);
         }
 
-        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+        modelMap.addAttribute("ms", Long.toString(IB.getNowMs() - ms));
         return "directionPage";
     }
 
@@ -149,7 +149,7 @@ public class MainController extends APIController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/exam")
     public String getExamPage(ModelMap modelMap) {
-        long ms = System.currentTimeMillis();
+        long ms = IB.getNowMs();
         List<Remind> reminds = getReminds();
         modelMap.addAttribute("reminds", reminds);
         modelMap.addAttribute("data", data);
@@ -164,7 +164,7 @@ public class MainController extends APIController {
             return "redirect:/exam" + lastExam.getId();
         }
 
-        modelMap.addAttribute("ms", Long.toString(System.currentTimeMillis() - ms));
+        modelMap.addAttribute("ms", Long.toString(IB.getNowMs() - ms));
         return "examPage";
     }
 
@@ -184,8 +184,9 @@ public class MainController extends APIController {
                 //All tickets done!
                 if (tempTry == null) {
                     lastExam.setDone(true);
-                    lastExam.setEndMs(System.currentTimeMillis());
+                    lastExam.setEndMs(IB.getNowMs());
                     examDao.update(lastExam);
+                    directionDao.recalcluateAllDirections();
                     return true;
                 }
             }

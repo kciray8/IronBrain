@@ -1,6 +1,7 @@
 package org.ironbrain.dao;
 
 import org.hibernate.criterion.Restrictions;
+import org.ironbrain.IB;
 import org.ironbrain.SessionData;
 import org.ironbrain.core.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ExamDao extends BaseDao {
 
     public Exam create(int count) {
         Exam exam = new Exam();
-        exam.setStartMs(System.currentTimeMillis());
+        exam.setStartMs(IB.getNowMs());
         exam.setUser(data.getUser().getId());
         exam.setDone(false);
         exam.setCount(count);

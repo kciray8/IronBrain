@@ -17,7 +17,6 @@
     Обновлён <i><%= DateUtils.getNiceDate(ticket.getEditDate()) %>
 </i>
 
-    <!-- Вспомнить после <i><%= DateUtils.getNiceDate(ticket.getRemind()) %></i> -->
 </div>
 
 Ответы:<br>

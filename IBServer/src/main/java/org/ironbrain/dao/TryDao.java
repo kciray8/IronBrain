@@ -1,6 +1,7 @@
 package org.ironbrain.dao;
 
 import org.hibernate.criterion.Restrictions;
+import org.ironbrain.IB;
 import org.ironbrain.SessionData;
 import org.ironbrain.core.Ticket;
 import org.ironbrain.core.Try;
@@ -87,7 +88,7 @@ public class TryDao extends BaseDao {
         } else {
             Try tempTry = tries.get(0);
             if (tempTry.getStartMs() == null) {
-                tempTry.setStartMs(System.currentTimeMillis());
+                tempTry.setStartMs(IB.getNowMs());
                 getSess().save(tempTry);
             }
 

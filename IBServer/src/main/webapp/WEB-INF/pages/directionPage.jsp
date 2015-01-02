@@ -29,6 +29,23 @@
                     }
                 });
             }
+
+            function sliceAndRemind(directionId, count) {
+                var paramObj = {
+                    directionId: directionId,
+                    count: count
+                };
+                location.href = "slice_and_remind?" + $.param(paramObj);
+            }
+
+            function showSliceMenu() {
+                var menuBlock = $('#sliceMenu');
+                if (menuBlock.is(':visible')) {
+                    menuBlock.hide();
+                } else {
+                    menuBlock.show()
+                }
+            }
             </c:if>
         </script>
 
@@ -41,7 +58,7 @@
                 <td style="width: 200px;vertical-align: top;">
                     <div class="bg">
                         <c:forEach var="direction" items="${directions}">
-                            <a href="./direction?id=${direction.id}">${direction.name}</a>
+                            <a class="menu" href="./direction?id=${direction.id}">${direction.name}</a>
                             <br>
                         </c:forEach>
                         <ib:gap px="5"/>
@@ -67,7 +84,15 @@
                             <ib:gap px="5"/>
                             Количество билетов - ${direction.ticketsCount}
                             <ib:gap px="5"/>
+                            Вы помните ${direction.ticketKnownCount} из ${direction.ticketsCount} (${direction.knowPercentStr}%)
+                            <ib:gap px="5"/>
                             <button onclick="recalculateDirection()">Пересчитать</button>
+                            <ib:gap px="5"/>
+                            <button onclick="showSliceMenu()">Нарезать билеты
+                            </button>
+                            <span id="sliceMenu" hidden><input value="20" id="sliceCount" type="text"> <button
+                                    onclick="sliceAndRemind(${direction.id},$('#sliceCount').val())">OK
+                            </button></span>
                         </c:if>
                     </div>
                 </td>

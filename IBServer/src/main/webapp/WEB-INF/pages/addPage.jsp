@@ -31,7 +31,7 @@
                         <c:if test="${data.user != null}">
                             <div class="bg" style="width: 300px">
                                 <c:if test="${section.parent != null}">
-                                    <a href="add?sec=${section.parent}">← Назад</a>
+                                    <a class="menu" href="add?sec=${section.parent}">← Назад</a>
                                     <br>
                                 </c:if>
 
@@ -63,7 +63,8 @@
                 <c:if test="${ticket != null}">
                     <td style="width: 200px;vertical-align: top;">
                         <div class="bg">
-                            Менюшка
+                            Вспомнить: <br>
+                            ${ticketSection.remindDateStr}
                         </div>
                     </td>
 

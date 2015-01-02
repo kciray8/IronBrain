@@ -92,6 +92,10 @@ public class SectionDao extends BaseDao {
         return sections;
     }
 
+    public void update(Section section) {
+        getSess().update(section);
+    }
+
     public Result<Section> addSection(Integer parent, String label) {
         return addSection(parent, label, data.getUser());
     }

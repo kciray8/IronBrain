@@ -36,6 +36,16 @@ public class Direction {
         this.directionToFields = directionToFields;
     }
 
+    public Integer getTicketKnownCount() {
+        return ticketKnownCount;
+    }
+
+    public void setTicketKnownCount(Integer ticketKnownCount) {
+        this.ticketKnownCount = ticketKnownCount;
+    }
+
+    private Integer ticketKnownCount = 0;
+
     @OneToMany
     @JoinColumn(name = "direction_id")
     private List<DirectionToField> directionToFields = new ArrayList<>();
@@ -69,4 +79,19 @@ public class Direction {
     }
 
     private Long createDate = 0L;
+
+    private Double knowPercent = 0D;
+
+    public Double getKnowPercent() {
+        return knowPercent;
+    }
+
+    public void setKnowPercent(Double knowPercent) {
+        this.knowPercent = knowPercent;
+    }
+
+    @Transient
+    public String getKnowPercentStr(){
+        return String.format("%.2g", knowPercent * 100);
+    }
 }

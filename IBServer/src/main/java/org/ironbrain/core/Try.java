@@ -1,5 +1,7 @@
 package org.ironbrain.core;
 
+import org.ironbrain.utils.DateUtils;
+
 import javax.persistence.*;
 
 @Table(name = "Try")
@@ -133,11 +135,43 @@ public class Try {
     }
 
     @Transient
-    public String getColor(){
-        if(correct){
+    public String getColor() {
+        if (correct) {
             return "#C1FFE9";
-        }else{
+        } else {
             return "#FFD8D7";
         }
     }
+
+    public Long getRemindTo() {
+        return remindTo;
+    }
+
+    public void setRemindTo(Long remindTo) {
+        this.remindTo = remindTo;
+    }
+
+    private Long remindTo;
+
+    public String getRemindState() {
+        return remindState;
+    }
+
+    public void setRemindState(String remindState) {
+        this.remindState = remindState;
+    }
+
+
+    @Transient
+    public String getResult() {
+        if (remindState.equals(Ticket.REMIND_NOW)) {
+            return "Повтор";
+        }
+        if (remindState.equals(Ticket.REMIND_LATER)) {
+            return "Вспомнить потом";
+        }
+        return "Вспомнить " + DateUtils.getNiceDate(remindTo);
+    }
+
+    private String remindState;
 }

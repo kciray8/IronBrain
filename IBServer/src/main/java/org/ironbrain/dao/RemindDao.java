@@ -33,7 +33,11 @@ public class RemindDao extends BaseDao {
     @Autowired
     protected SessionData data;
 
-    public void addRemind(Section section, int user) {
+    public Remind addRemind(Section section) {
+        return addRemind(section, data.getUserId());
+    }
+
+    public Remind addRemind(Section section, int user) {
         //One ticket
         if (section.getTicket() != null) {
             Ticket ticket = ticketDao.getTicket(section.getTicket());
@@ -53,12 +57,15 @@ public class RemindDao extends BaseDao {
             String path = Joiner.on(" → ").join(pathList);
             remind.setPath(path);
 
-            getSess().save(remind);
+            int id = (int) getSess().save(remind);
+            remind.setId(id);
+            return remind;
         } else {
             List<Section> children = api.getSections(section.getId());
             children.forEach(child -> {
                 addRemind(child.getId(), user);
             });
+            return null;
         }
     }
 

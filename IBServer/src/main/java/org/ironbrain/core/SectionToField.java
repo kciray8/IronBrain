@@ -22,7 +22,7 @@ public class SectionToField implements Serializable, IFieldMapper {
         this.field = field;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fieldId")
     public Field field;
 
@@ -34,7 +34,7 @@ public class SectionToField implements Serializable, IFieldMapper {
         this.section = section;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sectionId")
     public Section section;
 

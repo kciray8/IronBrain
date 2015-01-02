@@ -1,6 +1,7 @@
 package org.ironbrain.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.ironbrain.utils.DateUtils;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -20,16 +21,6 @@ public class Section implements Comparable<Section> {
     private Integer ticket;
 
     private String label;
-
-    public Long getRemindDate() {
-        return remindDate;
-    }
-
-    public void setRemindDate(Long remindDate) {
-        this.remindDate = remindDate;
-    }
-
-    private Long remindDate;
 
     /**
      * 0 - simple
@@ -103,8 +94,7 @@ public class Section implements Comparable<Section> {
         this.owner = owner;
     }
 
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "sectionId")
     private List<SectionToField> sectionToFields = new LinkedList<>();
 
@@ -124,23 +114,6 @@ public class Section implements Comparable<Section> {
         this.type = type;
     }
 
-
-
-    /*
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "sectiontofield",
-            joinColumns = {@JoinColumn(name = "sectionId")},
-            inverseJoinColumns = {@JoinColumn(name = "fieldId")})
-    private List<Field> fields = new LinkedList<>();
-
-    public List<Field> getFields() {
-        return this.fields;
-    }
-
-    public void setFields(List<Field> categories) {
-        this.fields = categories;
-    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -163,4 +136,37 @@ public class Section implements Comparable<Section> {
     public int compareTo(Section o) {
         return this.getId() - o.getId();
     }
+
+    public Long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Long remind) {
+        this.remind = remind;
+    }
+
+    private Long remind = 0L;
+
+    @Transient
+    public String getRemindDateStr() {
+        if ((remind != null) && (remind != 0)) {
+            return DateUtils.getNiceDate(remind);
+        } else {
+            return "[Не запланировано]";
+        }
+    }
+
+    @Transient
+    public int getNum() {
+        return num;
+    }
+
+    @Transient
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    @Transient
+    private int num;
+
 }

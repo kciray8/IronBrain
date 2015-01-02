@@ -195,15 +195,26 @@ public class APIController extends AllDao {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/try_done")
-    public Result tryDone(@RequestParam int id, @RequestParam boolean correct) {
+    public Result tryDone(@RequestParam int id, @RequestParam boolean correct, @RequestParam String remindTo) {
         Try someTry = tryDao.getTry(id);
-        someTry.setEndMs(System.currentTimeMillis());
+        someTry.setEndMs(IB.getNowMs());
+        someTry.setRemindState(remindTo);
+
+        someTry.setRemindTo(Ticket.getMsFromState(remindTo));
+
+        if (!remindTo.equals(Ticket.REMIND_NOW)) {
+            Section tSection = sectionDao.getSectionFromTicket(someTry.getTicket());
+            tSection.setRemind(Ticket.getMsFromState(remindTo));
+            sectionDao.update(tSection);
+        }
 
         if (correct) {
             someTry.setCorrect(true);
         }
         someTry.setDone(true);
         tryDao.updateTry(someTry);
+
+        System.out.println(remindTo);
 
         return Result.getOk();
     }
@@ -279,8 +290,10 @@ public class APIController extends AllDao {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/add_field_to_section")
-    public Result addFieldToSection(@RequestParam Integer fieldId, @RequestParam Integer targetId) {
-        return fieldDao.addFieldToSection(fieldId, targetId);
+    public Result<Integer> addFieldToSection(@RequestParam Integer fieldId, @RequestParam Integer targetId) {
+        SectionToField sectionToField = fieldDao.addFieldToSection(fieldId, targetId);
+
+        return Result.getOk(sectionToField.getId());
     }
 
     @ResponseBody
@@ -311,7 +324,8 @@ public class APIController extends AllDao {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/add_direction")
     public Result addDirection(@RequestParam String name) {
-        return directionDao.addDirection(name);
+        Direction direction = directionDao.addDirection(name);
+        return Result.getOk(direction.getId());
     }
 
     @ResponseBody
@@ -347,6 +361,14 @@ public class APIController extends AllDao {
     @RequestMapping(method = RequestMethod.GET, value = "/add_ticket_to_time")
     public String addTicketToTimeAndRedirect() {
         return "redirect:/edit_ticket?id=" + addTicketToTime().getLeft().getTicket();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/slice_and_remind")
+    public String sliceAndRemind(@RequestParam int directionId, int count) {
+        Direction direction = directionDao.getDirection(directionId);
+        directionDao.sliceAndAddToRemind(direction, count);
+
+        return "redirect:/exam";
     }
 
     private Section ensureChildSectionExist(int parent, String name) {

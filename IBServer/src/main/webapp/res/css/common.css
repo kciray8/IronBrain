@@ -2,12 +2,17 @@
     box-sizing: border-box;
 }
 
-a {
+a.menu, a.main-menu {
     text-decoration: none;
-    color: #32404f;
+    color: #155074;
 }
 
-a.someLogo{
+a.menu:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a.someLogo {
     margin: 15px;
     color: transparent;
 }
@@ -33,11 +38,6 @@ pre {
     border-left: solid #c9bfdd 3px;
 }
 
-a:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 body {
     max-width: 1000px;
     min-width: 1000px;
@@ -61,7 +61,7 @@ p {
 }
 
 .path {
-    padding: 3px;
+    padding-top: 3px;
     padding-bottom: 3px;
 }
 
@@ -147,10 +147,11 @@ button {
     padding-top: 2px;*/
 }
 
-button:hover:enabled{
+button:hover:enabled {
     background-color: #c5eaff;
 }
-button:hover:disabled{
+
+button:hover:disabled {
 
 }
 
@@ -186,14 +187,14 @@ button:active {
     background-color: #ffffff;
 }
 
-.main-menu {
+a.main-menu {
     padding-left: 10px;
     padding-right: 10px;
     font-size: large;
     height: 40px;
 }
 
-.main-menu:hover {
+a.main-menu:hover {
     text-decoration: none;
     background-color: #c5eaff;
 }
@@ -207,7 +208,7 @@ div.msg_error {
 
 input[type="text"], input[type="password"] {
     border: 1px solid black;
-    padding: 3px;
+    padding: 1px;
 }
 
 .highlight {

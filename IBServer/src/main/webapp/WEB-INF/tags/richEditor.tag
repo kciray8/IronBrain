@@ -26,7 +26,10 @@
 
 <button onclick="document.execCommand('strikeThrough',false,null);"><s>abc</s></button>
 
-<button onclick="document.execCommand('createLink',false,'vk.com');">createLink</button>
+
+<!-- ТЕКСТ НАЗВАНИЕ ИТОГ -->
+<button onclick="document.execCommand('createLink',false,'vk.com');"><span style="text-decoration: underline;color: #0000EE">link</span>
+</button>
 <button onclick="document.execCommand('insertUnorderedList',false,null);">list</button>
 
 <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>

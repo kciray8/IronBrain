@@ -40,13 +40,13 @@
                         <table class="base_table">
                             <tr class="base_tr">
                                 <th class="base_th">
-                                    №
+                                    Вопрос
                                 </th>
                                 <th class="base_th">
-                                    Попытка
+                                    Сек
                                 </th>
                                 <th class="base_th">
-                                    Текст
+                                    Результат
                                 </th>
                                 <th class="base_th">
                                     Действия
@@ -56,16 +56,17 @@
                             <c:forEach var="tempTry" items="${tries}">
                                 <tr class="base_tr"  style="background-color: ${tempTry.color}">
                                     <td class="base_td">
-                                        <%= ++i %>
-                                    </td>
-
-                                    <td class="base_td">
-                                            ${tempTry.attemptNum}
-                                    </td>
-
-                                    <td class="base_td">
                                             ${tempTry.shortText}
                                     </td>
+
+                                    <td class="base_td">
+                                            ${tempTry.durationSec}
+                                    </td>
+
+                                    <td class="base_td">
+                                            ${tempTry.result}
+                                    </td>
+
                                     <td class="base_td">
                                         <button onclick="window.open('edit_ticket?id=${tempTry.ticket}')">
                                             Редактировать

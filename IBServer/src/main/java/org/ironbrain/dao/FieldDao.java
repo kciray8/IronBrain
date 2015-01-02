@@ -17,16 +17,15 @@ public class FieldDao extends BaseDao {
     @Autowired
     private SectionDao sectionDao;
 
-    public Result addField(String name) {
+    public Result<Integer> addField(String name) {
         Field field = new Field();
         field.setLabel(name);
         field.setOwner(data.getUserId());
         int id = (int) getSess().save(field);
-
         return Result.getOk(id);
     }
 
-    public Result addFieldToSection(Integer fieldId, Integer sectionId) {
+    public SectionToField addFieldToSection(Integer fieldId, Integer sectionId) {
         SectionToField sectionToField = new SectionToField();
 
         Section section = sectionDao.getSection(sectionId, data.getUser());
@@ -36,8 +35,9 @@ public class FieldDao extends BaseDao {
         sectionToField.setField(field);
 
         int id = (int) getSess().save(sectionToField);
+        sectionToField.setId(id);
 
-        return Result.getOk(id);
+        return sectionToField;
     }
 
     public Result addFieldToDirection(Integer fieldId, Integer directionId) {

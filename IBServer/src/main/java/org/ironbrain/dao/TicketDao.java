@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.Query;
 import org.ironbrain.APIController;
+import org.ironbrain.IB;
 import org.ironbrain.Result;
 import org.ironbrain.core.Section;
 import org.ironbrain.core.Ticket;
@@ -46,12 +47,12 @@ public class TicketDao extends BaseDao {
             return result;
         } else {
             result = Result.getOk();
-            result.setData(System.currentTimeMillis());
+            result.setData(IB.getNowMs());
         }
 
         ticket.setQuestions(questions);
         ticket.setAnswers(answers);
-        ticket.setEditDate(System.currentTimeMillis());
+        ticket.setEditDate(IB.getNowMs());
         getSess().update(ticket);
 
         Section section = api.getSectionFromTicket(id);
@@ -74,8 +75,7 @@ public class TicketDao extends BaseDao {
         Long genNum = api.getChildCount(sectionId) + 1;
 
         Ticket ticket = new Ticket();
-        ticket.setCreateDate(System.currentTimeMillis());
-        ticket.setRemind(ticket.getCreateDate());
+        ticket.setCreateDate(IB.getNowMs());
         ticket.setEditDate(ticket.getCreateDate());
         int ticketId = (int) getSess().save(ticket);
         ticket.setId(ticketId);

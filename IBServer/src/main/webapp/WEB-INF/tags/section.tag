@@ -13,4 +13,4 @@
     </c:if>
 </c:url>
 
-<a href="${openSectionUrl}" id="<%= "navSection" + sec.getId()%>">${sec.framedLabel}</a>
+<a class="menu" href="${openSectionUrl}" id="<%= "navSection" + sec.getId()%>">${sec.framedLabel}</a>

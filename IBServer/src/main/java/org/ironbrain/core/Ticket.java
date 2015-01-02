@@ -1,13 +1,24 @@
 package org.ironbrain.core;
 
+import org.ironbrain.IB;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Calendar;
 
 @Table(name = "Tickets")
 @Entity
 public class Ticket {
+    public static final String REMIND_NOW = "rNow";
+    public static final String REMIND_LATER = "rLater";
+    public static final String REMIND_DAY = "rDay";
+    public static final String REMIND_WEEK = "rWeek";
+    public static final String REMIND_MONTH = "rMonth";
+    public static final String REMIND_HALF_YEAR = "rHalfYear";
+    public static final String REMIND_YEAR = "rYear";
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -23,7 +34,6 @@ public class Ticket {
     }
 
     private Long editDate;
-    private Long remind;
 
     public Integer getId() {
         return id;
@@ -32,6 +42,7 @@ public class Ticket {
     public void setId(Integer id) {
         this.id = id;
     }
+
     private String questions = "";
 
     public String getQuestions() {
@@ -70,14 +81,6 @@ public class Ticket {
         this.createDate = createDate;
     }
 
-    public Long getRemind() {
-        return remind;
-    }
-
-    public void setRemind(Long remind) {
-        this.remind = remind;
-    }
-
     public String getPath() {
         return path;
     }
@@ -87,4 +90,32 @@ public class Ticket {
     }
 
     private String path = "";
+
+    public static long getMsFromState(String state) {
+        Calendar calendar = IB.getNowCalendar();
+
+        switch (state) {
+            case REMIND_NOW:
+            case REMIND_LATER:
+                break;
+            case REMIND_DAY:
+                calendar.add(Calendar.DATE, 1);
+                break;
+            case REMIND_WEEK:
+                calendar.add(Calendar.WEEK_OF_MONTH, 1);
+                break;
+            case REMIND_MONTH:
+                calendar.add(Calendar.MONTH, 1);
+                break;
+            case REMIND_HALF_YEAR:
+                calendar.add(Calendar.MONTH, 6);
+                break;
+            case REMIND_YEAR:
+                calendar.add(Calendar.YEAR, 1);
+                break;
+        }
+
+        return calendar.getTimeInMillis();
+    }
+
 }

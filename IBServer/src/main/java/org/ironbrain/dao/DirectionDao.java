@@ -1,28 +1,38 @@
 package org.ironbrain.dao;
 
 import org.hibernate.criterion.Restrictions;
+import org.ironbrain.APIController;
+import org.ironbrain.IB;
 import org.ironbrain.Result;
 import org.ironbrain.core.*;
+import org.omg.CORBA.IntHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Repository
 public class DirectionDao extends BaseDao {
     @Autowired
     SectionDao sectionDao;
 
-    public Result addDirection(String name) {
+    @Autowired
+    FieldDao fieldDao;
+
+    @Autowired
+    RemindDao remindDao;
+
+    @Autowired
+    APIController api;
+
+    public Direction addDirection(String name) {
         Direction direction = new Direction();
         direction.setOwner(data.getUserId());
         direction.setName(name);
         int id = (int) getSess().save(direction);
+        direction.setId(id);
 
-        return Result.getOk(id);
+        return direction;
     }
 
     public Direction getDirection(Integer id) {
@@ -40,57 +50,138 @@ public class DirectionDao extends BaseDao {
                 .list();
     }
 
-    Set<Section> allSections;
-    List<Field> ourFields;
-
     public Result recalculateDirection(Integer id) {
-        allSections = new TreeSet<>();
-        ourFields = new LinkedList<>();
 
         Direction direction = getDirection(id);
-        List<DirectionToField> fields = direction.getDirectionToFields();
 
-        fields.forEach(dirToField -> {
-            ourFields.add(dirToField.getField());
-        });
-
-        fields.forEach(dirToField -> {
-            Field field = dirToField.getField();
-            List<SectionToField> sectionToFields = field.getSectionToFields();
-            sectionToFields.forEach(secToField -> {
-                Section section = secToField.getSection();
-                forAllSectionsInDirection(section);
-            });
-        });
+        Set<Section> allSections = getAllTSections(direction);
 
         direction.setTicketsCount(allSections.size());
+
+        Set<Section> needToRemindSec = getNeedToRemindSections(allSections);
+        double needToRemindPercent = ((double) needToRemindSec.size()) / allSections.size();
+        double knowPercent = 1 - needToRemindPercent;
+
+        direction.setKnowPercent(knowPercent);
+        direction.setTicketKnownCount(direction.getTicketsCount() - needToRemindSec.size());
+
         getSess().save(direction);
 
         return Result.getOk();
     }
 
+    public List<Field> getFields(Direction direction) {
+        List<Field> ourFields = new LinkedList<>();
+        List<DirectionToField> fields = direction.getDirectionToFields();
+        fields.forEach(dirToField -> {
+            ourFields.add(dirToField.getField());
+        });
+        return ourFields;
+    }
+
     boolean inverseCheck;
-    private void forAllSectionsInDirection(Section section) {
+
+    private void recursiveCollectTSections(Section section, List<Field> filerFields,
+                                           Set<Section> result, int count) {
         //Check if this Section has inversion fields and return if it true
         inverseCheck = false;
         section.getSectionToFields().forEach(secToField -> {
             if (secToField.getInverse()) {
                 Field field = secToField.getField();
-                if(ourFields.contains(field)){
+                if (filerFields.contains(field)) {
                     inverseCheck = true;
                 }
             }
         });
-        if(inverseCheck){
+        if (inverseCheck) {
             return;
         }
 
         if (section.getTicket() != null) {
-            allSections.add(section);
+            section.setNum(count);
+            result.add(section);
         }
 
+        IntHolder childCount = new IntHolder(1);
         sectionDao.getChildren(section.getId()).forEach(child -> {
-            forAllSectionsInDirection(child);
+            recursiveCollectTSections(child, filerFields, result, childCount.value);
+            childCount.value++;
         });
+    }
+
+    public Set<Section> getAllTSections(Direction direction) {
+        Set<Section> allSections = new TreeSet<>();
+
+        long ms = IB.getNowMs();
+        List<Field> directionFields = getFields(direction);
+        directionFields.forEach(field -> {
+            List<SectionToField> sectionToFields = field.getSectionToFields();
+            sectionToFields.forEach(secToField -> {
+                Section section = secToField.getSection();
+                recursiveCollectTSections(section, directionFields, allSections, 1);
+            });
+        });
+
+        System.out.println("RECALC & " + (IB.getNowMs() - ms));
+
+        return allSections;
+    }
+
+    public double getKnowPercent(Direction direction) {
+        Set<Section> sections = getAllTSections(direction);
+        Set<Section> needToRemindSec = getNeedToRemindSections(sections);
+        double needToRemindPercent = ((double) needToRemindSec.size()) / sections.size();
+        double knowPercent = 1 - needToRemindPercent;
+
+        return knowPercent;
+    }
+
+    public Set<Section> getNeedToRemindSections(Direction direction) {
+        Set<Section> sections = getAllTSections(direction);
+        return getNeedToRemindSections(sections);
+    }
+
+    public void recalcluateAllDirections() {
+        getDirections().forEach(direction -> {
+            recalculateDirection(direction.getId());
+        });
+    }
+
+    public void sliceAndAddToRemind(Direction direction, int count) {
+        Set<Section> needToRemind = getNeedToRemindSections(direction);
+        ArrayList<Section> result = new ArrayList<>();
+
+        IntHolder tempLevel = new IntHolder(1);
+        List<Section> levelSections = new ArrayList<>();
+        while ((result.size() < count) && (!needToRemind.isEmpty())) {
+            levelSections.clear();
+            needToRemind.forEach(section -> {
+                if (section.getNum() == tempLevel.value) {
+                    if (result.size() + levelSections.size() < count) {
+                        levelSections.add(section);
+                    }
+                }
+            });
+            result.addAll(levelSections);
+            needToRemind.removeAll(levelSections);
+            tempLevel.value++;
+        }
+
+        result.forEach(sec -> {
+            Remind remind = remindDao.addRemind(sec);
+        });
+    }
+
+    private Set<Section> getNeedToRemindSections(Set<Section> source) {
+        long nowMs = IB.getNowMs();
+        TreeSet<Section> needToRemind = new TreeSet<>();
+
+        source.forEach(section -> {
+            if ((section.getRemind() == null) || (section.getRemind() < nowMs)) {
+                needToRemind.add(section);
+            }
+        });
+
+        return needToRemind;
     }
 }

@@ -59,8 +59,8 @@ public class Result<T> {
         return new Result();
     }
 
-    public static Result getOk(Object data) {
-        Result result = Result.getOk();
+    public static <DataType> Result getOk(DataType data) {
+        Result<DataType> result = Result.getOk();
         result.setData(data);
         return result;
     }

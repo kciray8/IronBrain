@@ -1,4 +1,10 @@
 <%@ tag pageEncoding="UTF-8" %>
+<%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
+
+Значки для сайта взяты с <a href="http://iconza.ru/">http://iconza.ru/</a> <br>
+
+<ib:gap px="5"/>
+
 Используемые технологии: <br>
 <div style="margin-top: 5px;margin-bottom: 5px">
     <a class="someLogo" href="https://www.debian.org" target="_blank">

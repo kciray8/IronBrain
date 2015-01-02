@@ -48,9 +48,11 @@ Exam.prototype.nextTicket = function (id) {
     if (remind == "rNow") {
         correct = false;
     }
+
     $.get('try_done', {
             id: id,
-            correct: correct
+            correct: correct,
+            remindTo: remind
         },
         function (data) {
             if (data.res = Result.OK) {
@@ -85,7 +87,7 @@ Exam.prototype.configure = function () {
             if (!exam.tempTicketOpen) {
                 $("#answerButton").click();
             } else {
-                $("input:radio[value='rLater']").click();
+                //$("input:radio[value='rLater']").click();
                 $("#nextTicketButton").click();
             }
         }
@@ -102,6 +104,21 @@ Exam.prototype.configure = function () {
         }
         if(event.which == 50){
             $("input:radio[value='rLater']").click();
+        }
+        if(event.which == 51){
+            $("input:radio[value='rDay']").click();
+        }
+        if(event.which == 52){
+            $("input:radio[value='rWeek']").click();
+        }
+        if(event.which == 53){
+            $("input:radio[value='rMonth']").click();
+        }
+        if(event.which == 54){
+            $("input:radio[value='rHalfYear']").click();
+        }
+        if(event.which == 55){
+            $("input:radio[value='rYear']").click();
         }
     });
 };
