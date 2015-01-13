@@ -14,10 +14,6 @@ public class SectionToField implements Serializable, IFieldMapper {
 
     private Boolean inverse = false;
 
-    public Field getField() {
-        return field;
-    }
-
     public void setField(Field field) {
         this.field = field;
     }
@@ -28,6 +24,10 @@ public class SectionToField implements Serializable, IFieldMapper {
 
     public Section getSection() {
         return section;
+    }
+
+    public Field getField() {
+        return field;
     }
 
     public void setSection(Section section) {

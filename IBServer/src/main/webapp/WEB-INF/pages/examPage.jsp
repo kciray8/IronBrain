@@ -43,25 +43,24 @@
                                 Билет № ${tempTry.num} из ${exam.count}
                                 <br>
                                 Вопросы: <br>
-                                <div class="examTextOutput">
+                                <div class="examTextOutput" id="questionsDiv">
                                         ${ticket.questions}
                                 </div>
+
                                 <ib:margin/>
-                                <button id="answerButton" onclick="
-                                exam.tempTicketOpen = true;
-                            $('#answers').show();
-                            $('#answerButton').hide();
-                            ">Ответить
+                                <button id="answerButton" onclick="exam.openAnswers(true)">Ответы
                                 </button>
+
                                 <div id="answers" style="display: none">
                                     <ib:margin/>
                                     Ответы: <br>
-                                    <div class="examTextOutput">
+                                    <div class="examTextOutput" id="answersDiv">
                                             ${ticket.answers}
                                     </div>
+
                                     Повторить:<br>
-                                    <input value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
-                                    <input checked value="rLater" type="radio" name="toRemindRButton">Потом</input>
+                                    <input checked value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
+                                    <input value="rLater" type="radio" name="toRemindRButton">Потом</input>
                                     <input value="rDay" type="radio" name="toRemindRButton">Через день</input>
                                     <input value="rWeek" type="radio" name="toRemindRButton">Через неделю</input>
                                     <input value="rMonth" type="radio" name="toRemindRButton">Через месяц</input>
@@ -70,11 +69,16 @@
 
                                     <br>
                                     <ib:margin/>
+                                    <button accesskey="c" id="turnAsideTicketButton" onclick="exam.openAnswers(false)">
+                                        Свернуть
+                                    </button>
+
                                     <button id="nextTicketButton" onclick="exam.nextTicket(${tempTry.id})">Следующий
                                         билет
                                     </button>
 
-                                    <button id="nextTicketButton" onclick="window.open('edit_ticket?id=${tempTry.ticket}')">Редактировать
+                                    <button id="nextTicketButton"
+                                            onclick="window.open('edit_ticket?id=${tempTry.ticket}')">Редактировать
                                     </button>
                                 </div>
                             </c:if>

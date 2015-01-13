@@ -38,3 +38,7 @@
 
 <button id="saveButton" onclick="saveTicket(${ticket.id},${section.id});">Сохранить</button>
 <span id="saveProgress"></span>
+
+<script>
+    $("#answersDiv").focus();
+</script>

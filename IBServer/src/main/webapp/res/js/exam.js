@@ -84,43 +84,57 @@ Exam.prototype.endExam = function () {
 Exam.prototype.configure = function () {
     $(document).keydown(function (event) {
         if (event.which == 13) {//Enter
+            event.preventDefault();
+
             if (!exam.tempTicketOpen) {
                 $("#answerButton").click();
             } else {
-                //$("input:radio[value='rLater']").click();
                 $("#nextTicketButton").click();
             }
         }
         if (event.which == 16) {//Shift
+            event.preventDefault();
             if (!exam.tempTicketOpen) {
                 $("#answerButton").click();
             } else {
+                $("input:radio[value='rNow']").click();
                 $("#nextTicketButton").click();
             }
         }
 
-        if(event.which == 49){
+        if (event.which == 49) {
             $("input:radio[value='rNow']").click();
         }
-        if(event.which == 50){
+        if (event.which == 50) {
             $("input:radio[value='rLater']").click();
         }
-        if(event.which == 51){
+        if (event.which == 51) {
             $("input:radio[value='rDay']").click();
         }
-        if(event.which == 52){
+        if (event.which == 52) {
             $("input:radio[value='rWeek']").click();
         }
-        if(event.which == 53){
+        if (event.which == 53) {
             $("input:radio[value='rMonth']").click();
         }
-        if(event.which == 54){
+        if (event.which == 54) {
             $("input:radio[value='rHalfYear']").click();
         }
-        if(event.which == 55){
+        if (event.which == 55) {
             $("input:radio[value='rYear']").click();
         }
     });
+};
+
+Exam.prototype.openAnswers = function (open) {
+    exam.tempTicketOpen = open;
+    if (open) {
+        $('#answers').show();
+        $('#answerButton').hide();
+    } else {
+        $('#answers').hide();
+        $('#answerButton').show();
+    }
 };
 
 Exam.prototype.tempTicketOpen = false;

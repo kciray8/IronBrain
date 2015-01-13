@@ -1,20 +1,24 @@
 package org.ironbrain;
 
+import org.apache.commons.io.FileUtils;
 import org.ironbrain.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @Controller
 public class MainController extends APIController {
+    public static final String USER_URL = "user";
+
     @Autowired
     IB ib;
 
@@ -72,6 +76,10 @@ public class MainController extends APIController {
         modelMap.addAttribute("unusedFields", unusedFields);
 
         modelMap.addAttribute("ms", Long.toString(IB.getNowMs() - ms));
+
+        if (data.getBufferSectionId() != null) {
+            modelMap.addAttribute("bufferSectionId", data.getBufferSectionId());
+        }
 
         return "addPage";
     }
@@ -230,4 +238,27 @@ public class MainController extends APIController {
         }
     }
 
+
+    /**
+     * Example - http://localhost:8080/user/kciray/files/commons/2015_01_13__19_39_10_375.jpg
+     */
+    @RequestMapping(value = "/user/{user_name}", method = RequestMethod.GET)
+    @ResponseBody
+    void getFile(@PathVariable String user_name, String path, HttpServletResponse response) {
+        if (!data.getUser().getLogin().equals(user_name)) {
+            throw new AccessDeniedException();
+        }
+        File file = new File(data.getHomeDir(), path);
+
+        String contentType = null;
+        try {
+            contentType = Files.probeContentType(file.toPath());
+
+            byte[] fileByteArray = FileUtils.readFileToByteArray(file);
+            response.setContentType(contentType);
+            response.getOutputStream().write(fileByteArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

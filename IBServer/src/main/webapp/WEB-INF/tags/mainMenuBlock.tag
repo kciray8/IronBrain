@@ -4,7 +4,7 @@
 <%@ tag pageEncoding="UTF-8" %>
 
 <td colspan="2">
-    <div class="bg header" style="position: relative">
+    <div class="bg header" style="padding: 0;">
         <a class="main-menu" href="main">Главная</a>
 
         <c:if test="${data.user != null}">
@@ -14,12 +14,11 @@
             <a class="main-menu" href="search">Поиск</a>
             <a class="main-menu" href="direction">Направления</a>
             <a class="main-menu" href="add_ticket_to_time">+Билет</a>
+            <a class="main-menu" href="about">О сайте</a>
         </c:if>
 
-        <a class="main-menu" href="about">О системе</a>
-
         <c:if test="${data.user != null}">
-            <div style="float:right;">
+            <div style="display: inline; float: right; margin-top: 3px;margin-right: 5px;">
                     ${data.user.login}&nbsp;&nbsp;
                 <button onclick="window.location.href = 'logout'">Выход</button>
             </div>

@@ -1,14 +1,21 @@
 package org.ironbrain;
 
 import com.google.common.base.Joiner;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ironbrain.core.*;
 import org.ironbrain.dao.AllDao;
+import org.ironbrain.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -349,10 +356,10 @@ public class APIController extends AllDao {
         String nowYearStr = Integer.toString(date.getYear());
         Section sectionNowYear = ensureChildSectionExist(timeSection.getId(), nowYearStr);
 
-        String nowMonthStr = String.format("%2d", date.getMonthValue());
+        String nowMonthStr = String.format("%d", date.getMonthValue());
         Section sectionNowMonth = ensureChildSectionExist(sectionNowYear.getId(), nowMonthStr);
 
-        String nowDayStr = String.format("%2d", date.getDayOfMonth());
+        String nowDayStr = String.format("%d", date.getDayOfMonth());
         Section sectionNowDay = ensureChildSectionExist(sectionNowMonth.getId(), nowDayStr);
 
         return ticketDao.addTicket(sectionNowDay.getId());
@@ -372,12 +379,12 @@ public class APIController extends AllDao {
     }
 
     private Section ensureChildSectionExist(int parent, String name) {
-        List<Section> years = sectionDao.getChildren(parent);
+        List<Section> sections = sectionDao.getChildren(parent);
 
         Mutable<Section> childrenMut = new MutableObject<>();
-        years.forEach(iYear -> {
-            if (iYear.getLabel().equals(name)) {
-                childrenMut.setValue(iYear);
+        sections.forEach(section -> {
+            if (section.getLabel().equals(name)) {
+                childrenMut.setValue(section);
             }
         });
         Section child = childrenMut.getValue();
@@ -385,5 +392,71 @@ public class APIController extends AllDao {
             child = sectionDao.addSection(parent, name).getData();
         }
         return child;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/update_section")
+    @ResponseBody
+    public Result updateSection(@RequestParam int id, String label, Integer parent) {
+        Section section = sectionDao.getSection(id);
+        if (label != null) {
+            section.setLabel(label);
+        }
+        if (parent != null) {
+            section.setParent(parent);
+        }
+        sectionDao.update(section);
+
+        return Result.getOk();
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/cut_section")
+    @ResponseBody
+    public Result cutSection(@RequestParam Integer id) {
+        data.setBufferSectionId(id);
+        return Result.getOk();
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/paste_section")
+    @ResponseBody
+    public Result pastSection(@RequestParam Integer parent) {
+        Section section = sectionDao.getSection(data.getBufferSectionId());
+        List<Section> parentPath = sectionDao.getPath(parent);
+
+        if (parentPath.contains(section)) {
+            return Result.getError("Рекурсивное добавление!");
+        }
+
+        section.setParent(parent);
+        sectionDao.update(section);
+
+        data.setBufferSectionId(null);
+
+        return Result.getOk();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/upload_file")
+    @ResponseBody
+    public Result uploadFileHandler(@RequestParam MultipartFile file) {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
+        try {
+            File userHomeDir = data.getHomeDir();
+            File userFilesDir = new File(userHomeDir, User.FILES_DIR);
+            File userCommonsFir = new File(userFilesDir, User.COMMONS_DIR);
+            File thisFile = new File(userCommonsFir, DateUtils.getUniqueFileName() + "." + extension);
+
+            FileUtils.copyInputStreamToFile(file.getInputStream(), thisFile);
+
+            Path basePath = data.getFilesDir().toPath();
+            Path relPath = basePath.relativize(thisFile.toPath());
+            String relPathStr = MainController.USER_URL + File.separator + relPath.toString();
+            String relPathStrUni = FilenameUtils.separatorsToUnix(relPathStr);
+            return Result.getOk(relPathStrUni);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Result.getError(e.getMessage());
+        }
     }
 }

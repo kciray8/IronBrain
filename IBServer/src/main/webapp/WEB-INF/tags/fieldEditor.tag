@@ -51,7 +51,7 @@
                     if (data.res = Result.OK) {
                         addField(name, data.data, false, fieldId);
                         $("#createFieldForm").hide();
-                        $("#selectFieldButton").show();
+                        //$("#selectFieldButton").show();
                         $("#fieldName").val("");
                         if (onOK != null) {
                             onOK();

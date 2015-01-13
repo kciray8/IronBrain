@@ -5,11 +5,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <ib:headBlock title="-Билеты-"/>
+        <c:if test="${ticket == null}">
+            <ib:headBlock title="[${section.label}]"/>
+        </c:if>
+        <c:if test="${ticket != null}">
+            <ib:headBlock title="${ticketSection.label}"/>
+        </c:if>
     </head>
     <body>
         <script>
             updateTime = ${pageGenerateDate};
+            var thisSection = new Section("${section.id}", "${section.label}");
         </script>
 
         <table width="100%">
@@ -46,6 +52,12 @@
                                 <ib:gap px="5"/>
                                 <button id="addTicketButton" onClick="onAddNewTicket(${section.id});">Добавить билет
                                 </button>
+                                <c:if test="${bufferSectionId != null}">
+                                    <ib:gap px="5"/>
+                                    <button id="addTicketButton" onClick="thisSection.paste()">Вставить
+                                        раздел
+                                    </button>
+                                </c:if>
                             </div>
                         </c:if>
                     </td>
@@ -54,6 +66,16 @@
                 <c:if test="${ticket == null}">
                     <td valign="top" style="width: 100%">
                         <div class="bg">
+                            Название раздела: ${section.label}<br>
+                            <ib:gap px="5"/>
+                            <button id="renameButton" onclick="thisSection.showRenameGui();">Переименовать</button>
+                            <div hidden id="renameSectionGUI">
+                                <input autofocus type="text" size="20" id="renameSectionName">
+                                <button onClick="thisSection.rename()">OK</button>
+                                <button onClick="thisSection.hideRenameGui()">Отмена</button>
+                            </div>
+
+                            <ib:gap px="5"/>
                             <ib:fieldEditor target="section" fieldMappers="${secToFlds}" targetId="${section.id}"
                                             unusedFields="${unusedFields}"/>
                         </div>
@@ -64,7 +86,12 @@
                     <td style="width: 200px;vertical-align: top;">
                         <div class="bg">
                             Вспомнить: <br>
-                            ${ticketSection.remindDateStr}
+                                ${ticketSection.remindDateStr}<br>
+                            <ib:gap px="5"/>
+                            <button accesskey="a"
+                                    onclick="onAddNewTicketAfterSave(${section.id},${ticket.id},${ticketSection.id});">
+                                Добавить билет
+                            </button>
                         </div>
                     </td>
 

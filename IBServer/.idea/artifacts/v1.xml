@@ -11,14 +11,7 @@
           <element id="javaee-facet-classes" facet="IBServer/web/Web" />
           <element id="file-copy" path="$PROJECT_DIR$/src/main/java/database.properties" />
         </element>
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.mchange:c3p0:0.9.5-pre10" />
-          <element id="library" level="project" name="Maven: com.mchange:mchange-commons-java:0.2.8" />
-          <element id="library" level="project" name="Maven: com.google.guava:guava:18.0" />
-          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
-          <element id="library" level="project" name="Maven: commons-validator:commons-validator:1.4.0" />
-          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.7.2" />
-        </element>
+        <element id="directory" name="lib" />
       </element>
       <element id="javaee-facet-resources" facet="IBServer/web/Web" />
     </root>

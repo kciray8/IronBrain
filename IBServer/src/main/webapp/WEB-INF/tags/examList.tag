@@ -11,4 +11,4 @@
     <a class="menu" href="exam${exam.id}">${exam.name}</a> <br>
 </c:forEach>
 
-<a class="menu" href="http://localhost:8080/exam">--Сборка--</a>
+<a class="menu" href="exam">--Сборка--</a>

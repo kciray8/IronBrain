@@ -31,6 +31,7 @@ public class IB {
     public static Calendar getNowCalendar(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getNowMs());
+
         return calendar;
     }
 }

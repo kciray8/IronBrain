@@ -78,6 +78,12 @@ public class SectionDao extends BaseDao {
         do {
             Section section = (Section) getSess().get(Section.class, tempSection);
             if (section != null) {
+
+                //Detect recursion
+                if (sections.contains(section)) {
+                    break;
+                }
+
                 sections.add(section);
                 if (section.getParent() == null) {
                     break;

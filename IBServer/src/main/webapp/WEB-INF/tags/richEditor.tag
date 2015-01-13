@@ -28,7 +28,8 @@
 
 
 <!-- ТЕКСТ НАЗВАНИЕ ИТОГ -->
-<button onclick="document.execCommand('createLink',false,'vk.com');"><span style="text-decoration: underline;color: #0000EE">link</span>
+<button onclick="document.execCommand('createLink',false,'vk.com');"><span
+        style="text-decoration: underline;color: #0000EE">link</span>
 </button>
 <button onclick="document.execCommand('insertUnorderedList',false,null);">list</button>
 
@@ -41,6 +42,7 @@
      class="richTextEditor" id="${divID}" onload="alert('ddd')"
      contenteditable="true">${html}</div>
 
+
 <script>
     var ${editorName}Editor = {
         htmlMode: false,
@@ -49,9 +51,9 @@
     initEditor(${editorName}Editor.div);
 
     function initEditor(editor) {
-        console.log(editor);
+        var editorPureDiv = editor[0];
 
-        editor[0].addEventListener("paste", function (e) {
+        editorPureDiv.addEventListener("paste", function (e) {
             var html = e.clipboardData.getData("text/html");
 
             if (!jQuery.isEmptyObject(html)) {
@@ -63,6 +65,48 @@
                 document.execCommand("insertHTML", false, html);
             }
         });
+
+        editorPureDiv.ondragover = function () {
+            editorPureDiv.className = 'fileDropMode';
+            return false;
+        };
+
+        editorPureDiv.ondragend = function () {
+            editorPureDiv.className = 'richTextEditor';
+            return false;
+        };
+
+        editorPureDiv.ondragleave = function () {
+            editorPureDiv.className = 'richTextEditor';
+            return false;
+        };
+
+        editorPureDiv.ondrop = function (e) {
+            editorPureDiv.className = 'richTextEditor';
+            var file = e.dataTransfer.files[0];
+
+            var data = new FormData();
+            data.append("file", file);
+
+            $.ajax({
+                url: 'upload_file',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.res == Result.OK) {
+                        var url = data.data;
+
+                        var fileRef = "File: " + file.name;
+                        document.execCommand("insertHTML", false, String.format("<a href='{0}'>{1}</a>", url, fileRef));
+                    }
+                }
+            });
+
+            return false;
+        };
     }
 
     function onEditorFocus(event) {

@@ -10,6 +10,9 @@ import javax.persistence.Table;
 @Table(name = "Users")
 @Entity
 public class User {
+    public static final String FILES_DIR = "files";
+    public static final String COMMONS_DIR = "commons";
+
     @Id
     @GeneratedValue
     private Integer id;

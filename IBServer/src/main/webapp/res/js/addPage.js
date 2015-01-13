@@ -6,6 +6,8 @@ var Result = {
 var updateTime;
 var versionConflict = false;
 
+var saveInProcess = false;
+
 function handleResult(data) {
     if (data.res = Result.OK) {
         location.reload();
@@ -44,9 +46,16 @@ function initAddPage() {
     });
 }
 
-function saveTicket(id, sectionId) {
+function saveTicket(id, sectionId, onSaveOk) {
+    if (saveInProcess) {
+        return;
+    }
+    saveInProcess = true;
+
     $("#saveProgress").html("Сохранение...");
     var ticketLabel = $('#ticketLabel').val();
+
+    console.log("save...");
 
     $.post('update_ticket', {
             answers: $('#answersDiv').html(),
@@ -57,34 +66,57 @@ function saveTicket(id, sectionId) {
         },
         function (data) {
             if (data.res == Result.OK) {
+                console.log("OK");
                 var d = new Date();
                 $("#saveProgress").html("OK! " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
                 $("#navSection" + sectionId).html(ticketLabel);
                 updateTime = data.data;
+                if (onSaveOk != null) {
+                    onSaveOk();
+                }
             } else {
                 var subRes = data.subRes;
-                if (data.subRes == "versionConflict") {
+                if (subRes == "versionConflict") {
                     versionConflict = true;
                     location.href = ".";
-                    //alert("conf")
+
+                    console.log("versionConflict!!!");
                 }
             }
+            saveInProcess = false;
+        }
+    ).fail(
+        function () {
+            saveInProcess = false;
         });
 }
 
 function checkTicket(id) {
+    if (saveInProcess) {
+        return;
+    }
+    saveInProcess = true;
+
+    console.log("checking....");
     $.get('check_ticket', {
             id: id,
             clientVersionDate: updateTime
         },
         function (data) {
+            console.log("checking DONE");
+
             if (data.res != Result.OK) {
                 var subRes = data.subRes;
                 if (data.subRes == "versionConflict") {
                     versionConflict = true;
                     location.href = ".";
+
+                    console.log("versionConflict check....");
                 }
             }
+        }).always(
+        function () {
+            saveInProcess = false;
         });
 }
 
@@ -98,6 +130,12 @@ function onAddNewTicket(section) {
     );
 }
 
+function onAddNewTicketAfterSave(sectionId, ticketId, ticketSectionId) {
+    saveTicket(ticketId, ticketSectionId, function () {
+        onAddNewTicket(sectionId);
+    });
+}
+
 function setSaveOnBlur(id, sectionId) {
     $(window).blur(function () {
         saveTicket(id, sectionId);
@@ -105,7 +143,6 @@ function setSaveOnBlur(id, sectionId) {
     $(window).focus(function () {
         checkTicket(id);
     });
-
 }
 
 function setSaveOnUnload(id, sectionId) {
@@ -121,7 +158,7 @@ function setRegularSave(id, sectionId) {
         saveTicket(id, sectionId);
     }
 
-    //setInterval(autoSave, 1000);
+    //setInterval(autoSave, 300);//for debug
     setInterval(autoSave, 60 * 1000);
 }
 
@@ -295,6 +332,3 @@ function onSearch() {
         }
     );
 }
-
-
-var activeEditor;

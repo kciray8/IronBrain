@@ -12,6 +12,21 @@ a.menu:hover {
     cursor: pointer;
 }
 
+a.main-menu {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: large;
+
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: inline-block;
+}
+
+a.main-menu:hover {
+    text-decoration: none;
+    background-color: #c5eaff;
+}
+
 a.someLogo {
     margin: 15px;
     color: transparent;
@@ -70,7 +85,7 @@ p {
     padding-bottom: 3px;
 }
 
-.richTextEditor, .examTextOutput, .searchTextOutput {
+.richTextEditor, .examTextOutput, .searchTextOutput, .fileDropMode {
     padding: 5px;
     border: 1px solid #000000;
     background-color: #ffffff;
@@ -78,7 +93,12 @@ p {
     margin-bottom: 2px;
 
     /*font-family:monospace;*/
+}
 
+.fileDropMode {
+    border: 1px dashed #000000;
+    background-color: #bafdff;
+    outline: 0;
 }
 
 .plainHtmlEditor {
@@ -140,8 +160,26 @@ hr {
     margin-bottom: 4px;
 }
 
+input[type="text"], input[type="password"] {
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+input[type="radio"] {
+    border: 1px solid black;
+    color: green;
+    content: "\2713";
+}
+
 button {
     border: solid 1px;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
+
     /*
     margin-top: 5px;
     padding-top: 2px;*/
@@ -187,28 +225,11 @@ button:active {
     background-color: #ffffff;
 }
 
-a.main-menu {
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: large;
-    height: 40px;
-}
-
-a.main-menu:hover {
-    text-decoration: none;
-    background-color: #c5eaff;
-}
-
 div.msg_error {
     background-color: #ffa39c;
     margin-top: 5px;
     padding: 5px;
     display: none;
-}
-
-input[type="text"], input[type="password"] {
-    border: 1px solid black;
-    padding: 1px;
 }
 
 .highlight {

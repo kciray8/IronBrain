@@ -5,17 +5,35 @@
 
 <script>
     function addSectionMenu(id, event) {
-        var menu = [{
-            name: 'Вспомнить',
-            fun: function () {
-                exam.remindSection(id);
+        var menu = [
+            {
+                name: 'Вспомнить',
+                fun: function () {
+                    exam.remindSection(id);
+                }
+            },
+
+            {
+                name: 'Вырезать',
+                fun: function () {
+                    $.get('cut_section', {
+                                id: id
+                            },
+                            function (data) {
+                                if (data.res == Result.OK) {
+                                    location.reload();
+                                }
+                            });
+                }
+            },
+
+            {
+                name: 'Удалить',
+                fun: function () {
+                    deleteSectionDialog(id);
+                }
             }
-        }, {
-            name: 'Удалить',
-            fun: function () {
-                deleteSectionDialog(id);
-            }
-        }];
+        ];
 
         $(event.srcElement).contextMenu(menu);
     }
@@ -26,7 +44,7 @@
         <div>
             <ib:section sec="${sec}"/>
             <span style="margin-left: 2px"></span>
-            <img onload="addSectionMenu(${sec.id}, event);" class="inlineImgButton" src="./res/png/tune.png"/>
+            <ib:sectionMenuButton section="${sec}"/>
         </div>
     </c:forEach>
 </table>

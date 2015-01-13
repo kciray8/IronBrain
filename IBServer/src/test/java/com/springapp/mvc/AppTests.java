@@ -50,14 +50,14 @@ public class AppTests extends AllDao {
         this.mockMvc = webAppContextSetup(this.wac).build();
     }
 
+    User user;
+
     @Test
     public void base() throws Exception {
         mockMvc.perform(get("/main"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("mainPage"));
     }
-
-    User user;
     Section rootSection;
 
     @Test
@@ -165,7 +165,7 @@ public class AppTests extends AllDao {
         Exam exam = examDao.getLastUndoneExam();
         Assert.assertEquals(9, exam.getCount().intValue());
         Assert.assertEquals(false, exam.getDone());
-        Assert.assertEquals(data.getUserId(), exam.getUser().intValue());
+        Assert.assertEquals(data.getUserId(), exam.getUser());
 
         Try firstTry = tryDao.getTempTry(exam.getId());
         Assert.assertEquals(1, firstTry.getNum().intValue());

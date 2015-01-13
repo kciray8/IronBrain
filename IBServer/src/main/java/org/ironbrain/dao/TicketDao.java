@@ -45,19 +45,20 @@ public class TicketDao extends BaseDao {
             result.setSubRes("versionConflict");
 
             return result;
-        } else {
-            result = Result.getOk();
-            result.setData(IB.getNowMs());
         }
+        result = Result.getOk();
 
         ticket.setQuestions(questions);
         ticket.setAnswers(answers);
         ticket.setEditDate(IB.getNowMs());
+
         getSess().update(ticket);
 
         Section section = api.getSectionFromTicket(id);
         section.setLabel(label);
         getSess().update(section);
+
+        result.setData(ticket.getEditDate());
 
         return result;
     }

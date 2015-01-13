@@ -23,7 +23,13 @@ public class Ticket {
     @GeneratedValue
     private Integer id;
 
-    private Long createDate;
+    public Long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Long createDate) {
+        this.createDate = createDate;
+    }
 
     public Long getEditDate() {
         return editDate;
@@ -32,6 +38,8 @@ public class Ticket {
     public void setEditDate(Long editDate) {
         this.editDate = editDate;
     }
+
+    private Long createDate;
 
     private Long editDate;
 
@@ -71,14 +79,6 @@ public class Ticket {
 
     public void setOwner(Integer owner) {
         this.owner = owner;
-    }
-
-    public Long getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Long createDate) {
-        this.createDate = createDate;
     }
 
     public String getPath() {
