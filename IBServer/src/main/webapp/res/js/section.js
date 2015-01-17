@@ -6,6 +6,10 @@ function Section(id, label) {
         return _id;
     };
 
+    this.setId = function (id){
+        _id = id;
+    };
+
     this.showRenameGui = function () {
         $("#renameSectionName").val(_label);
 

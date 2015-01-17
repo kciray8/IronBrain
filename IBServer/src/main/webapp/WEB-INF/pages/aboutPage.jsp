@@ -6,6 +6,7 @@
 <html>
     <head>
         <ib:headBlock title="-О сайте-"/>
+        <ib:scripts/>
     </head>
     <body>
         <table style="width:100%;">

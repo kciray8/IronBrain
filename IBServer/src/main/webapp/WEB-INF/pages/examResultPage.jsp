@@ -4,21 +4,11 @@
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <ib:headBlock title="Результаты экзамена" />
+        <ib:scripts />
+    </head>
     <body>
-        <head>
-            <link rel="stylesheet" type="text/css" href="res/css/jquery-ui.css"/>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <script type="text/javascript" src="res/js/jquery.js"></script>
-            <script type="text/javascript" src="res/js/jquery-ui.js"></script>
-
-            <script type="text/javascript" src="res/js/exam.js"></script>
-            <script type="text/javascript" src="res/js/addPage.js"></script>
-
-            <link rel="stylesheet" type="text/css" href="res/css/common.css" media="screen"/>
-            <meta name="viewport" content="width=320"/>
-
-            <title>Результаты экзамена</title>
-        </head>
         <table style="width:100%;">
             <tr>
                 <ib:mainMenuBlock data="${data}"/>

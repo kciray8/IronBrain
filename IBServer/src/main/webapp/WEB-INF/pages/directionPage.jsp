@@ -6,6 +6,7 @@
 <html>
     <head>
         <ib:headBlock title="-Направления-"/>
+        <ib:scripts/>
     </head>
     <body>
         <script>

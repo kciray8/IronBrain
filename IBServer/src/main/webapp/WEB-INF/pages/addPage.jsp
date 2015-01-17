@@ -11,6 +11,7 @@
         <c:if test="${ticket != null}">
             <ib:headBlock title="${ticketSection.label}"/>
         </c:if>
+        <ib:scripts/>
     </head>
     <body>
         <script>
@@ -92,6 +93,13 @@
                                     onclick="onAddNewTicketAfterSave(${section.id},${ticket.id},${ticketSection.id});">
                                 Добавить билет
                             </button>
+                            <ib:gap px="5"/>
+                            <div id="loadingDiv" hidden>
+                                <div>Файл - <span id="loadingFileName"></span></div>
+                                <div>
+                                    Загрузка... <span id="loadingPercent"></span>%
+                                </div>
+                            </div>
                         </div>
                     </td>
 

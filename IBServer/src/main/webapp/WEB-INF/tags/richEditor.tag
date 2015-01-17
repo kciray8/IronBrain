@@ -13,11 +13,11 @@
 <button onclick="document.execCommand('underline',false,null);"><span style="text-decoration: underline;">U</span>
 </button>
 
-<button onclick="document.execCommand('fontName',false,'monospace');"><span style="font-family: monospace">CODE</span>
+<button onclick="document.execCommand('fontName',false,'monospace');"><span
+        style="font-family: monospace">CODE</span>
 </button>
 
 <button onclick="document.execCommand('insertImage',false,'http://upload.wikimedia.org/wikipedia/commons/8/8c/JPEG_example_JPG_RIP_025.jpg');">
-    <IMG>
 </button>
 
 <button onclick="document.execCommand('removeFormat',false,null);" title="Очистить формат">X</button>
@@ -34,7 +34,10 @@
 <button onclick="document.execCommand('insertUnorderedList',false,null);">list</button>
 
 <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
-<button onclick="pasteHtmlFromBuffer();">past from IDEA</button>
+
+<img accesskey="p" onclick="takeScreenShot(${editorName}Editor);" src="res/png/camera.png">
+
+
 <button onclick="newLineDown(${editorName}Editor);">newline Down</button>
 <button onclick="newLineUp(${editorName}Editor);">newline Up</button>
 
@@ -49,6 +52,65 @@
         div: $("#${divID}")
     };
     initEditor(${editorName}Editor.div);
+
+    function uploadFile(blob, fromScreenShot) {
+        var data = new FormData();
+        data.append("file", blob);
+
+        $("#loadingDiv").show();
+
+        $.ajax({
+            url: 'upload_file',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            xhr: function () {//For progress
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', progress, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                if (data.res == Result.OK) {
+                    var url = data.data;
+
+                    if (fromScreenShot) {
+                        Doc.insertHtml("<br><img class='inner' src='" + url + "'><br>");
+                    } else {
+                        var fileRef = "File: " + blob.name;
+
+                        if (blob.type.match('image.*')) {
+                            Image.load(blob, function (image) {
+                                if (image.width < 400) {
+                                    Doc.insertHtml("<br><img class='inner' src='" + url + "'><br>");
+                                } else {
+                                    Doc.insertHtml(HTML.linkAndImage(url, "width=100 class='preview'"));
+                                }
+                            });
+
+                            return;
+                        }
+
+                        Doc.insertHtml(String.format("<a href='{0}'>{1}</a>", url, fileRef));
+                    }
+                }
+                $("#loadingDiv").hide();
+            }
+        });
+    }
+
+    function progress(e) {
+        if (e.lengthComputable) {
+            var max = e.total;
+            var current = e.loaded;
+
+            var percentage = Math.round((current * 100) / max);
+            $("#loadingPercent").text(percentage);
+        }
+    }
 
     function initEditor(editor) {
         var editorPureDiv = editor[0];
@@ -85,28 +147,25 @@
             editorPureDiv.className = 'richTextEditor';
             var file = e.dataTransfer.files[0];
 
-            var data = new FormData();
-            data.append("file", file);
-
-            $.ajax({
-                url: 'upload_file',
-                data: data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                success: function (data) {
-                    if (data.res == Result.OK) {
-                        var url = data.data;
-
-                        var fileRef = "File: " + file.name;
-                        document.execCommand("insertHTML", false, String.format("<a href='{0}'>{1}</a>", url, fileRef));
-                    }
-                }
-            });
+            uploadFile(file, false);
 
             return false;
         };
+    }
+
+    function takeScreenShot(editor) {
+        var webSocket = new WebSocket("ws://localhost:9993/websockets/ib");
+        webSocket.onopen = function (event) {
+            webSocket.send("screenshot");
+        };
+
+        webSocket.onmessage = function (event) {
+            uploadFile(event.data, true);
+        };
+
+        webSocket.onerror = function (event) {
+            alert("IBClient не запущен!");
+        }
     }
 
     function onEditorFocus(event) {
@@ -140,7 +199,4 @@
         editorDiv.prepend("<br>");
     }
 
-    function pasteHtmlFromBuffer() {
-        pasteHtmlAtCaret("<code> fd gdf gdf     fdgdfg   fdgfdgdfgfd</code>");
-    }
 </script>

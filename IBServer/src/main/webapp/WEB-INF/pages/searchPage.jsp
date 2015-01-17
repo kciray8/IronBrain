@@ -6,6 +6,7 @@
 <html>
     <head>
         <ib:headBlock title="-Поиск-"/>
+        <ib:scripts/>
     </head>
     <body>
         <table style="width: 100%">

@@ -8,6 +8,7 @@
 <html>
     <head>
         <ib:headBlock title="-Экзаменовка-"/>
+        <ib:scripts/>
     </head>
     <body>
         <table style="width:100%;">

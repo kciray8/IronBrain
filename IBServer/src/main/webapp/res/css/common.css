@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+/* Fix bug - height issue in FireFox - too small if a div is empty */
+div[contenteditable='true'] {
+    min-height: 2em;
+}
+
 a.menu, a.main-menu {
     text-decoration: none;
     color: #155074;
@@ -61,6 +66,18 @@ body {
 
 p {
     margin: 0px;
+}
+
+img.inner {
+    border: solid #000000 1px;
+}
+
+img.preview {
+    border: dashed #000000 1px;
+}
+
+img.preview:hover {
+    border: solid #3444ff 1px;
 }
 
 .sectionRow:hover {
