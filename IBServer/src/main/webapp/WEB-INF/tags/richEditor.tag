@@ -6,45 +6,44 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@ tag pageEncoding="UTF-8" %>
 
-<button onclick="document.execCommand('bold',false,null);"><b>B</b></button>
-<button onclick="document.execCommand('italic',false,null);"><i>I</i></button>
-<button onclick="document.execCommand('underline',false,null);"><span style="text-decoration: underline;">U</span>
-</button>
+<div>
+    <button onclick="document.execCommand('bold',false,null);"><b>B</b></button>
+    <button onclick="document.execCommand('italic',false,null);"><i>I</i></button>
+    <button onclick="document.execCommand('underline',false,null);"><span style="text-decoration: underline;">U</span>
+    </button>
 
-<button onclick="document.execCommand('fontName',false,'monospace');"><span
-        style="font-family: monospace">CODE</span>
-</button>
+    <button onclick="insertCode()"><span
+            style="font-family: monospace">CODE</span>
+    </button>
 
-<button onclick="document.execCommand('insertImage',false,'http://upload.wikimedia.org/wikipedia/commons/8/8c/JPEG_example_JPG_RIP_025.jpg');">
-</button>
+    <button onclick="document.execCommand('removeFormat',false,null);" title="Очистить формат">X</button>
+    <button onclick="document.execCommand('backColor',false,'#9CEBFF');"><ib:marker color="#9CEBFF"/></button>
+    <button onclick="document.execCommand('backColor',false,'#FFFFFF');"><ib:marker color="#FFFFFF"/></button>
 
-<button onclick="document.execCommand('removeFormat',false,null);" title="Очистить формат">X</button>
-<button onclick="document.execCommand('backColor',false,'#9CEBFF');"><ib:marker color="#9CEBFF"/></button>
-<button onclick="document.execCommand('backColor',false,'#FFFFFF');"><ib:marker color="#FFFFFF"/></button>
+    <button onclick="document.execCommand('strikeThrough',false,null);"><s>abc</s></button>
 
-<button onclick="document.execCommand('strikeThrough',false,null);"><s>abc</s></button>
+    <button onclick="${divID}onCreateLink()"><span
+            style="text-decoration: underline;color: #0000EE">link</span>
+    </button>
 
+    <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
 
-<!-- ТЕКСТ НАЗВАНИЕ ИТОГ -->
-<button onclick="document.execCommand('createLink',false,'vk.com');"><span
-        style="text-decoration: underline;color: #0000EE">link</span>
-</button>
-<button onclick="document.execCommand('insertUnorderedList',false,null);">list</button>
+    <ui:imgButton src="res/png/camera.png" srcHover="res/png/camera_blue.png"
+                  onClick="takeScreenShot(${editorName}Editor);" accessKey="p"/>
+    <ib:space px="5"/>
+    <ui:imgButton src="res/png/round_up_arrow.png" srcHover="res/png/round_up_arrow_blue.png"
+                  onClick="newLineUp(${editorName}Editor);" accessKey=""/>
+    <ib:space px="5"/>
+    <ui:imgButton src="res/png/round_down_arrow.png" srcHover="res/png/round_down_arrow_blue.png"
+                  onClick="newLineDown(${editorName}Editor);" accessKey=""/>
+</div>
 
-<button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
-
-<img accesskey="p" onclick="takeScreenShot(${editorName}Editor);" src="res/png/camera.png">
-
-
-<button onclick="newLineDown(${editorName}Editor);">newline Down</button>
-<button onclick="newLineUp(${editorName}Editor);">newline Up</button>
-
-<div onblur="onEditorBlur(event)" onfocus="onEditorFocus(event)"
-     class="richTextEditor" id="${divID}" onload="alert('ddd')"
+<div onblur="${divID}onEditorBlur(event)" onfocus="${divID}onEditorFocus(event)"
+     class="richTextEditor" id="${divID}"
      contenteditable="true">${html}</div>
-
 
 <script>
     var ${editorName}Editor = {
@@ -52,6 +51,19 @@
         div: $("#${divID}")
     };
     initEditor(${editorName}Editor.div);
+
+    function ${divID}onCreateLink(editor) {
+        var link = prompt("Введите ссылку", "");
+        var text = document.getSelection();
+
+        Doc.insertHtml('<a href="' + link + '" target="_blank">' + text + '</a>');
+    }
+
+    function insertCode() {
+        var text = document.getSelection();
+
+        Doc.insertHtml('<pre style="font-family: Consolas; font-size: 12px;">' + text + '</pre>');
+    }
 
     function uploadFile(blob, fromScreenShot) {
         var data = new FormData();
@@ -168,12 +180,15 @@
         }
     }
 
-    function onEditorFocus(event) {
-        //activeEditor = $(event.srcElement);
+    function ${divID}onEditorFocus(event) {
+        activeEditor = $("#${divID}");
+        if (activeEditor != null) {
+            lastActiveEditor = activeEditor;
+        }
     }
 
-    function onEditorBlur(event) {
-        //activeEditor = null;
+    function ${divID}onEditorBlur(event) {
+        activeEditor = null;
     }
 
     function onEditorModeChange(editorObject) {

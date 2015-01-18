@@ -84,9 +84,10 @@ public class APIController extends AllDao {
     @RequestMapping(method = RequestMethod.POST, value = "/update_ticket")
     public Result updateTicket(@RequestParam int id, @RequestParam String answers,
                                @RequestParam String questions, @RequestParam String label,
+                               @RequestParam String customInfo,
                                @RequestParam long clientVersionDate) {
 
-        return ticketDao.updateTicket(id, answers, questions, label, clientVersionDate);
+        return ticketDao.updateTicket(id, answers, questions, customInfo, label, clientVersionDate);
     }
 
     @ResponseBody
@@ -206,7 +207,6 @@ public class APIController extends AllDao {
         Try someTry = tryDao.getTry(id);
         someTry.setEndMs(IB.getNowMs());
         someTry.setRemindState(remindTo);
-
         someTry.setRemindTo(Ticket.getMsFromState(remindTo));
 
         if (!remindTo.equals(Ticket.REMIND_NOW)) {
@@ -220,8 +220,6 @@ public class APIController extends AllDao {
         }
         someTry.setDone(true);
         tryDao.updateTry(someTry);
-
-        System.out.println(remindTo);
 
         return Result.getOk();
     }

@@ -94,6 +94,7 @@ public class MainController extends APIController {
     @RequestMapping(method = RequestMethod.GET, value = "/about")
     public String getAboutPage(ModelMap modelMap) {
         modelMap.addAttribute("data", data);
+        modelMap.addAttribute("ib", ib);
 
         return "aboutPage";
     }
@@ -194,7 +195,7 @@ public class MainController extends APIController {
                     lastExam.setDone(true);
                     lastExam.setEndMs(IB.getNowMs());
                     examDao.update(lastExam);
-                    directionDao.recalcluateAllDirections();
+                    //directionDao.recalcluateAllDirections();
                     return true;
                 }
             }

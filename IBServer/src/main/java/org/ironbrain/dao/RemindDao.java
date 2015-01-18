@@ -47,7 +47,7 @@ public class RemindDao extends BaseDao {
             remind.setUser(user);
             remind.setLabel(section.getLabel());
 
-            remind.setShortText(HtmlUtils.getShortText(ticket.getQuestions(), 50));
+            remind.setShortText(HtmlUtils.getEscapedShortText(ticket.getQuestions(), 50));
 
             List<String> pathList = new ArrayList<>();
             api.getPath(section.getId()).forEach(sec -> {

@@ -89,6 +89,7 @@ Exam.prototype.configure = function () {
             if (!exam.tempTicketOpen) {
                 $("#answerButton").click();
             } else {
+                $("input:radio[value='rLater']").click();
                 $("#nextTicketButton").click();
             }
         }

@@ -8,7 +8,6 @@
 <%@ attribute name="fieldMappers" required="true" type="java.util.List<org.ironbrain.core.IFieldMapper>" %>
 <%@ attribute name="unusedFields" required="true" type="java.util.List<org.ironbrain.core.Field>" %>
 
-
 <script>
     var unusedFields = [];
 

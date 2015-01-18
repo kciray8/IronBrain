@@ -25,7 +25,7 @@ public class TryDao extends BaseDao {
 
     public Try create(Ticket ticket, int examId, int num, int attemptNum) {
         Try someTry = new Try();
-        someTry.setShortText(HtmlUtils.getShortText(ticket.getQuestions(), 100));
+        someTry.setShortText(HtmlUtils.getEscapedShortText(ticket.getQuestions(), 100));
         someTry.setUser(data.getUser().getId());
         someTry.setCorrect(false);
         someTry.setDone(false);
