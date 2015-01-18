@@ -60,6 +60,7 @@ function saveTicket(id, sectionId, onSaveOk) {
     $.post('update_ticket', {
             answers: $('#answersDiv').html(),
             questions: $('#questionsDiv').html(),
+            customInfo: $('#customInfoDiv').html(),
             id: id,
             label: ticketLabel,
             clientVersionDate: updateTime

@@ -17,7 +17,7 @@
             <tr>
                 <td valign="top">
                     <div class="bg">
-                        <input autofocus type="text" id="query"/>
+                        <input size="50" autofocus type="text" id="query"/>
                         <button onclick="onSearch();">Поиск</button>
                         <div id="searchResult">
 

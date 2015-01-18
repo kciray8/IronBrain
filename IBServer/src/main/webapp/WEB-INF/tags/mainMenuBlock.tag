@@ -14,7 +14,7 @@
             <a class="main-menu" href="search">Поиск</a>
             <a class="main-menu" href="direction">Направления</a>
             <a class="main-menu" href="add_ticket_to_time">+Билет</a>
-            <a class="main-menu" href="about">О сайте</a>
+            <a class="main-menu" href="about">О системе</a>
         </c:if>
 
         <c:if test="${data.user != null}">

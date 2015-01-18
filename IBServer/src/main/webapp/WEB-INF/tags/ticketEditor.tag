@@ -26,6 +26,18 @@
 <ib:richEditor  editorName="questions" ticket="${ticket}"
                 html="${ticket.questions}" section="${section}" divID="questionsDiv"/>
 
+<ib:gap px="5" />
+<button id="showCustomInfo" >Показать дополнительное поле</button>
+
+<div hidden id="customInfoDivBlock">
+    <button id="hideCustomInfo" onclick="saveTicket(${ticket.id},${section.id});">Скрыть дополнительное поле</button>
+
+    <ib:gap px="5" />
+
+    <ib:richEditor  editorName="customInfo" ticket="${ticket}"
+                    html="${ticket.customInfo}" section="${section}" divID="customInfoDiv"/>
+</div>
+
 <div style="margin-top: 5px; margin-bottom: 3px">
     <ib:fieldEditor target="section" fieldMappers="${secToFields}" targetId="${section.id}" unusedFields="${unusedFields}"/>
 </div>
@@ -41,4 +53,14 @@
 
 <script>
     $("#answersDiv").focus();
+
+    $("#showCustomInfo").click(function(){
+        $("#customInfoDivBlock").show();
+        $("#showCustomInfo").hide();
+    });
+
+    $("#hideCustomInfo").click(function(){
+        $("#customInfoDivBlock").hide();
+        $("#showCustomInfo").show();
+    });
 </script>

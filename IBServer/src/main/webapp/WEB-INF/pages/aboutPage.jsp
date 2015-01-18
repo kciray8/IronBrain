@@ -23,7 +23,7 @@
 
                 <td style="vertical-align: top;">
                     <div class="bg">
-                        <ib:about/>
+                        <ib:about ib="${ib}"/>
                     </div>
                 </td>
             </tr>

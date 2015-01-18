@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="v1.war">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
       </element>
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">

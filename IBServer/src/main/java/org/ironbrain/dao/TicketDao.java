@@ -31,7 +31,7 @@ public class TicketDao extends BaseDao {
         return ticket;
     }
 
-    public Result updateTicket(int id, String answers, String questions, String label, long clientVersionDate) {
+    public Result updateTicket(int id, String answers, String questions, String customInfo, String label, long clientVersionDate) {
         Result result;
 
         Ticket ticket = (Ticket) getSess().get(Ticket.class, id);
@@ -51,6 +51,7 @@ public class TicketDao extends BaseDao {
         ticket.setQuestions(questions);
         ticket.setAnswers(answers);
         ticket.setEditDate(IB.getNowMs());
+        ticket.setCustomInfo(customInfo);
 
         getSess().update(ticket);
 
@@ -146,6 +147,7 @@ public class TicketDao extends BaseDao {
             }
             dbQuery.append("(ticket.answers LIKE '%").append(word).append("%'");
             dbQuery.append(" OR ticket.questions LIKE '%").append(word).append("%'");
+            dbQuery.append(" OR ticket.customInfo LIKE '%").append(word).append("%'");
             dbQuery.append(" OR ticket.path LIKE '%").append(word).append("%'").append(")");
 
             firstIter = false;

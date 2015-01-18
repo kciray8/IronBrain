@@ -71,6 +71,16 @@ public class Ticket {
         this.answers = answers;
     }
 
+    public String getCustomInfo() {
+        return customInfo;
+    }
+
+    public void setCustomInfo(String customInfo) {
+        this.customInfo = customInfo;
+    }
+
+    private String customInfo = "";
+
     private Integer owner;
 
     public Integer getOwner() {

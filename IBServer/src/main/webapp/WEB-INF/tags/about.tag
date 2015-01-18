@@ -1,5 +1,10 @@
 <%@ tag pageEncoding="UTF-8" %>
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
+<%@ attribute name="ib" required="true" type="org.ironbrain.IB" %>
+
+Версия системы - ${ib.versionStr}
+
+<ib:gap px="5"/>
 
 Значки для сайта взяты с <a href="http://iconza.ru/">http://iconza.ru/</a> <br>
 
@@ -7,8 +12,8 @@
 
 Используемые технологии: <br>
 <div style="margin-top: 5px;margin-bottom: 5px">
-    <a class="someLogo" href="https://www.debian.org" target="_blank">
-        <img src="res/png/about/debian.png"/>
+    <a class="someLogo" href="http://www.oracle.com/technetwork/java/index.html" target="_blank">
+        <img src="res/png/about/java.png"/>
     </a>
 
     <a class="someLogo" href="https://tomcat.apache.org" target="_blank">
@@ -37,6 +42,18 @@
 
     <a class="someLogo" href="http://jquery.com/" target="_blank">
         <img src="res/png/about/jquery.png"/>
+    </a>
+
+    <a class="someLogo" href="https://www.debian.org" target="_blank">
+        <img src="res/png/about/debian.png"/>
+    </a>
+
+    <a class="someLogo" href="http://junit.org/" target="_blank">
+        <img src="res/png/about/junit.png"/>
+    </a>
+
+    <a class="someLogo" href="http://commons.apache.org/" target="_blank">
+        <img src="res/png/about/apache_commons.png"/>
     </a>
 </div>
 
