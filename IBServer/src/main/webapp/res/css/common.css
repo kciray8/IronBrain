@@ -249,6 +249,13 @@ div.msg_error {
     display: none;
 }
 
+div.msg_info {
+    background-color: #e7ffcc;
+    margin-top: 5px;
+    padding: 5px;
+    display: none;
+}
+
 .highlight {
     background-color: #d7ffb0
 }

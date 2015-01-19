@@ -82,4 +82,14 @@ public class User {
     public void setRoot(Integer root) {
         this.root = root;
     }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    private String port = "9993";
 }

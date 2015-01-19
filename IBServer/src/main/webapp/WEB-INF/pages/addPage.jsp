@@ -110,7 +110,7 @@
                                 setSaveOnUnload(${ticket.id}, ${ticketSection.id});
                                 setRegularSave(${ticket.id}, ${ticketSection.id});
                             </script>
-                            <ib:ticketEditor ticket="${ticket}" section="${ticketSection}"
+                            <ib:ticketEditor data="${data}" ticket="${ticket}" section="${ticketSection}"
                                              secToFields="${secToFlds}" unusedFields="${unusedFields}"/>
                         </div>
                     </td>

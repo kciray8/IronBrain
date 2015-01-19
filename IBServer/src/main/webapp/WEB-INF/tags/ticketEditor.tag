@@ -3,6 +3,7 @@
 <%@ attribute name="section" required="true" type="org.ironbrain.core.Section" %>
 <%@ attribute name="secToFields" required="true" type="java.util.List<org.ironbrain.core.SectionToField>" %>
 <%@ attribute name="unusedFields" required="true" type="java.util.List<org.ironbrain.core.Field>" %>
+<%@ attribute name="data" required="true" type="org.ironbrain.SessionData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
@@ -20,10 +21,10 @@
 </div>
 
 Ответы:<br>
-<ib:richEditor editorName="answers" ticket="${ticket}"
+<ib:richEditor data="${data}" editorName="answers" ticket="${ticket}"
                html="${ticket.answers}" section="${section}" divID="answersDiv"/>
 Вопросы:<br>
-<ib:richEditor  editorName="questions" ticket="${ticket}"
+<ib:richEditor data="${data}"   editorName="questions" ticket="${ticket}"
                 html="${ticket.questions}" section="${section}" divID="questionsDiv"/>
 
 <ib:gap px="5" />
@@ -34,7 +35,7 @@
 
     <ib:gap px="5" />
 
-    <ib:richEditor  editorName="customInfo" ticket="${ticket}"
+    <ib:richEditor data="${data}"  editorName="customInfo" ticket="${ticket}"
                     html="${ticket.customInfo}" section="${section}" divID="customInfoDiv"/>
 </div>
 

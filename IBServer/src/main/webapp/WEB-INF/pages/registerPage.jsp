@@ -41,7 +41,7 @@
                             <input checked value="simple" type="radio" name="accountMode">Простой</input>
                             <input value="extended" type="radio" name="accountMode">Расширенный</input>
                         </div>
-                        Если вы программист, выбирайте "Расширенный" режим - больше функций. <br> В любом случае, в
+                        Если вы программист, выбирайте "Расширенный" режим - больше функций. Но с ними надо быть аккуратнее. <br> В любом случае, в
                         настройках всегда можно его изменить.
 
                         <div class="form-element">

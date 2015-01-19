@@ -177,6 +177,14 @@ public class MainController extends APIController {
         return "examPage";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/profile")
+    public String getProfilePage(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+        modelMap.addAttribute("user", data.getUser());
+        modelMap.addAttribute("ib", ib);
+        return "profilePage";
+    }
+
     /**
      * @param modelMap optional
      * @return true - if we end exam

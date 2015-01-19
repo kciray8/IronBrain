@@ -17,6 +17,10 @@ public class UserDao extends BaseDao {
         return user;
     }
 
+    public User getUser(){
+        return data.getUser();
+    }
+
     public User getUserByLogin(String login) {
         User user = (User) getSess().createCriteria(User.class)
                 .add(Restrictions.eq("login", login)).uniqueResult();
@@ -77,5 +81,23 @@ public class UserDao extends BaseDao {
         timeSection.setLabel("Время");
         timeSection.setType(Section.Type.TIME.ordinal());
         getSess().save(timeSection);
+    }
+
+    public Result updateProfile(String newPassword, String newPasswordConfirm,
+                                Boolean extendedProfile, String port, String email) {
+        if(!newPassword.equals("")){
+            if(newPassword.equals(newPasswordConfirm)){
+                getUser().setPassword(newPassword);
+            }else{
+                return Result.getError("Пароли не совпадают!");
+            }
+        }
+        getUser().setExtended(extendedProfile);
+        getUser().setPort(port);
+        getUser().setEmail(email);
+
+        getSess().update(data.getUser());
+
+        return Result.getOk();
     }
 }

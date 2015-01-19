@@ -2,3 +2,6 @@
 *.jar
 *.war
 *.ear
+IBClient/gradle/wrapper/gradle-wrapper.properties
+IBClient/gradlew
+IBClient/gradlew.bat

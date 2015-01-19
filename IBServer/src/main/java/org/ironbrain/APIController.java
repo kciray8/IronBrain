@@ -457,4 +457,10 @@ public class APIController extends AllDao {
             return Result.getError(e.getMessage());
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/update_profile")
+    @ResponseBody
+    public Result updateProfile(String newPassword, String newPasswordConfirm, Boolean extendedProfile, String port, String email) {
+        return userDao.updateProfile(newPassword, newPasswordConfirm, extendedProfile, port, email);
+    }
 }

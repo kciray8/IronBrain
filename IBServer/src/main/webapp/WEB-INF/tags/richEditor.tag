@@ -3,6 +3,7 @@
 <%@ attribute name="section" required="true" type="org.ironbrain.core.Section" %>
 <%@ attribute name="ticket" required="true" type="org.ironbrain.core.Ticket" %>
 <%@ attribute name="editorName" required="true" type="java.lang.String" %>
+<%@ attribute name="data" required="true" type="org.ironbrain.SessionData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
@@ -29,7 +30,9 @@
             style="text-decoration: underline;color: #0000EE">link</span>
     </button>
 
-    <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
+    <c:if test="${data.user.extended}">
+        <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
+    </c:if>
 
     <ui:imgButton src="res/png/camera.png" srcHover="res/png/camera_blue.png"
                   onClick="takeScreenShot(${editorName}Editor);" accessKey="p"/>
@@ -166,7 +169,7 @@
     }
 
     function takeScreenShot(editor) {
-        var webSocket = new WebSocket("ws://localhost:9993/websockets/ib");
+        var webSocket = new WebSocket("ws://localhost:${data.user.port}/websockets/ib");
         webSocket.onopen = function (event) {
             webSocket.send("screenshot");
         };
