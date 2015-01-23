@@ -17,7 +17,7 @@
             <tr>
                 <td style="width: 200px;vertical-align: top;">
                     <div class="bg">
-
+                        <a class="menu" href="/profile">Основные настройки</a>
                     </div>
                 </td>
 

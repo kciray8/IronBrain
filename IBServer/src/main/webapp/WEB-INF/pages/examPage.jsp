@@ -60,8 +60,8 @@
                                     </div>
 
                                     Повторить:<br>
-                                    <input checked value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
-                                    <input value="rLater" type="radio" name="toRemindRButton">Потом</input>
+                                    <input value="rNow" type="radio" name="toRemindRButton">Сейчас</input>
+                                    <input checked value="rLater" type="radio" name="toRemindRButton">Потом</input>
                                     <input value="rDay" type="radio" name="toRemindRButton">Через день</input>
                                     <input value="rWeek" type="radio" name="toRemindRButton">Через неделю</input>
                                     <input value="rMonth" type="radio" name="toRemindRButton">Через месяц</input>

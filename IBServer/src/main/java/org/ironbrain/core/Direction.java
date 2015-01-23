@@ -91,7 +91,13 @@ public class Direction {
     }
 
     @Transient
-    public String getKnowPercentStr(){
-        return String.format("%.2g", knowPercent * 100);
+    public String getKnowPercentStr() {
+        double d = knowPercent * 100;
+
+        //Some trick
+        if (d == (long) d)
+            return String.format("%d", (long) d);
+        else
+            return String.format("%.2g", d);
     }
 }

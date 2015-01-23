@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <ib:headBlock title="-О сайте-"/>
+        <ib:headBlock title="-О системе-"/>
         <ib:scripts/>
     </head>
     <body>
@@ -15,11 +15,19 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
+                <c:if test="${data.user == null}">
+                    <td style="width: 200px;vertical-align: top;">
+                        <ib:login/>
+                    </td>
+                </c:if>
 
-                    </div>
-                </td>
+                <c:if test="${data.user != null}">
+                    <td style="width: 200px;vertical-align: top;">
+                        <div class="bg" style="width:200px;">
+                            Указанные товарные знаки и логотипы принадлежат соответствующим правообладателям
+                        </div>
+                    </td>
+                </c:if>
 
                 <td style="vertical-align: top;">
                     <div class="bg">

@@ -85,7 +85,7 @@
                             <ib:gap px="5"/>
                             Количество билетов - ${direction.ticketsCount}
                             <ib:gap px="5"/>
-                            Вы помните ${direction.ticketKnownCount} из ${direction.ticketsCount} (${direction.knowPercentStr}%)
+                            Вы помните ${direction.ticketKnownCount} из ${direction.ticketsCount} (${direction.knowPercentStr} %)
                             <ib:gap px="5"/>
                             <button onclick="recalculateDirection()">Пересчитать</button>
                             <ib:gap px="5"/>

@@ -21,15 +21,28 @@
                     </td>
                 </c:if>
 
+                <c:if test="${data.user != null}">
+                    <td style="width: 200px;vertical-align: top;">
+                        <div class="bg" style="width:200px;">
+                            Добро пожаловать в систему, ${data.user.login}
+                        </div>
+                    </td>
+                </c:if>
+
                 <td style="width: 100%;vertical-align: top;">
                     <div class="bg">
                         <ib:intro/>
                         <c:if test="${data.user == null}">
-                            <button>Зайти гостем, без регистрации</button>
+                            <button id="guestLogin">Зайти гостем, без регистрации</button>
                         </c:if>
                     </div>
                 </td>
             </tr>
         </table>
+        <script>
+            $("#guestLogin").click(function () {
+                location.href = "guest_login";
+            });
+        </script>
     </body>
 </html>

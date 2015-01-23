@@ -35,8 +35,8 @@
     </filter-mapping>
 
     <session-config>
-        <!-- Week timeout -->
-        <session-timeout>10080</session-timeout>
+        <!-- unlimited session -->
+        <session-timeout>-1</session-timeout>
     </session-config>
 
 

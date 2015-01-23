@@ -1,6 +1,8 @@
 package org.ironbrain;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.ironbrain.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -135,6 +137,17 @@ public class MainController extends APIController {
         return "directionPage";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/guest_login")
+    public String guestLogin() {
+        String login = RandomStringUtils.randomAlphanumeric(6);
+        String password = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(5, 15));
+
+        registerUser("guest_" + login,
+                password, "guest@ironbrain.org", true);
+
+        return "redirect:/main";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/edit_ticket")
     public String editTicket(@RequestParam Integer id) {
         Section section = getSectionFromTicket(id);
@@ -243,7 +256,7 @@ public class MainController extends APIController {
         if (result.isOk()) {
             return "redirect:/add?sec=" + getUser().getRoot();
         } else {
-            return null;
+            return "redirect:/";
         }
     }
 
@@ -270,4 +283,11 @@ public class MainController extends APIController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/documentation")
+    public String getDocumentationPage(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+        return "documentationPage";
+    }
+
 }

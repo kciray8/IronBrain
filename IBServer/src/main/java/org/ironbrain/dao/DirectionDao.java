@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class DirectionDao extends BaseDao {
@@ -150,14 +151,22 @@ public class DirectionDao extends BaseDao {
     public void sliceAndAddToRemind(Direction direction, int count) {
         Set<Section> needToRemind = getNeedToRemindSections(direction);
         ArrayList<Section> result = new ArrayList<>();
+        AtomicInteger realCount = new AtomicInteger(count);
+        if (realCount.intValue() > needToRemind.size()) {
+            realCount.set(needToRemind.size());
+        }
 
         IntHolder tempLevel = new IntHolder(1);
         List<Section> levelSections = new ArrayList<>();
-        while ((result.size() < count) && (!needToRemind.isEmpty())) {
+        while ((result.size() < realCount.intValue()) && (!needToRemind.isEmpty())) {
+            System.out.println("---- " + result.size() + "    " + needToRemind.size() + "   ->  " + levelSections.size());
+
             levelSections.clear();
             needToRemind.forEach(section -> {
+
+                System.out.println("=== " + section.getNum() + "    " + tempLevel.value);
                 if (section.getNum() == tempLevel.value) {
-                    if (result.size() + levelSections.size() < count) {
+                    if (result.size() + levelSections.size() < realCount.intValue()) {
                         levelSections.add(section);
                     }
                 }

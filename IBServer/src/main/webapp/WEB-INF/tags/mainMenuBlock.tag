@@ -5,7 +5,8 @@
 
 <td colspan="2">
     <div class="bg header" style="padding: 0;">
-        <a class="main-menu" href="main">Главная</a>
+        <a class="main-menu" href="main" style="padding-left: 13px;">Главная</a>
+        <a class="main-menu" href="documentation">Документация</a>
 
         <c:if test="${data.user != null}">
             <a class="main-menu" href="add">Билеты</a>

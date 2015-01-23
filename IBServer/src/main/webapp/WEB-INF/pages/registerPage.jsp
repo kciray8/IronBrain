@@ -17,7 +17,7 @@
             <tr>
                 <td style="width: 200px;vertical-align: top;">
                     <div class="bg">
-
+                        <button onclick="location.href='.'">Назад</button>
                     </div>
                 </td>
 

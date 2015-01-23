@@ -35,11 +35,17 @@ public class Main implements ClipboardOwner {
             server.start();
             createTray();
             registerGlobalHotkeys();
+            loadClasses();
         } catch (DeploymentException exc) {
             JOptionPane.showMessageDialog(null, String.format("Port %d already in use", port));
         } catch (AWTException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadClasses() {
+        //For speed-up
+        new JFrame();
     }
 
     private void registerGlobalHotkeys() {
