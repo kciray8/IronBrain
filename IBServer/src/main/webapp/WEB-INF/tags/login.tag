@@ -2,30 +2,22 @@
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
 <%@ tag pageEncoding="UTF-8" %>
 
-<div class="bg" style="width:200px;">
-    <div>
-        Вход<br>
-        <div class="form-element">
-            <input style="width: 100%; box-sizing: border-box;" type="text" placeholder="Логин" name="login" id="login" value="">
-            <br>
-        </div>
-        <div class="form-element">
-            <input style="width: 100%; box-sizing: border-box;" width="2" type="password" id="password" placeholder="Пароль"
-                   name="password"
-                   value="">
-        </div>
-        <div class="form-element">
-            <button onclick="enter();">Войти</button>  <button onclick="register();">Регистрация</button>
-        </div>
-        <div id = "login_error" class="msg_error">
-
-        </div>
+<ib:panel title="Вход">
+    <ib:input placeholder="Логин" id="login"/>
+    <ib:gap px="5" />
+    <ib:input placeholder="Пароль" id="password" attr="type='password''"/>
+    <div class="form-element">
+        <ib:button onClick="enter();">Войти</ib:button>
+        <ib:space px="5"/>
+        <ib:button onClick="register();">Регистрация</ib:button>
     </div>
-</div>
-<div style="margin-top: 6px"></div>
+    <div id="login_error" class="msg_error">
+
+    </div>
+</ib:panel>
 
 <script>
-    function register(){
+    function register() {
         location.href = "./register";
     }
 </script>

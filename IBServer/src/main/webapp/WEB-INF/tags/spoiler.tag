@@ -5,6 +5,6 @@
 <div class="spoilerHeader" onclick="onSpoilerClick($(this).next(),$(this).children().first(), $(this));">
     <span>►</span> ${title}
 </div>
-<div hidden style="border: #000000 1px solid; padding: 3px">
+<div hidden style="border: #ddd 1px solid; padding: 3px">
     <jsp:doBody/>
 </div>

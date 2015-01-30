@@ -16,9 +16,10 @@ IronBrain - система самообразования (Beta - версия)<
     <li class="squareLi">Структурируйте билеты - иерархически, хронологически или по направлениям</li>
     <li class="squareLi">Человеку свойственно забывать, но IB поможет вам преодолеть этот недостаток</li>
     <li class="squareLi">Поддерживайте определённый набор знаний, нужный вам для ваших задач и целей.</li>
-    <li class="squareLi">Исходные коды открыты под лицензией GNU\GPL</li>
+    <li class="squareLi"> <a href="http://github.com/kciray8/IronBrain">Исходные коды</a> открыты под лицензией GNU\GPL</li>
     <li class="squareLi">Система поддерживается в двух версиях - веб сервис (<a href="http://IronBrain.org">IronBrain.org</a>)
-        и независимое Desktop-приложение
+        и <a href="https://github.com/kciray8/IronBrain/releases">независимое Desktop-приложение</a>
     </li>
     <li class="squareLi">Как пользоваться системой - подробно описано в <a href="documentation">документации</a></li>
+    <li class="squareLi">По всем вопросам пишите на <b>kciray8@gmail.com</b></li>
 </ul>

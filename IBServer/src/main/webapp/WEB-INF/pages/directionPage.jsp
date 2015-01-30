@@ -56,22 +56,22 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
+                <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                    <ib:panel title="Все направления">
                         <c:forEach var="direction" items="${directions}">
                             <a class="menu" href="./direction?id=${direction.id}">${direction.name}</a>
                             <br>
                         </c:forEach>
                         <ib:gap px="5"/>
 
-                        <input id="directionName" type="text" placeholder="Имя направления"/>
+                        <ib:input id="directionName" placeholder="Имя направления"/>
                         <ib:gap px="5"/>
-                        <button onclick="addDirection()">Добавить</button>
-                    </div>
+                        <ib:button onClick="addDirection()">Добавить</ib:button>
+                    </ib:panel>
                 </td>
 
                 <td valign="top">
-                    <div class="bg">
+                    <ib:panel title="Редактор направления">
                         <c:if test="${direction == null}">
                             Выберите существующее направление или добавьте новое
                         </c:if>
@@ -87,15 +87,15 @@
                             <ib:gap px="5"/>
                             Вы помните ${direction.ticketKnownCount} из ${direction.ticketsCount} (${direction.knowPercentStr} %)
                             <ib:gap px="5"/>
-                            <button onclick="recalculateDirection()">Пересчитать</button>
+                            <ib:button onClick="recalculateDirection()">Пересчитать</ib:button>
                             <ib:gap px="5"/>
-                            <button onclick="showSliceMenu()">Нарезать билеты
-                            </button>
-                            <span id="sliceMenu" hidden><input value="20" id="sliceCount" type="text"> <button
-                                    onclick="sliceAndRemind(${direction.id},$('#sliceCount').val())">OK
-                            </button></span>
+                            <ib:button onClick="showSliceMenu()">Нарезать билеты
+                            </ib:button>
+                            <span id="sliceMenu" hidden><input value="20" id="sliceCount" type="text"> <ib:button
+                                    onClick="sliceAndRemind(${direction.id},$('#sliceCount').val())">OK
+                            </ib:button></span>
                         </c:if>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

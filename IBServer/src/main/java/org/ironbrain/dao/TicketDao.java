@@ -3,6 +3,7 @@ package org.ironbrain.dao;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.ironbrain.APIController;
 import org.ironbrain.IB;
 import org.ironbrain.Result;
@@ -162,5 +163,9 @@ public class TicketDao extends BaseDao {
 
     public List<Ticket> getAllTickets() {
         return getSess().createCriteria(Ticket.class).list();
+    }
+
+    public List<Ticket> getAllTicketsFromEnd(int limit) {
+        return getSess().createCriteria(Ticket.class).addOrder(Order.desc("id")).setMaxResults(limit).list();
     }
 }

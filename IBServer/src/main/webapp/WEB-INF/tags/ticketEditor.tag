@@ -9,9 +9,9 @@
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
 
 <div class="ticketNameSpan">
-    <label>
-        Билет: <input type="text" id="ticketLabel" value="${section.label}">
-    </label>
+
+    <ib:input id="ticketLabel" value="${section.label}" />
+
     Создан <i><%= DateUtils.getNiceDate(ticket.getCreateDate()) %>
 </i>
     &nbsp;&nbsp;
@@ -28,10 +28,10 @@
                 html="${ticket.questions}" section="${section}" divID="questionsDiv"/>
 
 <ib:gap px="5" />
-<button id="showCustomInfo" >Показать дополнительное поле</button>
+<ib:button id="showCustomInfo" >Показать дополнительное поле</ib:button>
 
 <div hidden id="customInfoDivBlock">
-    <button id="hideCustomInfo" onclick="saveTicket(${ticket.id},${section.id});">Скрыть дополнительное поле</button>
+    <ib:button id="hideCustomInfo" onClick="saveTicket(${ticket.id},${section.id});">Скрыть дополнительное поле</ib:button>
 
     <ib:gap px="5" />
 
@@ -49,7 +49,7 @@
     </nobr>
 </div>
 
-<button id="saveButton" onclick="saveTicket(${ticket.id},${section.id});">Сохранить</button>
+<ib:button id="saveButton" onClick="saveTicket(${ticket.id},${section.id});" style="margin-right:5px">Сохранить</ib:button>
 <span id="saveProgress"></span>
 
 <script>

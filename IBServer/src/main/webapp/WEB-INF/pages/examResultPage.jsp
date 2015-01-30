@@ -15,18 +15,17 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
+                <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                    <ib:panel title="Все экзмены">
                         <ib:examList exams="${exams}"/>
-                    </div>
+                    </ib:panel>
                 </td>
                 <td valign="top">
-                    <div class="bg">
+                    <ib:panel title="Результат">
                         Длительность экзамена - ${exam.durationMin} минут(ы)
 
                         <ib:margin/>
 
-                        <% int i = 0; %>
                         <table class="base_table">
                             <tr class="base_tr">
                                 <th class="base_th">
@@ -58,14 +57,14 @@
                                     </td>
 
                                     <td class="base_td">
-                                        <button onclick="window.open('edit_ticket?id=${tempTry.ticket}')">
+                                        <ib:button onClick="window.open('edit_ticket?id=${tempTry.ticket}')">
                                             Редактировать
-                                        </button>
+                                        </ib:button>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </table>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

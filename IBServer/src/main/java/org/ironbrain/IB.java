@@ -56,4 +56,18 @@ public class IB {
 
         return version;
     }
+
+    public boolean isPublicVersion() {
+        return publicVersion;
+    }
+
+    public static void out(Object object){
+        System.out.println(object);
+    }
+
+    public void setPublicVersion(boolean publicVersion) {
+        this.publicVersion = publicVersion;
+    }
+
+    private boolean publicVersion;
 }

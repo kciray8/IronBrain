@@ -84,7 +84,12 @@ public class Exam {
     }
 
     @Transient
-    public String getName(){
+    public String getName() {
         return DateUtils.getNiceDate(startMs);
+    }
+
+    @Transient
+    public String getStrStart() {
+        return DateUtils.getNiceDate(this.getStartMs());
     }
 }

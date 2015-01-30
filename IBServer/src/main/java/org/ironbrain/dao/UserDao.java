@@ -8,6 +8,8 @@ import org.ironbrain.core.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @SuppressWarnings("unchecked")
 @Transactional
@@ -19,6 +21,10 @@ public class UserDao extends BaseDao {
 
     public User getUser(){
         return data.getUser();
+    }
+
+    public List<User> getUsers(){
+        return getSess().createCriteria(User.class).list();
     }
 
     public User getUserByLogin(String login) {

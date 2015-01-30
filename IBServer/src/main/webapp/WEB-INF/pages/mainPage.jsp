@@ -5,37 +5,37 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <ib:headBlock title="-О сайте-"/>
+        <ib:headBlock title="-О системе-"/>
         <ib:scripts/>
     </head>
     <body>
-        <table style="width:100%;">
+        <table width="100%">
             <tr>
                 <ib:mainMenuBlock data="${data}"/>
             </tr>
 
             <tr>
                 <c:if test="${data.user == null}">
-                    <td style="width: 200px;vertical-align: top;">
+                    <td style="width: 210px; vertical-align: top; padding-right: 10px">
                         <ib:login/>
                     </td>
                 </c:if>
 
                 <c:if test="${data.user != null}">
-                    <td style="width: 200px;vertical-align: top;">
-                        <div class="bg" style="width:200px;">
+                    <td style="width: 210px;vertical-align: top; padding-right: 10px">
+                        <ib:panel title="Информация">
                             Добро пожаловать в систему, ${data.user.login}
-                        </div>
+                        </ib:panel>
                     </td>
                 </c:if>
 
-                <td style="width: 100%;vertical-align: top;">
-                    <div class="bg">
+                <td style="vertical-align: top;">
+                    <ib:panel title="О системе">
                         <ib:intro/>
                         <c:if test="${data.user == null}">
-                            <button id="guestLogin">Зайти гостем, без регистрации</button>
+                            <ib:button id="guestLogin" >Зайти гостем, без регистрации</ib:button>
                         </c:if>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

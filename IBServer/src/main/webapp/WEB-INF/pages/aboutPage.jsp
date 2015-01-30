@@ -16,23 +16,23 @@
 
             <tr>
                 <c:if test="${data.user == null}">
-                    <td style="width: 200px;vertical-align: top;">
+                    <td style="width: 200px;vertical-align: top; padding-right: 10px">
                         <ib:login/>
                     </td>
                 </c:if>
 
                 <c:if test="${data.user != null}">
-                    <td style="width: 200px;vertical-align: top;">
-                        <div class="bg" style="width:200px;">
+                    <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                        <ib:panel title="Предупреждение">
                             Указанные товарные знаки и логотипы принадлежат соответствующим правообладателям
-                        </div>
+                        </ib:panel>
                     </td>
                 </c:if>
 
                 <td style="vertical-align: top;">
-                    <div class="bg">
+                    <ib:panel title="О системе">
                         <ib:about ib="${ib}"/>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

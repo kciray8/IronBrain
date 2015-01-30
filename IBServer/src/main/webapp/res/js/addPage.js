@@ -311,7 +311,7 @@ function onSearch() {
                 resultHtml += "</td></tr>";
 
                 resultHtml += "<tr>";
-                resultHtml += "<td valign='top' style='width: 50%'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
+                resultHtml += "<td valign='top' style='width: 50%; padding-right: 5px'><div class='searchTextOutput'>" + ticket.questions + "</div></td>";
                 resultHtml += "<td valign='top' style='width: 50%'><div class='searchTextOutput'>" + ticket.answers + "</div></td>";
                 resultHtml += "</tr>";
 

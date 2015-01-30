@@ -2,10 +2,7 @@ package org.ironbrain.core;
 
 import org.ironbrain.IB;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Calendar;
 
 @Table(name = "Tickets")
@@ -51,6 +48,7 @@ public class Ticket {
         this.id = id;
     }
 
+    @Lob
     private String questions = "";
 
     public String getQuestions() {
@@ -61,6 +59,7 @@ public class Ticket {
         this.questions = questions;
     }
 
+    @Lob
     private String answers = "";
 
     public String getAnswers() {

@@ -99,7 +99,7 @@
         if (inverse) {
             newField.attr("class", "fieldsBGInverse");
         }
-        newField.html("&nbsp;" + name);
+        newField.html(name);
         newField.contextMenu(selectFieldMenu);
         $("#fieldsContainer").append(newField);
         newField.show();
@@ -121,14 +121,14 @@
     $(document).ready(function () {
         <c:forEach var="fieldMapper" items="${fieldMappers}">
         addField("${fieldMapper.field.label}", ${fieldMapper.id},
-        ${fieldMapper.inverse}, "${fieldMapper.field.id}");
+                ${fieldMapper.inverse}, "${fieldMapper.field.id}");
         </c:forEach>
 
         unusedFields.forEach(function (field) {
             addSelectionField(field.label, field.id);
         });
 
-        $('#fieldName').keydown(function(event) {
+        $('#fieldName').keydown(function (event) {
             if (event.keyCode == 13) {
                 onCreateFieldOK();
                 return false;
@@ -156,17 +156,17 @@
 </div>
 
 <nobr>
-    <button id="createFieldButton" onclick="onCreateFieldOpen()">Создать</button>
+    <ib:button id="createFieldButton" onClick="onCreateFieldOpen()">Создать</ib:button>
         <span id="createFieldForm" style="display: none;">
             <input type="text" placeholder="Имя области" id="fieldName"/>
-            <button onclick="onCreateFieldOK()">OK</button>
+            <ib:button onClick="onCreateFieldOK()">OK</ib:button>
         </span>
 </nobr>
 
-<button onclick="onSelectField()" id="selectFieldButton">Выбрать</button>
+<ib:button onClick="onSelectField()" id="selectFieldButton">Выбрать</ib:button>
 <div class="fieldSelection" id="fieldsSelection" hidden>
     <div id="fieldsSelectionContainer">
         <button id="fieldSelectionPattern" class="selectedField" hidden></button>
     </div>
-    <button onclick="onCreateFieldClose()" style="margin-left: 5px; margin-top: 5px">Закрыть</button>
+    <ib:button onClick="onCreateFieldClose()" style="margin-left: 5px; margin-top: 5px">Закрыть</ib:button>
 </div>

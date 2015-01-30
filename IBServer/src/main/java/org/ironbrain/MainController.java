@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,6 +89,7 @@ public class MainController extends APIController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/main")
     public String getMainPage(ModelMap modelMap) {
+        modelMap.addAttribute("ib", ib);
         modelMap.addAttribute("data", data);
 
         return "mainPage";
@@ -288,6 +290,34 @@ public class MainController extends APIController {
     public String getDocumentationPage(ModelMap modelMap) {
         modelMap.addAttribute("data", data);
         return "documentationPage";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all_users")
+    public String getAllUsers(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+        if(!data.getUser().getAdmin()){
+            throw new AccessDeniedException();
+        }
+
+        List<User> users = userDao.getUsers();
+        Collections.reverse(users);
+        modelMap.addAttribute("users", users);
+
+        return "allUsersPage";
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all_tickets")
+    public String getAllTickets(ModelMap modelMap) {
+        modelMap.addAttribute("data", data);
+        if(!data.getUser().getAdmin()){
+            throw new AccessDeniedException();
+        }
+
+        List<Ticket> tickets = ticketDao.getAllTicketsFromEnd(20);
+        modelMap.addAttribute("tickets", tickets);
+
+        return "allTicketsPage";
     }
 
 }

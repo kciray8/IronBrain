@@ -10,7 +10,9 @@ div[contenteditable='true'] {
 /* Support constructions like <div hidden>content</div>
 in old browsers
 */
-*[hidden] { display: none; }
+*[hidden] {
+    display: none;
+}
 
 a.menu, a.main-menu {
     text-decoration: none;
@@ -25,7 +27,8 @@ a.menu:hover {
 a.main-menu {
     padding-left: 5px;
     padding-right: 5px;
-    font-size: large;
+    font-size: medium;
+    font-weight: bold;
 
     padding-top: 3px;
     padding-bottom: 3px;
@@ -42,7 +45,26 @@ a.someLogo {
     color: transparent;
 }
 
-p.par{
+.navbar {
+    margin-bottom: 10px;
+}
+
+.panel-body {
+    padding: 10px;
+}
+
+.panel-heading {
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+}
+
+.panel {
+    margin-bottom: 10px;
+}
+
+p.par {
 }
 
 ul.squareUl {
@@ -77,14 +99,16 @@ p {
 }
 
 img.inner {
-    border: solid #000000 1px;
+    border: solid gray 1px;
 }
 
 img.doc {
+    margin: 5px;
+    max-width:700px;
 }
 
 img.preview {
-    border: dashed #000000 1px;
+    border: dashed gray 1px;
 }
 
 img.preview:hover {
@@ -93,14 +117,6 @@ img.preview:hover {
 
 .sectionRow:hover {
     background-color: #c5eaff;
-}
-
-.bg {
-    /*border-radius: 10px;*/
-    background-color: #ececec;
-    margin: 2px;
-    padding: 10px;
-    border: solid 1px;
 }
 
 .path {
@@ -115,7 +131,8 @@ img.preview:hover {
 
 .richTextEditor, .examTextOutput, .searchTextOutput, .fileDropMode {
     padding: 5px;
-    border: 1px solid #000000;
+    border: 1px solid gray;
+    border-radius: 5px;
     background-color: #ffffff;
     margin-top: 5px;
     margin-bottom: 2px;
@@ -124,7 +141,7 @@ img.preview:hover {
 }
 
 .fileDropMode {
-    border: 1px dashed #000000;
+    border: 1px dashed gray;
     background-color: #bafdff;
     outline: 0;
 }
@@ -143,7 +160,7 @@ img.preview:hover {
 
 /*Menu all*/
 .ui-menu {
-    border-color: rgba(0, 0, 0, 0.72);
+    border-color: gray;
     padding: 2px;
     width: 200px;
     background: #dddddd;
@@ -157,7 +174,7 @@ img.preview:hover {
 .ui-widget-content .ui-state-focus {
     font-weight: normal;
     border-color: #c5eaff;
-    color: #000000;
+    color: gray;
     background-color: #c5eaff;
 }
 
@@ -188,37 +205,11 @@ hr {
     margin-bottom: 4px;
 }
 
-input[type="text"], input[type="password"] {
-    border: 1px solid black;
+.form-control {
+    padding-top: 2px;
+    padding-right: 4px;
     padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
     padding-bottom: 2px;
-}
-
-input[type="radio"] {
-    border: 1px solid black;
-    color: green;
-    content: "\2713";
-}
-
-button {
-    border: solid 1px;
-
-    padding-top: 2px;
-    padding-bottom: 2px;
-
-    /*
-    margin-top: 5px;
-    padding-top: 2px;*/
-}
-
-button:hover:enabled {
-    background-color: #c5eaff;
-}
-
-button:hover:disabled {
-
 }
 
 button:active {
@@ -231,7 +222,7 @@ button:active {
 }
 
 .base_table, .base_td, .base_th {
-    border: 1px solid black;
+    border: 1px solid #ddd;
 }
 
 .base_td, .base_th {
@@ -254,17 +245,21 @@ button:active {
 }
 
 div.msg_error {
-    background-color: #ffa39c;
+    background: linear-gradient(#ffcad2, #dc98a4);
     margin-top: 5px;
     padding: 5px;
+    padding-left: 10px;
     display: none;
+    border-radius: 5px;
 }
 
 div.msg_info {
-    background-color: #e7ffcc;
+    background: linear-gradient(#e7ffcc, #c4dcaa);
     margin-top: 5px;
     padding: 5px;
+    padding-left: 10px;
     display: none;
+    border-radius: 5px;
 }
 
 .highlight {
@@ -272,22 +267,18 @@ div.msg_info {
 }
 
 .fieldsBG, .fieldsBGInverse {
-    background-color: #ddffe5;
-    border: 1px solid #000000;
+    background: linear-gradient(#7adc3a, #49803a);
+    border: 0;
+    border-radius: 5px;
 
     margin-top: 2px;
     margin-bottom: 2px;
     margin-left: 0px;
     margin-right: 5px;
-
-    padding-bottom: 2px;
-    padding-top: 1px;
-    padding-left: 4px;
-    padding-right: 4px;
 }
 
 .fieldsBGInverse {
-    background-color: #ffc4ed;
+    background: linear-gradient(#f08ab0, #cd3938);
 }
 
 .fieldsBGInverse:hover {
@@ -297,7 +288,8 @@ div.msg_info {
 .fieldSelection {
     margin-top: 5px;
     background-color: #fff7d1;
-    border: solid #000000 1px;
+    border-radius: 5px;
+    border: 0;
     padding-bottom: 5px;
 }
 
@@ -305,27 +297,31 @@ div.msg_info {
     margin-top: 5px;
     margin-left: 5px;
     background-color: #ff8b3f;
+    border: 0;
+    border-radius: 5px;
+    background: linear-gradient(#ffb032, #ff6a3b);;
 }
 
 .iw-contextMenu {
-    border: 1px solid #000000;
+    border: 1px solid gray;
+    border-radius: 5px;
     box-shadow: 3px 3px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .iw-cm-menu li {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid gray;
 }
 
 .iw-mSelected {
     background-color: #c5eaff;
-    color: #000000;
+    color: #3645be;
 }
 
 /*jQuery Ui - Customization*/
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
     border-radius: 0px;
 
-    border: 1px solid #000000;
+    border: 1px solid gray;
     background: #ececec;
 }
 
@@ -333,7 +329,7 @@ div.msg_info {
     padding: 1px;
     padding-left: 5px;
     padding-right: 5px;
-    border: 1px solid #000000;
+    border: 1px solid gray;
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
@@ -351,7 +347,7 @@ div.msg_info {
 }
 
 .ui-widget-content {
-    border: 1px solid #000000;
+    border: 1px solid gray;
     background: #ececec;
 }
 
@@ -361,13 +357,13 @@ div.msg_info {
     display: inline-block;
 }
 
-.spoilerHeader, .spoilerHeader2{
+.spoilerHeader, .spoilerHeader2 {
     margin-top: 5px;
     color: #2526a7;
     padding: 2px;
 }
 
-.spoilerHeader:hover, .spoilerHeader2:hover{
+.spoilerHeader:hover, .spoilerHeader2:hover {
     color: #7faaea;
     cursor: pointer;
 }

@@ -16,9 +16,9 @@
 
             <tr>
                 <td valign="top">
-                    <div class="bg">
+                    <ib:panel title="Поиск">
                         <input size="50" autofocus type="text" id="query"/>
-                        <button onclick="onSearch();">Поиск</button>
+                        <ib:button onClick="onSearch();">Запрос</ib:button>
                         <div id="searchResult">
 
                         </div>
@@ -30,7 +30,7 @@
                                 }
                             });
                         </script>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

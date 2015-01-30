@@ -7,6 +7,7 @@
 <ib:gap px="5"/>
 
 Значки для сайта взяты с <a href="http://iconza.ru/">http://iconza.ru/</a> <br>
+Общий дизайн выполнен с использованием <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
 
 <ib:gap px="5"/>
 

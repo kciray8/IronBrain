@@ -1,5 +1,3 @@
-<%@ page import="org.ironbrain.core.Exam" %>
-<%@ page import="org.ironbrain.utils.DateUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
@@ -17,40 +15,38 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
-                        <c:if test="${exam != null}">
-                            Экзамен
-                            <br>
+                <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                    <c:if test="${exam != null}">
+                        <ib:panel title="Экзамен">
                             Запущен <br>
-                            <%=
-                            DateUtils.getNiceDate(((Exam)
-                                    pageContext.findAttribute("exam")).getStartMs()) %>
+                            ${exam.strStart}
                             <br>
                             Заход № ${tempTry.attemptNum}
-                        </c:if>
-                        <c:if test="${exam == null}">
+                        </ib:panel>
+                    </c:if>
+                    <c:if test="${exam == null}">
+                        <ib:panel title="Все экзмены">
                             <ib:examList exams="${exams}"/>
-                        </c:if>
-                    </div>
+                        </ib:panel>
+                    </c:if>
                 </td>
                 <td valign="top">
-                    <div class="bg">
-                        <div id="ticketWindow">
-                            <c:if test="${exam == null}">
+
+                    <div id="ticketWindow">
+                        <c:if test="${exam == null}">
+                            <ib:panel title="Сборка">
                                 <ib:reminds reminds="${reminds}"/>
-                            </c:if>
-                            <c:if test="${exam != null}">
-                                Билет № ${tempTry.num} из ${exam.count}
-                                <br>
+                            </ib:panel>
+                        </c:if>
+                        <c:if test="${exam != null}">
+                            <ib:panel title="Билет № ${tempTry.num} из ${exam.count}">
                                 Вопросы: <br>
                                 <div class="examTextOutput" id="questionsDiv">
                                         ${ticket.questions}
                                 </div>
 
                                 <ib:margin/>
-                                <button id="answerButton" onclick="exam.openAnswers(true)">Ответы
-                                </button>
+                                <ib:button id="answerButton" onClick="exam.openAnswers(true)">Ответы</ib:button>
 
                                 <div id="answers" style="display: none">
                                     <ib:margin/>
@@ -70,24 +66,23 @@
 
                                     <br>
                                     <ib:margin/>
-                                    <button accesskey="c" id="turnAsideTicketButton" onclick="exam.openAnswers(false)">
-                                        Свернуть
-                                    </button>
 
-                                    <button id="nextTicketButton" onclick="exam.nextTicket(${tempTry.id})">Следующий
-                                        билет
-                                    </button>
-
-                                    <button id="nextTicketButton"
-                                            onclick="window.open('edit_ticket?id=${tempTry.ticket}')">Редактировать
-                                    </button>
+                                    <ib:button accesskey="c" id="turnAsideTicketButton"
+                                               onClick="exam.openAnswers(false)">Свернуть</ib:button>
+                                    <ib:space px="5"/>
+                                    <ib:button id="nextTicketButton"
+                                               onClick="exam.nextTicket(${tempTry.id})">Следующий билет</ib:button>
+                                    <ib:space px="5"/>
+                                    <ib:button id="nextTicketButton"
+                                               onClick="window.open('edit_ticket?id=${tempTry.ticket}')">Редактировать</ib:button>
                                 </div>
-                            </c:if>
-                        </div>
-                        <script>
-                            exam.configure();
-                        </script>
+                            </ib:panel>
+                        </c:if>
                     </div>
+                    <script>
+                        exam.configure();
+                    </script>
+
                 </td>
             </tr>
         </table>

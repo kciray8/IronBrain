@@ -11,7 +11,7 @@
         >
 
     <context:annotation-config/>
-    <context:property-placeholder location='classpath:database.properties'/>
+    <context:property-placeholder location='classpath*:config/*.properties'/>
 
     <mvc:annotation-driven>
     </mvc:annotation-driven>
@@ -51,6 +51,7 @@
 
                 <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
                 <prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
             </props>
         </property>
     </bean>
@@ -60,18 +61,19 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <mvc:resources mapping="/**" location="res" />
+    <mvc:resources mapping="/**" location="res"/>
 
     <bean id="data" class="org.ironbrain.SessionData" scope="session">
         <aop:scoped-proxy/>
     </bean>
 
     <bean id="ib" class="org.ironbrain.IB">
+        <property name="publicVersion" value="${ib.public}"/>
     </bean>
 
     <bean id="multipartResolver"
-                class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- setting maximum upload size -->
-        <property name="maxUploadSize" value="100000000" />
+        <property name="maxUploadSize" value="${ib.maxUploadSize}"/>
     </bean>
 </beans>

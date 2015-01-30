@@ -26,17 +26,17 @@
 
             <tr>
                 <td colspan="2">
-                    <div class="bg path">
+                    <ib:bg>
                         <ib:path list="${path}"/>
-                    </div>
+                    </ib:bg>
                 </td>
             </tr>
 
             <tr>
                 <c:if test="${ticket == null}">
-                    <td valign="top">
+                    <td valign="top" style="width: 310px;vertical-align: top; padding-right: 10px">
                         <c:if test="${data.user != null}">
-                            <div class="bg" style="width: 300px">
+                            <ib:panel title="Навигация">
                                 <c:if test="${section.parent != null}">
                                     <a class="menu" href="add?sec=${section.parent}">← Назад</a>
                                     <br>
@@ -45,54 +45,56 @@
                                 <ib:sections list="${sections}"/>
 
                                 <ib:gap px="5"/>
-                                <input placeholder="Имя раздела" style="width:100%;" type="text" size="20"
-                                       id="newSectionName">
+                                <ib:input placeholder="Имя раздела" id="newSectionName"/>
+
                                 <ib:gap px="5"/>
-                                <button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
-                                </button>
+                                <ib:button id="addSectionButton" onClick="onAddSection(${section.id});">Добавить раздел
+                                </ib:button>
                                 <ib:gap px="5"/>
-                                <button id="addTicketButton" onClick="onAddNewTicket(${section.id});">Добавить билет
-                                </button>
+                                <ib:button id="addTicketButton" onClick="onAddNewTicket(${section.id});">Добавить билет
+                                </ib:button>
                                 <c:if test="${bufferSectionId != null}">
                                     <ib:gap px="5"/>
-                                    <button id="addTicketButton" onClick="thisSection.paste()">Вставить
+                                    <ib:button id="addTicketButton" onClick="thisSection.paste()">Вставить
                                         раздел
-                                    </button>
+                                    </ib:button>
                                 </c:if>
-                            </div>
+                            </ib:panel>
                         </c:if>
                     </td>
                 </c:if>
 
                 <c:if test="${ticket == null}">
-                    <td valign="top" style="width: 100%">
-                        <div class="bg">
+                    <td valign="top">
+                        <ib:panel title="Редактор раздела">
                             Название раздела: ${section.label}<br>
                             <ib:gap px="5"/>
-                            <button id="renameButton" onclick="thisSection.showRenameGui();">Переименовать</button>
+                            <ib:button id="renameButton"
+                                       onClick="thisSection.showRenameGui();">Переименовать</ib:button>
                             <div hidden id="renameSectionGUI">
-                                <input autofocus type="text" size="20" id="renameSectionName">
-                                <button onClick="thisSection.rename()">OK</button>
-                                <button onClick="thisSection.hideRenameGui()">Отмена</button>
+                                <ib:input attr="autofocus" style="width:200px;" id="renameSectionName" size="20"/>
+                                <ib:gap px="5"/>
+                                <ib:button style="margin-right:5px" onClick="thisSection.rename()">OK</ib:button>
+                                <ib:button onClick="thisSection.hideRenameGui()">Отмена</ib:button>
                             </div>
 
                             <ib:gap px="5"/>
                             <ib:fieldEditor target="section" fieldMappers="${secToFlds}" targetId="${section.id}"
                                             unusedFields="${unusedFields}"/>
-                        </div>
+                        </ib:panel>
                     </td>
                 </c:if>
 
                 <c:if test="${ticket != null}">
-                    <td style="width: 200px;vertical-align: top;">
-                        <div class="bg">
+                    <td style="width: 210px;vertical-align: top; padding-right: 10px">
+                        <ib:panel title="Команды">
                             Вспомнить: <br>
                                 ${ticketSection.remindDateStr}<br>
                             <ib:gap px="5"/>
-                            <button accesskey="a"
-                                    onclick="onAddNewTicketAfterSave(${section.id},${ticket.id},${ticketSection.id});">
+                            <ib:button
+                                    onClick="onAddNewTicketAfterSave(${section.id},${ticket.id},${ticketSection.id});">
                                 Добавить билет
-                            </button>
+                            </ib:button>
                             <ib:gap px="5"/>
                             <div id="loadingDiv" hidden>
                                 <div>Файл - <span id="loadingFileName"></span></div>
@@ -100,11 +102,11 @@
                                     Загрузка... <span id="loadingPercent"></span>%
                                 </div>
                             </div>
-                        </div>
+                        </ib:panel>
                     </td>
 
                     <td valign="top">
-                        <div class="bg">
+                        <ib:panel title="Редактор билета">
                             <script>
                                 setSaveOnBlur(${ticket.id}, ${ticketSection.id});
                                 setSaveOnUnload(${ticket.id}, ${ticketSection.id});
@@ -112,7 +114,7 @@
                             </script>
                             <ib:ticketEditor data="${data}" ticket="${ticket}" section="${ticketSection}"
                                              secToFields="${secToFlds}" unusedFields="${unusedFields}"/>
-                        </div>
+                        </ib:panel>
                     </td>
                 </c:if>
             </tr>

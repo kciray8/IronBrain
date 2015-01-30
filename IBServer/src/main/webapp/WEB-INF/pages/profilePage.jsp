@@ -15,14 +15,14 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
+                <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                    <ib:panel title="Разделы">
                         <a class="menu" href="/profile">Основные настройки</a>
-                    </div>
+                    </ib:panel>
                 </td>
 
                 <td style="vertical-align: top;">
-                    <div class="bg">
+                    <ib:panel title="Основные настройки">
                         <div class="form-element">
                             Имя пользователя: ${user.login} <br>
                         </div>
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="form-element">
-                            <button id="updateProfileButton">Сохранить</button>
+                            <ib:button id="updateProfileButton">Сохранить</ib:button>
                         </div>
 
                         <div id="update_error" class="msg_error"></div>
@@ -60,7 +60,7 @@
                                 $("#extendedProfile").prop('checked', true);
                             </script>
                         </c:if>
-                    </div>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

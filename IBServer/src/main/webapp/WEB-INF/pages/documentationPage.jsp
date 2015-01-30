@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <ib:headBlock title="-Документация-"/>
         <ib:scripts/>
+        <ib:headBlock title="-Документация-"/>
     </head>
     <body>
         <table style="width:100%;">
@@ -15,16 +15,22 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
-                        <button onclick="window.history.back()">Назад</button>
-                    </div>
+                <td style="width: 210px;vertical-align: top; padding-right: 10px">
+                    <ib:panel title="Команды">
+                        <ib:button style="margin-top: 5px" onClick="$('.spoilerHeader').click()">
+                            Развернуть все разделы
+                        </ib:button>
+                        <ib:space px="5"/>
+                        <ib:button style="margin-top: 5px" onClick="$('.spoilerHeader2').click()">
+                            Свернуть все разделы
+                        </ib:button>
+                    </ib:panel>
                 </td>
 
                 <td valign="top">
-                    <div class="bg">
-                        <ib:doc />
-                    </div>
+                    <ib:panel title="Документация">
+                        <ib:doc/>
+                    </ib:panel>
                 </td>
             </tr>
         </table>

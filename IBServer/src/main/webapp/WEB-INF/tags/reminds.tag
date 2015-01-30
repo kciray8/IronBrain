@@ -39,9 +39,9 @@
                         ${remind.shortText}
                 </td>
                 <td class="base_td">
-                    <button onclick="deleteRemind(${remind.id});">
+                    <ib:button onClick="deleteRemind(${remind.id});">
                         Удалить
-                    </button>
+                    </ib:button>
                 </td>
 
                 <!--Remind:
@@ -62,7 +62,7 @@
     </table>
 
     <ib:margin/>
-    <button onclick="exam.remind()">Вспомнить</button>
+    <ib:button onClick="exam.remind()">Вспомнить</ib:button>
 </c:if>
 
 <c:if test="${empty reminds}">

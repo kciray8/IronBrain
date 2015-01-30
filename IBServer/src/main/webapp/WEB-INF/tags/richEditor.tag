@@ -11,27 +11,33 @@
 <%@ tag pageEncoding="UTF-8" %>
 
 <div>
-    <button onclick="document.execCommand('bold',false,null);"><b>B</b></button>
-    <button onclick="document.execCommand('italic',false,null);"><i>I</i></button>
-    <button onclick="document.execCommand('underline',false,null);"><span style="text-decoration: underline;">U</span>
-    </button>
+    <div class="btn-group">
+        <ib:button onClick="document.execCommand('bold',false,null);" style="width: 25px;"><b>B</b></ib:button>
+        <ib:button onClick="document.execCommand('italic',false,null);" style="width: 25px;"><i>I</i></ib:button>
+        <ib:button onClick="document.execCommand('underline',false,null);" style="width: 25px;"><span
+                style="text-decoration: underline;">U</span>
+        </ib:button>
+    </div>
 
-    <button onclick="insertCode()"><span
+    <ib:button onClick="insertCode()" style="margin-right:3px"><span
             style="font-family: monospace">CODE</span>
-    </button>
+    </ib:button>
 
-    <button onclick="document.execCommand('removeFormat',false,null);" title="Очистить формат">X</button>
-    <button onclick="document.execCommand('backColor',false,'#9CEBFF');"><ib:marker color="#9CEBFF"/></button>
-    <button onclick="document.execCommand('backColor',false,'#FFFFFF');"><ib:marker color="#FFFFFF"/></button>
+    <ib:button onClick="document.execCommand('removeFormat',false,null);" style="margin-right:3px">X</ib:button>
+    <ib:button onClick="document.execCommand('backColor',false,'#9CEBFF');" style="margin-right:3px"><ib:marker
+            color="#9CEBFF"/></ib:button>
+    <ib:button onClick="document.execCommand('backColor',false,'#FFFFFF');" style="margin-right:3px"><ib:marker
+            color="#FFFFFF"/></ib:button>
 
-    <button onclick="document.execCommand('strikeThrough',false,null);"><s>abc</s></button>
+    <ib:button onClick="document.execCommand('strikeThrough',false,null);"
+               style="margin-right:3px"><s>abc</s></ib:button>
 
-    <button onclick="${divID}onCreateLink()"><span
+    <ib:button onClick="${divID}onCreateLink()" style="margin-right:3px"><span
             style="text-decoration: underline;color: #0000EE">link</span>
-    </button>
+    </ib:button>
 
     <c:if test="${data.user.extended}">
-        <button onclick="onEditorModeChange(${editorName}Editor);">HTML</button>
+        <ib:button onClick="onEditorModeChange(${editorName}Editor);" style="margin-right:3px">HTML</ib:button>
     </c:if>
 
     <ui:imgButton src="res/png/camera.png" srcHover="res/png/camera_blue.png"

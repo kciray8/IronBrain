@@ -15,15 +15,14 @@
             </tr>
 
             <tr>
-                <td style="width: 200px;vertical-align: top;">
-                    <div class="bg">
-                        <button onclick="location.href='.'">Назад</button>
-                    </div>
+                <td style="width: 200px;vertical-align: top; padding-right: 10px">
+                    <ib:panel title="Команды">
+                        <ib:button onClick="location.href='.'">Назад</ib:button>
+                    </ib:panel>
                 </td>
 
                 <td style="vertical-align: top;">
-                    <div class="bg">
-                        Регистрация <br>
+                    <ib:panel title="Регистрация">
                         <div class="form-element">
                             <input type="text" id="login" placeholder="Логин"/>
                         </div>
@@ -41,17 +40,18 @@
                             <input checked value="simple" type="radio" name="accountMode">Простой</input>
                             <input value="extended" type="radio" name="accountMode">Расширенный</input>
                         </div>
-                        Если вы программист, выбирайте "Расширенный" режим - больше функций. Но с ними надо быть аккуратнее. <br> В любом случае, в
+                        Если вы программист, выбирайте "Расширенный" режим - больше функций. Но с ними надо быть
+                        аккуратнее. <br> В любом случае, в
                         настройках всегда можно его изменить.
 
                         <div class="form-element">
-                            <button onclick="submitRegister()">Регистрация</button>
+                            <ib:button onClick="submitRegister()">Регистрация</ib:button>
                         </div>
 
                         <div id="reg_error" class="msg_error">
 
                         </div>
-                    </div>
+                    </ib:panel>
 
                     <script>
                         function submitRegister() {

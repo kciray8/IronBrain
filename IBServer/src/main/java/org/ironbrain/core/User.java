@@ -1,11 +1,9 @@
 package org.ironbrain.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.ironbrain.utils.DateUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "Users")
 @Entity
@@ -92,4 +90,29 @@ public class User {
     }
 
     private String port = "9993";
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    private Boolean admin = false;
+
+    public long getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(long registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    private long registerDate = System.currentTimeMillis();
+
+    @Transient
+    public String getRegisterDateStr(){
+        return DateUtils.getNiceDate(registerDate);
+    }
 }

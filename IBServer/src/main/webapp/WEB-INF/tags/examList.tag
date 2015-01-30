@@ -3,10 +3,6 @@
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
 <%@ tag pageEncoding="UTF-8" %>
 
-Все экзамены:
-
-<ib:gap px="5"/>
-
 <c:forEach var="exam" items="${exams}">
     <a class="menu" href="exam${exam.id}">${exam.name}</a> <br>
 </c:forEach>

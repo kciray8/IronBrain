@@ -3,28 +3,46 @@
 <%@ taglib prefix="ib" tagdir="/WEB-INF/tags" %>
 <%@ tag pageEncoding="UTF-8" %>
 
-<td colspan="2">
-    <div class="bg header" style="padding: 0;">
-        <a class="main-menu" href="main" style="padding-left: 13px;">Главная</a>
-        <a class="main-menu" href="documentation">Документация</a>
+<%
+    String uri = request.getRequestURI();
+    String pname = uri.substring(uri.lastIndexOf("/") + 1);
+%>
 
-        <c:if test="${data.user != null}">
-            <a class="main-menu" href="add">Билеты</a>
-            <a class="main-menu" href="exam" id="examAnchor">Экзамен</a>
-            <a class="main-menu" href="profile">Профиль</a>
-            <a class="main-menu" href="search">Поиск</a>
-            <a class="main-menu" href="direction">Направления</a>
-            <a class="main-menu" href="add_ticket_to_time">+Билет</a>
-            <a class="main-menu" href="about">О системе</a>
-        </c:if>
-
-        <c:if test="${data.user != null}">
-            <div style="display: inline; float: right; margin-top: 3px;margin-right: 5px;">
-                    ${data.user.login}&nbsp;&nbsp;
-                <button onclick="window.location.href = 'logout'">Выход</button>
+<td colspan="2" style="max-width: 800px">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="main">IronBrain</a>
             </div>
-        </c:if>
-    </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li <%= (pname.equals("mainPage.jsp") ? "class='active'" : "") %> ><a href="main">Главная</a></li>
+                    <li <%= (pname.equals("documentationPage.jsp") ? "class='active'" : "") %> ><a href="documentation">Документация</a>
+                        <c:if test="${data.user != null}">
+                    <li <%= (pname.equals("addPage.jsp") ? "class='active'" : "") %> ><a href="add">Билеты</a>
+                    <li <%= (pname.equals("examPage.jsp") ? "class='active'" : "") %> ><a href="exam">Экзамен</a>
+                    <li <%= (pname.equals("searchPage.jsp") ? "class='active'" : "") %> ><a href="search">Поиск</a>
+                    <li <%= (pname.equals("directionPage.jsp") ? "class='active'" : "") %> ><a href="direction">Направления</a>
+                    <li><a href="add_ticket_to_time">+Билет</a>
+                    <li <%= (pname.equals("aboutPage.jsp") ? "class='active'" : "") %> ><a href="about">О системе</a>
+
+                        </c:if>
+
+                        <c:if test="${data.user != null}">
+                    <li <%= (pname.equals("profilePage.jsp") ? "class='active'" : "") %> class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">${data.user.login}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="profile">Профиль</a></li>
+                            <li><a href="logout">Выход</a></li>
+                        </ul>
+                    </li>
+                    </c:if>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </td>
 
 <script>
