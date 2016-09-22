@@ -1,4 +1,0 @@
-my.ini ADD
-
-interactive_timeout=3700
-wait_timeout=3700
